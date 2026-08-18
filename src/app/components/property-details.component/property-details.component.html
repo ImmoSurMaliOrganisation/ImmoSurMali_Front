@@ -1,0 +1,297 @@
+@if (property(); as p) {
+  <app-detail-navbar />
+
+  <div class="max-w-7xl mx-auto px-4 md:px-12 py-8 space-y-12">
+    <!-- Section des images -->
+    <section
+      class="grid gap-4 h-[450px] md:h-[600px]"
+      [class.grid-cols-1]="p.images.length === 1"
+      [class.md:grid-cols-2]="p.images.length === 2"
+      [class.md:grid-cols-3]="p.images.length === 3"
+      [class.md:grid-cols-4]="p.images.length >= 4"
+    >
+      <div
+        class="rounded-[2.5rem] overflow-hidden relative group cursor-pointer"
+        [class.md:col-span-2]="p.images.length >= 4"
+        [class.md:row-span-2]="p.images.length >= 4"
+        [class.h-full]="p.images.length < 4"
+        (click)="openGallery(0)"
+      >
+        <img
+          [src]="p.images[0]"
+          class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+          alt="Vue principale"
+        />
+        <div class="absolute inset-0 bg-black/5"></div>
+      </div>
+
+      @if (p.images.length >= 2) {
+        <div
+          class="hidden md:block rounded-[2.5rem] overflow-hidden relative group"
+          [class.md:row-span-2]="p.images.length === 2"
+          [class.md:col-span-2]="p.images.length === 3"
+        >
+          <img
+            [src]="p.images[1]"
+            class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+          />
+        </div>
+      }
+
+      @if (p.images.length >= 3) {
+        <div
+          class="hidden md:block rounded-[2.5rem] overflow-hidden relative group"
+          [class.md:row-span-1]="p.images.length >= 4"
+        >
+          <img
+            [src]="p.images[2]"
+            class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+          />
+        </div>
+      }
+
+      @if (p.images.length >= 4) {
+        <div
+          (click)="openGallery(3)"
+          class="hidden md:flex rounded-[2.5rem] overflow-hidden relative bg-brand items-center justify-center cursor-pointer group"
+        >
+          <img
+            [src]="p.images[3]"
+            class="absolute inset-0 w-full h-full object-cover opacity-40 group-hover:scale-110 transition-transform"
+          />
+          @if (p.images.length > 4) {
+            <span class="relative text-white font-black text-xl"
+              >+ {{ p.images.length - 3 }} photos</span
+            >
+          } @else {
+            <div class="absolute inset-0 bg-black/10"></div>
+          }
+        </div>
+      }
+    </section>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+      <div class="lg:col-span-2 space-y-12">
+        <div class="space-y-4">
+          <div class="flex items-center gap-3">
+            <span
+              class="px-4 py-1.5 rounded-full bg-brand/10 text-brand text-xs font-black uppercase"
+            >
+              {{ property()!.type }}
+            </span>
+            <span class="text-text-muted flex items-center gap-1 text-sm">
+              <svg lucideMapPin class="w-4 h-4"></svg> {{ property()!.location }}
+            </span>
+          </div>
+          <h1 class="text-4xl md:text-6xl font-black text-main-text tracking-tight leading-tight">
+            {{ property()!.title }}
+          </h1>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+          @for (stat of stats(); track stat.label) {
+            <div class="bg-card-bg border border-border p-6 rounded-[2rem] space-y-2">
+              <p class="text-[10px] font-bold text-text-muted uppercase tracking-widest">
+                {{ stat.label }}
+              </p>
+              <p class="text-2xl font-black text-main-text">{{ stat.value }}</p>
+            </div>
+          }
+        </div>
+
+        <div class="space-y-4">
+          <h3 class="text-2xl font-black">Description</h3>
+          <p class="text-text-muted leading-relaxed text-lg">
+            {{ property()!.description }}
+          </p>
+        </div>
+
+        <div class="space-y-6">
+          <h3 class="text-2xl font-black">What this property offers</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            @for (item of property()!.amenities; track item) {
+              <div
+                class="flex items-center gap-3 p-4 rounded-2xl bg-slate-50 dark:bg-white/5 border border-transparent hover:border-brand/20 transition-all"
+              >
+                <div class="w-2 h-2 rounded-full bg-brand"></div>
+                <span class="font-bold text-main-text">{{ item }}</span>
+              </div>
+            }
+          </div>
+        </div>
+        <!-- Location section -->
+        <div class="space-y-6">
+          <div class="flex items-center justify-between">
+            <h3 class="text-2xl font-black">Location</h3>
+            <button
+              (click)="toggleMap()"
+              class="text-brand font-bold text-sm flex items-center gap-2 hover:underline"
+            >
+              <svg lucideMaximize2 class="w-4 h-4"></svg>
+              Expand map
+            </button>
+          </div>
+
+          <div
+            [class.fixed]="isMapMaximized()"
+            [class.inset-0]="isMapMaximized()"
+            [class.z-[250]]="isMapMaximized()"
+            [class.p-4]="isMapMaximized()"
+            [class.bg-black/40]="isMapMaximized()"
+            [class.backdrop-blur-md]="isMapMaximized()"
+            class="transition-all duration-500 ease-in-out"
+          >
+            <div
+              class="relative overflow-hidden border border-border transition-all duration-500 shadow-xl"
+              [class.rounded-[2.5rem]]="!isMapMaximized()"
+              [class.rounded-[3rem]]="isMapMaximized()"
+              [class.h-80]="!isMapMaximized()"
+              [class.h-full]="isMapMaximized()"
+              [class.w-full]="isMapMaximized()"
+            >
+              @if (isMapMaximized()) {
+                <button
+                  (click)="toggleMap()"
+                  class="absolute top-6 right-6 z-[260] bg-white dark:bg-[#121212] p-4 rounded-2xl shadow-2xl active:scale-95 transition-all text-main-text"
+                >
+                  <svg lucideMinimize2 class="w-6 h-6"></svg>
+                </button>
+              }
+
+              <app-map-view [properties]="[p]" class="w-full h-full block" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="relative" id="booking-section">
+        <div class="sticky top-28 space-y-6">
+          <div
+            class="bg-main-text dark:bg-card-bg text-white dark:text-main-text p-8 rounded-[3rem] shadow-2xl border border-white/10"
+          >
+            <p class="text-sm opacity-60 font-medium">Prix total</p>
+            <div class="flex items-baseline gap-2 mb-8">
+              <span class="text-4xl font-black text-brand">{{ property()!.price | number }}</span>
+              <span class="text-lg opacity-60">FCFA</span>
+            </div>
+
+            <div class="space-y-4">
+              <button
+                class="w-full bg-brand hover:bg-brand/90 text-white h-16 rounded-2xl font-black text-lg transition-all active:scale-95 shadow-lg shadow-brand/20"
+              >
+                Book a Visit
+              </button>
+              <button
+                class="w-full bg-white/10 dark:bg-slate-100 border border-white/20 h-16 rounded-2xl font-black transition-all flex items-center justify-center gap-3 text-main-bg dark:text-main-bg hover:bg-white/20 dark:hover:bg-slate-100/20 active:scale-95 shadow-md shadow-white/10"
+              >
+                <svg lucideMessageCircle class="w-5 h-5"></svg>
+                Contact on WhatsApp
+              </button>
+            </div>
+
+            <div class="mt-8 pt-8 border-t border-white/10 flex items-center gap-4">
+              <div
+                class="w-12 h-12 rounded-full bg-slate-200 overflow-hidden border-2 border-brand"
+              >
+                <img
+                  src="https://media.licdn.com/dms/image/v2/D4E03AQFA3z4Nle4VTw/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1674723339115?e=2147483647&v=beta&t=liHaZWYf4LtVyHyTCkjCKzmPmAeFY6isOzu50u4h8D0"
+                  class="w-full h-full object-cover"
+                />
+              </div>
+              <div>
+                <p class="text-sm font-black">Moussa Diarra</p>
+                <p class="text-xs opacity-50 font-bold uppercase">Certified Agent</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <section class="space-y-8 pt-12 border-t border-border">
+      <h3 class="text-3xl font-black text-main-text">Similar Properties</h3>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        @for (p of similarProperties(); track p.id) {
+          <app-property-card [property]="p" />
+        }
+      </div>
+    </section>
+  </div>
+
+  <!-- Gallery image modal -->
+  @if (showLightbox()) {
+    <div
+      class="fixed inset-0 z-[200] bg-black flex flex-col items-center justify-between transition-all"
+    >
+      <div class="w-full p-6 flex justify-end">
+        <button (click)="closeGallery()" class="p-2 bg-white/10 rounded-full text-white">
+          <svg lucideX class="w-6 h-6"></svg>
+        </button>
+      </div>
+
+      <div class="relative w-full flex-1 flex items-center justify-center overflow-hidden">
+        <button
+          (click)="prevImage(p.images)"
+          class="hidden md:block absolute left-4 p-4 text-white/50"
+        >
+          <svg lucideChevronLeft class="w-10 h-10"></svg>
+        </button>
+
+        <img
+          [src]="p.images[currentImageIndex()]"
+          class="max-w-full max-h-[70vh] object-contain shadow-2xl transition-all duration-300"
+        />
+
+        <button
+          (click)="nextImage(p.images)"
+          class="hidden md:block absolute right-4 p-4 text-white/50"
+        >
+          <svg lucideChevronRight class="w-10 h-10"></svg>
+        </button>
+      </div>
+
+      <div class="w-full p-8 space-y-6 bg-gradient-to-t from-black to-transparent text-center">
+        <div class="space-y-1">
+          <p class="text-white font-black text-2xl">
+            {{ currentImageIndex() + 1 }} / {{ p.images.length }}
+          </p>
+          <p class="text-white/60 text-sm uppercase tracking-widest font-bold">{{ p.title }}</p>
+        </div>
+
+        <div class="flex justify-center gap-8 md:hidden">
+          <button
+            (click)="prevImage(p.images)"
+            class="p-4 bg-white/10 rounded-2xl active:scale-90 transition-all text-white"
+          >
+            <svg lucideArrowLeft class="w-6 h-6"></svg>
+          </button>
+          <button
+            (click)="nextImage(p.images)"
+            class="p-4 bg-white/10 rounded-2xl active:scale-90 transition-all text-white"
+          >
+            <svg lucideArrowRight class="w-6 h-6"></svg>
+          </button>
+        </div>
+
+        <div class="hidden md:flex justify-center gap-2">
+          @for (img of p.images; track $index) {
+            <button
+              (click)="currentImageIndex.set($index)"
+              class="w-14 h-14 rounded-xl overflow-hidden border-2 transition-all"
+              [class.border-brand]="currentImageIndex() === $index"
+              [class.border-transparent]="currentImageIndex() !== $index"
+            >
+              <img
+                [src]="img"
+                class="w-full h-full object-cover"
+                [class.opacity-40]="currentImageIndex() !== $index"
+              />
+            </button>
+          }
+        </div>
+      </div>
+    </div>
+  }
+} @else {
+  <div class="animate-pulse p-20 text-center text-text-muted">Loading property details...</div>
+}

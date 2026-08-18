@@ -1,0 +1,69 @@
+[
+  {
+    "id": 1,
+    "title": "Modern Glass Villa",
+    "location": "Sébénikoro, Bamako",
+    "price": 250000,
+    "beds": 4,
+    "baths": 3,
+    "sqft": 350,
+    "image": "https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&q=80&w=800",
+    "type": "Sale",
+    "category": "Villa",
+    "coordinates": {
+      "lat": 12.61,
+      "lng": -8.06
+    }
+  },
+  {
+    "id": 2,
+    "title": "Luxury Sky Apartment",
+    "location": "ACI 2000, Bamako",
+    "price": 1200,
+    "beds": 2,
+    "baths": 2,
+    "sqft": 120,
+    "image": "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&q=80&w=800",
+    "type": "Rent",
+    "category": "Apartment",
+    "period": "month",
+    "coordinates": {
+      "lat": 12.628,
+      "lng": -8.02
+    }
+  },
+  {
+    "id": 3,
+    "title": "Nomad Desert Resort",
+    "location": "Bandiagara, Mopti",
+    "price": 450000,
+    "beds": 6,
+    "baths": 4,
+    "sqft": 500,
+    "image": "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=800",
+    "type": "Sale",
+    "category": "Villa",
+    "coordinates": {
+      "lat": 14.35,
+      "lng": -3.61
+    }
+  },
+
+  {
+    "id": 4,
+    "title": "Sunset View Residence",
+    "location": "Kalaban Coura, Bamako",
+    "price": 800,
+    "beds": 3,
+    "baths": 2,
+    "sqft": 160,
+    "image": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=800",
+    "type": "Rent",
+    "category": "Villa",
+    "period": "night",
+    "coordinates": {
+      "lat": 12.585,
+      "lng": -7.985
+    }
+  }
+]

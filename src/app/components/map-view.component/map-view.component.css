@@ -1,0 +1,18 @@
+:host {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Fix important pour les DivIcons */
+.custom-house-icon {
+  background: none !important;
+  border: none !important;
+}
+
+/* Optionnel : Ajoute un effet au survol */
+.custom-house-icon:hover div {
+  transform: translateY(-6px) scale(1.1);
+  transition: transform 0.2s ease-out;
+  color: #1d4ed8 !important; /* Une nuance plus foncée au survol */
+}

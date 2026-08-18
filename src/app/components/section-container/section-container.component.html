@@ -1,0 +1,75 @@
+<section class="m-1 transition-all duration-500 overflow-hidden">
+  <div class="p-2 md:p-6 space-y-2">
+    <!-- HEADER DYNAMIQUE -->
+    <div class="flex justify-between items-end">
+      <div class="space-y-1">
+        <p class="text-[10px] font-black uppercase tracking-[0.3em] text-brand">{{ subtitle() }}</p>
+        <h2 class="text-2xl md:text-4xl font-black tracking-tight">{{ title() }}</h2>
+      </div>
+
+      <!-- CONTROLES (Dots + Arrows) -->
+      <div
+        class="hidden md:flex items-center gap-4 bg-background/20 p-2 rounded-[2rem] border border-border/40 backdrop-blur-sm"
+      >
+        <button
+          (click)="move('prev')"
+          [disabled]="currentPage() === 1"
+          class="w-10 h-10 flex items-center justify-center bg-card-bg/50 rounded-xl disabled:opacity-20 shadow-sm transition-all bg-main-text text-card-bg"
+        >
+          <svg lucideChevronLeft class="w-4 h-4"></svg>
+        </button>
+
+        <div class="flex items-center gap-1.5 px-2">
+          @for (p of [].constructor(totalPages()); track $index) {
+            <div
+              [class]="
+                $index + 1 === currentPage()
+                  ? 'w-8 bg-[#FF4D4D] h-2.5 rounded-full'
+                  : 'w-2.5 h-2.5 bg-gray-200 rounded-full'
+              "
+              class="transition-all duration-500 ease-out"
+            ></div>
+          }
+        </div>
+
+        <button
+          (click)="move('next')"
+          [disabled]="currentPage() === totalPages()"
+          class="w-10 h-10 flex items-center justify-center bg-card-bg/50 rounded-xl disabled:opacity-20 shadow-sm transition-all bg-main-text text-card-bg"
+        >
+          <svg lucideChevronRight class="w-4 h-4"></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- ZONE DE SCROLL -->
+    @if (isLoading()) {
+      <!-- Affiche 6 squelettes pendant le chargement -->
+      @for (s of skeletons(); track $index) {
+        <app-property-card-skeleton />
+      }
+    } @else {
+      <div
+        #scrollArea
+        (scroll)="onScroll($event)"
+        class="flex gap-2 overflow-x-auto no-scrollbar scroll-smooth snap-x snap-mandatory py-4 -mx-2 px-2"
+      >
+        <ng-content></ng-content>
+      </div>
+    }
+
+    <!-- PAGINATION MOBILE -->
+    <div class="flex md:hidden justify-center border-t border-border/10">
+      <div class="flex items-center gap-2 p-2 bg-background/50 rounded-full border border-border">
+      @for (p of [].constructor(totalPages()); track $index) {
+      <div
+        [class]="currentPage() === $index + 1 
+          ? 'w-8 bg-[#FF4D4D]' 
+          : 'w-2 bg-border/40'"
+        class="h-2 rounded-full transition-all duration-500 flex-shrink-0"
+      ></div>
+    }
+      </div>
+    </div>
+  </div>
+</section>

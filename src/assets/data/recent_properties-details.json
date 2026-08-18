@@ -1,0 +1,529 @@
+[
+  {
+    "id": 1,
+    "title": "Minimalist Studio",
+    "location": "Hamdallaye ACI, Bamako",
+    "price": 450,
+    "beds": 1,
+    "baths": 1,
+    "sqft": 45,
+    "image": "https://images.unsplash.com/photo-1493809842364-78817add7ffb?auto=format&fit=crop&q=80&w=800",
+    "images": [
+      "https://images.unsplash.com/photo-1493809842364-78817add7ffb?auto=format&fit=crop&q=80&w=800",
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&q=80&w=800",
+      "https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&q=80&w=800",
+      "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&q=80&w=800",
+      "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&q=80&w=800"
+    ],
+    "type": "Rent",
+    "category": "Apartment",
+    "period": "night",
+    "description": "Un studio compact et élégant au cœur du quartier des affaires. Idéal pour les voyageurs solos ou les séjours professionnels de courte durée. Design épuré avec finitions modernes.",
+    "amenities": ["WiFi Fibre", "Climatisation", "Smart Lock", "Ménage inclus"],
+    "agent": {
+      "name": "Aminata Traoré",
+      "phone": "+223 70 00 00 01",
+      "image": "https://i.pravatar.cc/150?u=ami",
+      "verified": true
+    },
+    "coordinates": { "lat": 12.6285, "lng": -8.025 }
+  },
+  {
+    "id": 2,
+    "title": "Residence Fleuve Niger",
+    "location": "Cité du Niger, Bamako",
+    "price": 3500,
+    "beds": 4,
+    "baths": 4,
+    "sqft": 300,
+    "image": "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=800",
+    "images": [
+      "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=800",
+      "https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&q=80&w=800",
+      "https://images.unsplash.com/photo-1600607687940-c52af04657b0?auto=format&fit=crop&q=80&w=800",
+      "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&q=80&w=800"
+    ],
+    "type": "Rent",
+    "category": "Apartment",
+    "period": "month",
+    "rating": 4.9,
+    "isFavorite": true,
+    "description": "Penthouse de prestige offrant une vue panoramique imprenable sur le fleuve Niger. Situé dans une zone ultra-sécurisée, ce bien allie luxe absolu et confort technologique.",
+    "amenities": ["River View", "Security 24/7", "Gym", "Infinity Pool", "Garage privé"],
+    "agent": {
+      "name": "Moussa Diarra",
+      "phone": "+223 60 00 00 11",
+      "image": "https://i.pravatar.cc/150?u=moussa",
+      "verified": true
+    },
+    "yearBuilt": 2025,
+    "coordinates": { "lat": 12.631, "lng": -7.988 }
+  },
+  {
+    "id": 3,
+    "title": "Château de Sébénikoro",
+    "location": "Sébénikoro Nord, Bamako",
+    "price": 420000,
+    "beds": 8,
+    "baths": 6,
+    "sqft": 700,
+    "image": "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&q=80&w=800",
+    "images": [
+      "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&q=80&w=800",
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=800",
+      "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&q=80&w=800",
+      "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&q=80&w=800"
+    ],
+    "type": "Sale",
+    "category": "Villa",
+    "rating": 5.0,
+    "isFavorite": true,
+    "description": "Une demeure d'exception pour les acheteurs les plus exigeants. Ce palais moderne dispose d'un jardin luxuriant, d'une piscine olympique et d'un système domotique complet.",
+    "amenities": ["Cinema Room", "Infinity Pool", "Wine Cellar", "Solar Power", "Borehole"],
+    "agent": {
+      "name": "Fatoumata Kouyaté",
+      "phone": "+223 75 00 00 15",
+      "image": "https://i.pravatar.cc/150?u=fatou",
+      "verified": true
+    },
+    "yearBuilt": 2025,
+    "coordinates": { "lat": 12.605, "lng": -8.07 }
+  },
+  {
+    "id": 4,
+    "title": "Eco-Lodge Siby",
+    "location": "Monts Manding, Siby",
+    "price": 150,
+    "beds": 2,
+    "baths": 1,
+    "sqft": 90,
+    "image": "https://images.unsplash.com/photo-1449156001437-3a1f93977c31?auto=format&fit=crop&q=80&w=800",
+    "images": [
+      "https://images.unsplash.com/photo-1449156001437-3a1f93977c31?auto=format&fit=crop&q=80&w=800",
+      "https://images.unsplash.com/photo-1510798831971-661eb04b3739?auto=format&fit=crop&q=80&w=800",
+      "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80&w=800"
+    ],
+    "type": "Rent",
+    "category": "Villa",
+    "period": "night",
+    "rating": 4.8,
+    "isFavorite": true,
+    "description": "Évadez-vous dans cet éco-lodge niché au cœur des montagnes de Siby. Architecture bioclimatique utilisant des matériaux locaux pour une expérience naturelle unique.",
+    "amenities": ["Nature View", "Solar Energy", "Fire Pit", "Hiking Access"],
+    "agent": {
+      "name": "Boubacar Sidibé",
+      "phone": "+223 65 00 00 17",
+      "image": "https://i.pravatar.cc/150?u=bouba",
+      "verified": false
+    },
+    "yearBuilt": 2023,
+    "coordinates": { "lat": 12.385, "lng": -8.321 }
+  },
+  {
+    "id": 5,
+    "title": "Minimalist Studio",
+    "location": "Hamdallaye ACI, Bamako",
+    "price": 450,
+    "beds": 1,
+    "baths": 1,
+    "sqft": 45,
+    "image": "https://images.unsplash.com/photo-1493809842364-78817add7ffb?auto=format&fit=crop&q=80&w=800",
+    "type": "Rent",
+    "category": "Apartment",
+    "period": "night",
+    "coordinates": { "lat": 12.6285, "lng": -8.025 },
+    "images": [
+      "https://images.unsplash.com/photo-1493809842364-78817add7ffb",
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688",
+      "https://images.unsplash.com/photo-1484154218962-a197022b5858"
+    ],
+    "description": "Un studio moderne et épuré au cœur de l'ACI 2000, parfait pour les séjours d'affaires.",
+    "amenities": ["WiFi", "Climatisation", "Parking Sécurisé"],
+    "agent": {
+      "name": "Sidy Diarra",
+      "phone": "+223 70 00 00 00",
+      "image": "https://i.pravatar.cc/150?u=sidy",
+      "verified": true
+    },
+    "features": { "yearBuilt": 2023, "furnished": true },
+    "isFavorite": false
+  },
+  {
+    "id": 6,
+    "title": "Residence Fleuve Niger",
+    "location": "Cité du Niger, Bamako",
+    "price": 3500,
+    "beds": 4,
+    "baths": 4,
+    "sqft": 300,
+    "image": "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=800",
+    "type": "Rent",
+    "category": "Apartment",
+    "period": "month",
+    "coordinates": { "lat": 12.631, "lng": -7.988 },
+    "images": [
+      "https://images.unsplash.com/photo-1512917774080-9991f1c4c750",
+      "https://images.unsplash.com/photo-1613490493576-7fde63acd811",
+      "https://images.unsplash.com/photo-1580587771525-78b9bed3b928"
+    ],
+    "description": "Appartement de standing avec une vue imprenable sur le fleuve Niger. Sécurité 24/7.",
+    "amenities": ["River View", "Security", "Gym", "Pool"],
+    "agent": {
+      "name": "Fily Mohamed",
+      "phone": "+223 60 00 00 00",
+      "image": "https://i.pravatar.cc/150?u=fily",
+      "verified": true
+    },
+    "features": { "yearBuilt": 2025, "floors": 2, "furnished": true },
+    "isFavorite": true
+  },
+  {
+    "id": 7,
+    "title": "Villa Oasis Koulikoro",
+    "location": "Route de Koulikoro, Bamako",
+    "price": 180000,
+    "beds": 5,
+    "baths": 3,
+    "sqft": 450,
+    "image": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=800",
+    "type": "Sale",
+    "category": "Villa",
+    "coordinates": { "lat": 12.67, "lng": -7.94 },
+    "images": [
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c",
+      "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3",
+      "https://images.unsplash.com/photo-1600607687940-c52af04657b0"
+    ],
+    "description": "Grande villa familiale écologique équipée de panneaux solaires et d'un forage privé.",
+    "amenities": ["Garden", "Solar Power", "Borehole", "Large Garage"],
+    "agent": {
+      "name": "Sidy Diarra",
+      "phone": "+223 70 00 00 00",
+      "image": "https://i.pravatar.cc/150?u=sidy",
+      "verified": true
+    },
+    "features": { "yearBuilt": 2022, "floors": 1, "furnished": false },
+    "isFavorite": false
+  },
+  {
+    "id": 8,
+    "title": "Château de Sébénikoro",
+    "location": "Sébénikoro Nord, Bamako",
+    "price": 420000,
+    "beds": 8,
+    "baths": 6,
+    "sqft": 700,
+    "image": "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&q=80&w=800",
+    "type": "Sale",
+    "category": "Villa",
+    "coordinates": { "lat": 12.605, "lng": -8.07 },
+    "images": [
+      "https://images.unsplash.com/photo-1564013799919-ab600027ffc6",
+      "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0",
+      "https://images.unsplash.com/photo-1512917774080-9991f1c4c750"
+    ],
+    "description": "Une demeure d'exception offrant un luxe inégalé avec salle de cinéma et piscine à débordement.",
+    "amenities": ["Cinema Room", "Infinity Pool", "Wine Cellar", "Security System"],
+    "agent": {
+      "name": "A. Assitan",
+      "phone": "+223 75 00 00 00",
+      "image": "https://i.pravatar.cc/150?u=anne",
+      "verified": true
+    },
+    "features": { "yearBuilt": 2025, "floors": 3, "furnished": true },
+    "isFavorite": true
+  },
+  {
+    "id": 9,
+    "title": "Terrain Commercial Titibougou",
+    "location": "Titibougou, Bamako",
+    "price": 95000,
+    "beds": 0,
+    "baths": 0,
+    "sqft": 1200,
+    "image": "https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&q=80&w=800",
+    "type": "Sale",
+    "category": "Land",
+    "coordinates": { "lat": 12.678, "lng": -7.915 },
+    "images": [
+      "https://images.unsplash.com/photo-1500382017468-9049fed747ef",
+      "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab"
+    ],
+    "description": "Vaste terrain plat idéalement situé pour un complexe commercial ou industriel.",
+    "amenities": ["Road Access", "Water Connection", "Electricity Grid"],
+    "agent": {
+      "name": "Fily Mohamed",
+      "phone": "+223 60 00 00 00",
+      "image": "https://i.pravatar.cc/150?u=fily",
+      "verified": true
+    },
+    "features": { "furnished": false },
+    "isFavorite": false
+  },
+  {
+    "id": 10,
+    "title": "Penthouse Horizon Fleuve",
+    "location": "Badalabougou, Bamako",
+    "price": 2500,
+    "beds": 3,
+    "baths": 3,
+    "sqft": 280,
+    "image": "https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&q=80&w=800",
+    "type": "Rent",
+    "category": "Apartment",
+    "period": "month",
+    "coordinates": { "lat": 12.618, "lng": -7.995 },
+    "images": [
+      "https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd",
+      "https://images.unsplash.com/photo-1600607687940-c52af04657b0"
+    ],
+    "description": "Un espace luxueux avec une terrasse panoramique offrant la plus belle vue sur le pont Fahd.",
+    "amenities": ["Terrasse", "Ascenseur", "Vue Fleuve", "Sécurité"],
+    "agent": {
+      "name": "Sidy Diarra",
+      "phone": "+223 70 00 00 00",
+      "image": "https://i.pravatar.cc/150?u=sidy",
+      "verified": true
+    },
+    "features": { "yearBuilt": 2024, "floors": 5, "furnished": true },
+    "isFavorite": true
+  },
+  {
+    "id": 11,
+    "title": "Villa Royale Sotuba",
+    "location": "Sotuba ACI, Bamako",
+    "price": 350000,
+    "beds": 6,
+    "baths": 5,
+    "sqft": 600,
+    "image": "https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&q=80&w=800",
+    "type": "Sale",
+    "category": "Villa",
+    "coordinates": { "lat": 12.655, "lng": -7.93 },
+    "images": [
+      "https://images.unsplash.com/photo-1613977257363-707ba9348227",
+      "https://images.unsplash.com/photo-1580587771525-78b9bed3b928"
+    ],
+    "description": "Demeure prestigieuse située dans une zone calme et résidentielle, parfaite pour une grande famille.",
+    "amenities": ["Piscine", "Double Garage", "Jardin", "Cuisine Moderne"],
+    "agent": {
+      "name": "Fily Mohamed",
+      "phone": "+223 60 00 00 00",
+      "image": "https://i.pravatar.cc/150?u=fily",
+      "verified": true
+    },
+    "features": { "yearBuilt": 2023, "floors": 2, "furnished": false },
+    "isFavorite": false
+  },
+  {
+    "id": 12,
+    "title": "Bureau Prestige ACI",
+    "location": "Hamdallaye ACI 2000, Bamako",
+    "price": 1500,
+    "beds": 0,
+    "baths": 2,
+    "sqft": 120,
+    "image": "https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&q=80&w=800",
+    "type": "Rent",
+    "category": "Apartment",
+    "period": "month",
+    "coordinates": { "lat": 12.625, "lng": -8.02 },
+    "images": [
+      "https://images.unsplash.com/photo-1497215728101-856f4ea42174",
+      "https://images.unsplash.com/photo-1431540015161-0bf868a2d407"
+    ],
+    "description": "Plateau de bureau prêt à l'emploi, idéal pour une startup ou un cabinet d'avocats.",
+    "amenities": ["Fibre Optique", "Groupe Électrogène", "Salle de réunion"],
+    "agent": {
+      "name": "A. Assitan",
+      "phone": "+223 75 00 00 00",
+      "image": "https://i.pravatar.cc/150?u=anne",
+      "verified": true
+    },
+    "features": { "yearBuilt": 2022, "furnished": true },
+    "isFavorite": false
+  },
+  {
+    "id": 13,
+    "title": "Terrain Titré Sébénikoro",
+    "location": "Sébénikoro Woyowayanko, Bamako",
+    "price": 45000,
+    "beds": 0,
+    "baths": 0,
+    "sqft": 500,
+    "image": "https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&q=80&w=800",
+    "type": "Sale",
+    "category": "Land",
+    "coordinates": { "lat": 12.602, "lng": -8.085 },
+    "images": ["https://images.unsplash.com/photo-1500382017468-9049fed747ef"],
+    "description": "Parcelle de 500m² avec titre foncier, située dans une zone en plein essor.",
+    "amenities": ["Accès Goudron", "Eau", "Électricité"],
+    "agent": {
+      "name": "Sidy Diarra",
+      "phone": "+223 70 00 00 00",
+      "image": "https://i.pravatar.cc/150?u=sidy",
+      "verified": true
+    },
+    "features": { "furnished": false },
+    "isFavorite": true
+  },
+  {
+    "id": 14,
+    "title": "Appartement Cosy Baco",
+    "location": "Baco-Djicoroni Golf, Bamako",
+    "price": 300,
+    "beds": 2,
+    "baths": 1,
+    "sqft": 95,
+    "image": "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&q=80&w=800",
+    "type": "Rent",
+    "category": "Apartment",
+    "period": "month",
+    "coordinates": { "lat": 12.595, "lng": -7.975 },
+    "images": [
+      "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267",
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688"
+    ],
+    "description": "Bel appartement au calme dans le quartier prisé du Golf.",
+    "amenities": ["Balcon", "Cuisine équipée", "Gardiennage"],
+    "agent": {
+      "name": "Fily Mohamed",
+      "phone": "+223 60 00 00 00",
+      "image": "https://i.pravatar.cc/150?u=fily",
+      "verified": false
+    },
+    "features": { "yearBuilt": 2021, "furnished": false },
+    "isFavorite": false
+  },
+  {
+    "id": 15,
+    "title": "Duplex Moderne Kalaban",
+    "location": "Kalaban Coro, Bamako",
+    "price": 125000,
+    "beds": 4,
+    "baths": 3,
+    "sqft": 220,
+    "image": "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=800",
+    "type": "Sale",
+    "category": "Villa",
+    "coordinates": { "lat": 12.575, "lng": -8.01 },
+    "images": [
+      "https://images.unsplash.com/photo-1512917774080-9991f1c4c750",
+      "https://images.unsplash.com/photo-1602675891175-e40449e750fe"
+    ],
+    "description": "Duplex récent avec finitions haut de gamme et garage fermé.",
+    "amenities": ["Climatisation Centrale", "Système Alarme", "Garage"],
+    "agent": {
+      "name": "A. Assitan",
+      "phone": "+223 75 00 00 00",
+      "image": "https://i.pravatar.cc/150?u=anne",
+      "verified": true
+    },
+    "features": { "yearBuilt": 2025, "floors": 2, "furnished": true },
+    "isFavorite": true
+  },
+  {
+    "id": 16,
+    "title": "Studio Voyageur ACI",
+    "location": "Hamdallaye ACI 2000, Bamako",
+    "price": 50,
+    "beds": 1,
+    "baths": 1,
+    "sqft": 40,
+    "image": "https://images.unsplash.com/photo-1536376074432-bf1217407841?auto=format&fit=crop&q=80&w=800",
+    "type": "Rent",
+    "category": "Apartment",
+    "period": "night",
+    "coordinates": { "lat": 12.622, "lng": -8.028 },
+    "images": ["https://images.unsplash.com/photo-1536376074432-bf1217407841"],
+    "description": "Petit studio fonctionnel pour vos courts séjours à Bamako.",
+    "amenities": ["Smart TV", "Nettoyage quotidien", "Netflix"],
+    "agent": {
+      "name": "Sidy Diarra",
+      "phone": "+223 70 00 00 00",
+      "image": "https://i.pravatar.cc/150?u=sidy",
+      "verified": true
+    },
+    "features": { "yearBuilt": 2026, "furnished": true },
+    "isFavorite": false
+  },
+  {
+    "id": 17,
+    "title": "Domaine Agricole Baguineda",
+    "location": "Baguineda, Périphérie Bamako",
+    "price": 85000,
+    "beds": 0,
+    "baths": 0,
+    "sqft": 5000,
+    "image": "https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&q=80&w=800",
+    "type": "Sale",
+    "category": "Land",
+    "coordinates": { "lat": 12.61, "lng": -7.75 },
+    "images": ["https://images.unsplash.com/photo-1500382017468-9049fed747ef"],
+    "description": "Grand terrain fertile avec accès direct au canal, idéal pour projet agricole.",
+    "amenities": ["Irrigation", "Puits", "Clôturé"],
+    "agent": {
+      "name": "Fily Mohamed",
+      "phone": "+223 60 00 00 00",
+      "image": "https://i.pravatar.cc/150?u=fily",
+      "verified": true
+    },
+    "features": { "furnished": false },
+    "isFavorite": false
+  },
+  {
+    "id": 18,
+    "title": "Appartement Lumineux N'Tomikorobougou",
+    "location": "N'Tomikorobougou, Bamako",
+    "price": 450,
+    "beds": 3,
+    "baths": 2,
+    "sqft": 150,
+    "image": "https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&q=80&w=800",
+    "type": "Rent",
+    "category": "Apartment",
+    "period": "month",
+    "coordinates": { "lat": 12.645, "lng": -8.012 },
+    "images": [
+      "https://images.unsplash.com/photo-1484154218962-a197022b5858",
+      "https://images.unsplash.com/photo-1493809842364-78817add7ffb"
+    ],
+    "description": "Appartement spacieux et très aéré sur les hauteurs de Bamako.",
+    "amenities": ["Chauffe-eau", "Balcon", "Parking"],
+    "agent": {
+      "name": "A. Assitan",
+      "phone": "+223 75 00 00 00",
+      "image": "https://i.pravatar.cc/150?u=anne",
+      "verified": true
+    },
+    "features": { "yearBuilt": 2020, "furnished": false },
+    "isFavorite": false
+  },
+  {
+    "id": 19,
+    "title": "Villa Contemporaine Magnambougou",
+    "location": "Magnambougou Faso Kanu, Bamako",
+    "price": 210000,
+    "beds": 5,
+    "baths": 4,
+    "sqft": 350,
+    "image": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=800",
+    "type": "Sale",
+    "category": "Villa",
+    "coordinates": { "lat": 12.612, "lng": -7.958 },
+    "images": [
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c",
+      "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3"
+    ],
+    "description": "Architecture moderne avec de grands volumes et un éclairage naturel optimisé.",
+    "amenities": ["Piscine", "Cuisine Américaine", "Domotique"],
+    "agent": {
+      "name": "Sidy Diarra",
+      "phone": "+223 70 00 00 00",
+      "image": "https://i.pravatar.cc/150?u=sidy",
+      "verified": true
+    },
+    "features": { "yearBuilt": 2025, "floors": 2, "furnished": true },
+    "isFavorite": true
+  }
+]

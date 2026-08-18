@@ -1,0 +1,158 @@
+<div class="mb-4 space-y-4">
+  <div class="flex flex-col lg:flex-row gap-4 items-stretch">
+    <!-- DESKTOP ONLY: Recherche -->
+    <div class="hidden md:flex relative flex-1 group">
+      <svg
+        lucideSearch
+        class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted group-focus-within:text-brand transition-colors"
+      ></svg>
+      <input
+        type="text"
+        [ngModel]="searchQuery()"
+        (ngModelChange)="searchQuery.set($event)"
+        placeholder="Search..."
+        class="w-full h-14 pl-12 pr-4 bg-card-bg border border-border rounded-2xl outline-none focus:border-brand/50 shadow-sm transition-all text-sm"
+      />
+    </div>
+
+    <!-- ACTIONS : Adaptées au mobile -->
+    <div class="flex items-center gap-2 h-14 w-full lg:w-auto">
+      <div class="flex items-center gap-2 h-14 w-full lg:w-auto">
+        <!-- BOUTON FILTRE (Reste le même) -->
+        <button
+          (click)="showAdvanced.set(!showAdvanced())"
+          [class]="
+            showAdvanced()
+              ? 'bg-brand text-white border-brand'
+              : 'bg-card-bg text-main-text border-border'
+          "
+          class="h-full aspect-square flex items-center justify-center border rounded-2xl shadow-sm active:scale-95"
+        >
+          <svg lucideSettings2 class="w-5 h-5"></svg>
+        </button>
+        <!-- MOBILE : Sélecteur de catégorie (Remplace le scroll) -->
+        <div class="flex-1 h-full md:hidden relative group">
+          <!-- Icône de gauche (Catégorie) -->
+          <svg
+            lucideLayers
+            class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-brand/70"
+          ></svg>
+
+          <select
+            [ngModel]="selectedCategory()"
+            (ngModelChange)="selectedCategory.set($event)"
+            class="w-full h-full appearance-none bg-card-bg border border-border rounded-2xl pl-11 pr-10 font-bold text-sm text-main-text focus:border-brand/50 outline-none shadow-sm transition-all active:bg-gray-50 dark:active:bg-neutral-800"
+          >
+            @for (cat of categories; track cat) {
+              <option [value]="cat">{{ cat }}</option>
+            }
+          </select>
+
+          <!-- Icône de droite (Flèche de sélection) -->
+          <svg
+            lucideChevronDown
+            class="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted pointer-events-none group-focus-within:rotate-180 transition-transform"
+          ></svg>
+        </div>
+
+        <!-- DESKTOP : On garde ton design original avec les boutons côte à côte -->
+        <div
+          class="hidden md:flex flex-1 items-center gap-1 h-full bg-card-bg border border-border p-1 rounded-2xl overflow-x-auto no-scrollbar"
+        >
+          @for (cat of categories; track cat) {
+            <button
+              (click)="selectedCategory.set(cat)"
+              [class]="
+                selectedCategory() === cat
+                  ? 'bg-brand text-white shadow-sm'
+                  : 'text-text-muted hover:text-main-text'
+              "
+              class="h-full px-5 rounded-xl font-bold text-xs transition-all whitespace-nowrap"
+            >
+              {{ cat }}
+            </button>
+          }
+        </div>
+      </div>
+
+      <!-- DESKTOP ONLY: Switcher Grid/Map -->
+      <div class="hidden md:flex h-full bg-card-bg border border-border p-1 rounded-2xl shadow-sm">
+        <button
+          (click)="viewMode.set('grid')"
+          [class]="viewMode() === 'grid' ? 'bg-main-text text-card-bg' : 'text-text-muted'"
+          class="h-full aspect-square flex items-center justify-center rounded-xl transition-all"
+        >
+          <svg lucideLayoutGrid class="w-5 h-5"></svg>
+        </button>
+        <button
+          (click)="viewMode.set('map')"
+          [class]="viewMode() === 'map' ? 'bg-main-text text-card-bg' : 'text-text-muted'"
+          class="h-full aspect-square flex items-center justify-center rounded-xl transition-all"
+        >
+          <svg lucideMap class="w-5 h-5"></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+  <!-- Panneau Avancé : Grid 1 col sur mobile, 2 ou 3 sur desktop -->
+  @if (showAdvanced()) {
+    <div
+      class="p-5 md:p-8 bg-card-bg border border-border rounded-[2rem] shadow-xl animate-in fade-in slide-in-from-top-2 duration-300"
+    >
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- Prix (Slider) -->
+        <div class="space-y-4">
+          <div class="flex justify-between items-end">
+            <label class="font-bold text-[10px] uppercase tracking-widest text-text-muted"
+              >Max Price</label
+            >
+            <span class="text-brand font-extrabold text-base md:text-lg"
+              >{{ maxPrice() | number }} €</span
+            >
+          </div>
+          <input
+            type="range"
+            min="0"
+            max="1000000"
+            step="10000"
+            [value]="maxPrice()"
+            (input)="updatePrice($event)"
+            class="w-full h-1.5 bg-border rounded-lg appearance-none cursor-pointer accent-brand"
+          />
+        </div>
+
+        <!-- Chambres (Optimisé pour le toucher) -->
+        <div class="space-y-4">
+          <label class="font-bold text-[10px] uppercase tracking-widest text-text-muted"
+            >Min Bedrooms</label
+          >
+          <div class="flex gap-1 md:gap-2">
+            @for (num of [0, 1, 2, 3, 4]; track num) {
+              <button
+                (click)="minBeds.set(num)"
+                [class]="
+                  minBeds() === num
+                    ? 'bg-brand text-white border-brand'
+                    : 'bg-transparent text-text-muted border-border'
+                "
+                class="flex-1 py-3 md:py-2 border rounded-xl font-bold text-xs transition-all active:bg-brand/10"
+              >
+                {{ num === 4 ? '4+' : num }}
+              </button>
+            }
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="flex items-end pt-4 md:pt-0">
+          <button
+            (click)="reset()"
+            class="w-full py-4 bg-gray-100 dark:bg-neutral-800 text-main-text dark:text-white rounded-2xl font-bold text-xs hover:bg-red-50 hover:text-red-500 transition-all active:scale-95"
+          >
+            Reset All
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+</div>

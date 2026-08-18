@@ -1,0 +1,167 @@
+<div
+  class="min-h-screen grid grid-cols-1 lg:grid-cols-2 bg-white dark:bg-[#121212] overflow-hidden"
+>
+  <div class="hidden lg:block relative overflow-hidden group">
+    <img
+      src="https://images.unsplash.com/photo-1613490493576-7fde63acd811?q=80&w=2071"
+      class="absolute inset-0 w-full h-full object-cover transition-transform duration-[5000ms] group-hover:scale-110"
+    />
+    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+    <div
+      class="absolute bottom-12 left-12 right-12 space-y-4 animate-in slide-in-from-bottom-10 duration-1000"
+    >
+      <div class="w-12 h-1 bg-brand rounded-full"></div>
+      <h2 class="text-4xl font-black text-white leading-tight">
+        {{
+          isLoginMode() ? 'Welcome Back to your Sanctuary.' : 'Start your journey with us today.'
+        }}
+      </h2>
+    </div>
+  </div>
+
+  <div class="flex flex-col justify-center px-8 md:px-20 lg:px-32 relative">
+    <div
+      class="max-w-md w-full mx-auto space-y-8 animate-in fade-in slide-in-from-right-10 duration-700"
+    >
+      <div class="space-y-2">
+        <h3 class="text-3xl font-black text-main-text tracking-tight">
+          {{ isLoginMode() ? 'Welcome back' : 'Create account' }}
+        </h3>
+        <p class="text-text-muted font-bold">
+          {{
+            isLoginMode()
+              ? 'Please enter your details to sign in.'
+              : 'Fill the form to join our community.'
+          }}
+        </p>
+      </div>
+
+      <div class="grid grid-cols-2 gap-4"></div>
+
+      <div class="relative flex items-center justify-center">
+        <span
+          class="absolute bg-white dark:bg-[#121212] px-4 text-xs font-black text-text-muted uppercase tracking-widest"
+          >Or continue with email</span
+        >
+        <div class="w-full h-[1px] bg-border/50"></div>
+      </div>
+
+      <form [formGroup]="authForm" (ngSubmit)="onSignIn()" class="space-y-5">
+        @if (!isLoginMode()) {
+          <div class="space-y-2 animate-in fade-in slide-in-from-top-4 duration-500">
+            <label class="text-xs font-black uppercase tracking-widest text-text-muted ml-2"
+              >Full Name</label
+            >
+            <div class="relative group">
+              <div
+                class="absolute left-5 top-1/2 -translate-y-1/2 text-text-muted group-focus-within:text-brand transition-colors"
+              >
+                <svg lucideUser class="w-5 h-5"></svg>
+              </div>
+              <input
+                type="text"
+                formControlName="fullName"
+                placeholder="Sidy Diarra"
+                class="w-full pl-14 pr-6 py-4 rounded-2xl bg-slate-50 dark:bg-white/5 border border-transparent focus:border-brand/30 focus:bg-white dark:focus:bg-[#121212] outline-none transition-all font-bold text-main-text"
+              />
+            </div>
+          </div>
+        }
+
+        <div class="space-y-2">
+          <label class="text-xs font-black uppercase tracking-widest text-text-muted ml-2"
+            >Email Address</label
+          >
+          <div class="relative group">
+            <div
+              class="absolute left-5 top-1/2 -translate-y-1/2 text-text-muted group-focus-within:text-brand transition-colors"
+            >
+              <svg lucideMail class="w-5 h-5"></svg>
+            </div>
+            <input
+              type="email"
+              formControlName="email"
+              placeholder="sidy@example.com"
+              class="w-full pl-14 pr-6 py-4 rounded-2xl bg-slate-50 dark:bg-white/5 border border-transparent focus:border-brand/30 focus:bg-white dark:focus:bg-[#121212] outline-none transition-all font-bold text-main-text"
+            />
+          </div>
+        </div>
+
+        <div class="space-y-2">
+          <div class="flex justify-between items-center px-2">
+            <label class="text-xs font-black uppercase tracking-widest text-text-muted"
+              >Password</label
+            >
+            @if (isLoginMode()) {
+              <a href="#" class="text-xs font-black text-brand hover:underline">Forgot?</a>
+            }
+          </div>
+          <div class="relative group">
+            <div
+              class="absolute left-5 top-1/2 -translate-y-1/2 text-text-muted group-focus-within:text-brand transition-colors"
+            >
+              <svg lucideLock class="w-5 h-5"></svg>
+            </div>
+            <input
+              [type]="showPassword() ? 'text' : 'password'"
+              formControlName="password"
+              placeholder="••••••••"
+              class="w-full pl-14 pr-14 py-4 rounded-2xl bg-slate-50 dark:bg-white/5 border border-transparent focus:border-brand/30 focus:bg-white dark:focus:bg-[#121212] outline-none transition-all font-bold text-main-text"
+            />
+            <button
+              type="button"
+              (click)="togglePassword()"
+              class="absolute right-5 top-1/2 -translate-y-1/2 text-text-muted hover:text-main-text cursor-pointer"
+            >
+              <svg [lucideIcon]="showPassword() ? LucideEyeOff : LucideEye" class="w-5 h-5"></svg>
+            </button>
+          </div>
+        </div>
+        @if (!isLoginMode()) {
+          <div
+            class="flex items-start gap-3 px-2 animate-in fade-in slide-in-from-top-2 duration-500"
+          >
+            <div class="relative flex items-center">
+              <input
+                type="checkbox"
+                formControlName="acceptTerms"
+                id="terms"
+                class="peer appearance-none w-5 h-5 border-2 border-border rounded-md checked:bg-brand checked:border-brand transition-all cursor-pointer"
+              />
+              <svg
+                lucideCheck
+                class="absolute w-3.5 h-3.5 text-white left-0.5 pointer-events-none opacity-0 peer-checked:opacity-100 transition-opacity"
+              ></svg>
+            </div>
+            <label
+              for="terms"
+              class="text-xs font-bold text-text-muted leading-tight cursor-pointer select-none"
+            >
+              I agree to the
+              <a href="#" class="text-brand hover:underline">Terms of Service</a>
+              and
+              <a href="#" class="text-brand hover:underline">Privacy Policy</a>.
+            </label>
+          </div>
+        }
+        <button
+          type="submit"
+          class="w-full bg-main-text cursor-pointer dark:bg-brand text-white h-16 rounded-2xl font-black text-lg shadow-xl shadow-brand/20 hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-3 mt-4"
+        >
+          {{ isLoginMode() ? 'Sign In' : 'Create Account' }}
+          <svg [lucideIcon]="isLoginMode() ? LucideLogIn : LucideUserPlus" class="w-5 h-5"></svg>
+        </button>
+      </form>
+
+      <p class="text-center text-text-muted font-bold text-sm">
+        {{ isLoginMode() ? "Don't have an account?" : 'Already have an account?' }}
+        <button
+          (click)="toggleMode()"
+          class="text-brand cursor-pointer hover:underline ml-1 font-black cursor-pointer"
+        >
+          {{ isLoginMode() ? 'Create an account' : 'Sign In instead' }}
+        </button>
+      </p>
+    </div>
+  </div>
+</div>

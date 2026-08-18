@@ -1,0 +1,116 @@
+<div class="flex flex-col bg-background" style="height: calc(100vh - 64px)">
+  <div
+    class="pt-3 px-6 sm:px-6 lg:px-8 border-b border-border/200 bg-background/80 backdrop-blur-xl z-30 sticky top-0"
+  >
+    <div class="max-w-7xl mx-auto">
+      <app-filter-section
+        [(searchQuery)]="searchQuery"
+        [(selectedCategory)]="selectedCategory"
+        [(maxPrice)]="maxPrice"
+        [(minBeds)]="minBeds"
+        [(viewMode)]="navService.viewMode"
+      />
+    </div>
+  </div>
+
+  <div class="flex-1 overflow-y-auto custom-scrollbar pb-24 md:pb-10">
+    <div
+      class="max-w-7xl mx-auto mb-8 transition-all duration-300"
+      [class.px-4]="navService.viewMode() === 'grid'"
+      [class.sm:px-6]="navService.viewMode() === 'grid'"
+      [class.lg:px-8]="navService.viewMode() === 'grid'"
+      [class.px-0]="navService.viewMode() === 'map'"
+    >
+      <!-- View Mode: Grid -->
+      @if (navService.viewMode() === 'grid') {
+        <!-- On utilise une div avec space-y-20 pour séparer les sections Bento -->
+        <div class="space-y-20">
+          <!-- ✨ Section Récents (Style Light) -->
+          @if (filteredRecent().length > 0) {
+            <app-section-container
+              title="Recently added"
+              subtitle="New Arrivals"
+              variant="light"
+              [isLoading]="isLoading()"
+              [items]="recentProperties()"
+              [skeletonCount]="getSkeletonCount(recentProperties())"
+            >
+              @for (p of recentProperties(); track p.id) {
+                <div class="min-w-[300px] md:min-w-[400px] snap-start">
+                  <app-property-card [property]="p" />
+                </div>
+              }
+            </app-section-container>
+          }
+          <!-- 🔥 Section Populaires (Style Dark) -->
+          @if (filteredPopular().length > 0) {
+            <app-section-container
+              title="Over 1000 likes"
+              subtitle="Popular Choice"
+              variant="dark"
+              [isLoading]="isLoading()"
+              [items]="mostLikedProperties()"
+              [skeletonCount]="getSkeletonCount(mostLikedProperties())"
+            >
+              @for (p of mostLikedProperties(); track p.id) {
+                <div class="min-w-[280px] md:min-w-[350px] snap-start">
+                  <app-property-card [property]="p" />
+                </div>
+              }
+            </app-section-container>
+          }
+
+          <!-- 📋 Section Catalogue (Grille classique) -->
+          <div class="space-y-8">
+            @if (!hasActiveFilters() && filteredProperties.length <= 0) {
+              <div class="space-y-1">
+                <p class="text-[10px] font-black uppercase tracking-[0.3em] text-brand">
+                  All kinds
+                </p>
+                <h2 class="text-2xl md:text-4xl font-black tracking-tight">
+                  All properties
+                </h2>
+              </div>
+            }
+            @if (filteredProperties().length > 0) {
+              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                @for (p of filteredProperties(); track p.id) {
+                  <app-property-card [property]="p" />
+                }
+              </div>
+            } @else if (hasActiveFilters() && !isLoading()) {
+              <div
+                class="flex flex-col items-center justify-center py-20 bg-card-bg/50 rounded-[2.5rem] border-2 border-dashed border-border/50"
+              >
+                <svg lucideSearchX class="w-12 h-12 text-text-muted mb-4"></svg>
+                <p class="text-lg font-bold">No matches found</p>
+                <button (click)="resetFilters()" class="mt-4 text-brand font-bold underline">
+                  Reset Filters
+                </button>
+              </div>
+            }
+          </div>
+        </div>
+      } @else {
+        <div
+          class="rounded-none md:rounded-[2.5rem] mx-2 mt-2 overflow-hidden border-y md:border border-border bg-card-bg shadow-2xl animate-in zoom-in-95 duration-500 relative"
+        >
+          <app-map-view
+            [properties]="allProperties()"
+          />
+
+          <div class="absolute top-4 left-6 z-[400] pointer-events-none">
+            <div
+              class="bg-main-bg bg-background/80 backdrop-blur-md border border-border px-4 py-2 rounded-full shadow-lg flex items-center gap-2"
+            >
+              <div class="w-2 h-2 bg-brand rounded-full"></div>
+              <span class="text-[10px] font-bold text-main-text uppercase tracking-wider">
+                {{allProperties().length }} properties
+              </span>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</div>

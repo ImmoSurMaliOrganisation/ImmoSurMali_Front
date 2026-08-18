@@ -1,0 +1,67 @@
+[
+  {
+    "id": 5,
+    "title": "Downtown Prime Plot",
+    "location": "Avenue du Mali, Bamako",
+    "price": 75000,
+    "beds": 0,
+    "baths": 0,
+    "sqft": 1000,
+    "image": "https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&q=80&w=800",
+    "type": "Sale",
+    "category": "Land",
+    "coordinates": {
+      "lat": 12.6392,
+      "lng": -8.0029
+    }
+  },
+  {
+    "id": 6,
+    "title": "The Diamond Estate",
+    "location": "Titibougou, Bamako",
+    "price": 850000,
+    "beds": 7,
+    "baths": 6,
+    "sqft": 800,
+    "image": "https://images.unsplash.com/photo-1518780664697-55e3ad937233?auto=format&fit=crop&q=80&w=800",
+    "type": "Sale",
+    "category": "Villa",
+    "coordinates": {
+      "lat": 12.675,
+      "lng": -7.925
+    }
+  },
+  {
+    "id": 7,
+    "title": "Skyline Executive Suite",
+    "location": "Cité du Niger, Bamako",
+    "price": 2500,
+    "beds": 3,
+    "baths": 3,
+    "sqft": 200,
+    "image": "https://images.unsplash.com/photo-1493246507139-91e8bef99c1e?auto=format&fit=crop&q=80&w=800",
+    "type": "Rent",
+    "category": "Apartment",
+    "period": "month",
+    "coordinates": {
+      "lat": 12.6333,
+      "lng": -7.9833
+    }
+  },
+  {
+    "id": 8,
+    "title": "Zen Garden Residence",
+    "location": "Samé, Bamako",
+    "price": 195000,
+    "beds": 4,
+    "baths": 3,
+    "sqft": 280,
+    "image": "https://images.unsplash.com/photo-1513584684374-8bdb7483fe8f?auto=format&fit=crop&q=80&w=800",
+    "type": "Sale",
+    "category": "Villa",
+    "coordinates": {
+      "lat": 12.6585,
+      "lng": -8.0312
+    }
+  }
+]
