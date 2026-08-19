@@ -55,10 +55,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "immo-starter-pro:build:production"
+              "buildTarget": "immo-sur-mali:build:production"
             },
             "development": {
-              "buildTarget": "immo-starter-pro:build:development"
+              "buildTarget": "immo-sur-mali:build:development"
             }
           },
           "defaultConfiguration": "development"
