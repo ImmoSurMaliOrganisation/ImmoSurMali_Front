@@ -5,7 +5,7 @@ import { AuthComponent } from './components/login/auth.component';
 import { ProfileComponent } from './components/profile/profile.component';
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'properties', pathMatch: 'full' },
+  { path: '', redirectTo: 'auth', pathMatch: 'full' },
   { path: 'properties', component: PropertyList },
   { path: 'property/:id', component: PropertyDetailsComponent },
   { path: 'auth', component: AuthComponent },
