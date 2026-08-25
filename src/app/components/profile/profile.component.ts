@@ -19,7 +19,7 @@ import {
   LucideUser,
 } from '@lucide/angular';
 import { FormInputComponent } from '../../shared/components/form-input.component';
-import { ButtonComponent } from "../../shared/components/button.component";
+import { ButtonComponent } from '../../shared/components/button.component';
 
 @Component({
   selector: 'app-user-profile',
@@ -38,11 +38,11 @@ import { ButtonComponent } from "../../shared/components/button.component";
     LucideLogOut,
     LucideUser,
     FormInputComponent,
-    ButtonComponent
-],
+    ButtonComponent,
+  ],
   templateUrl: './profile.component.html',
 })
-export class ProfileComponent   implements OnDestroy {
+export class ProfileComponent implements OnDestroy {
   isEditing = signal(false);
   avatarUrl = signal(
     'https://ui-avatars.com/api/?name=Moussa+Diarra&background=333&color=fff&size=128',
@@ -105,7 +105,7 @@ export class ProfileComponent   implements OnDestroy {
     document.body.style.overflow = 'auto';
   }
 
-  logout(){
-  console.log('Déconnexion de tous les appareils');
+  logout() {
+    console.log('Déconnexion de tous les appareils');
   }
 }

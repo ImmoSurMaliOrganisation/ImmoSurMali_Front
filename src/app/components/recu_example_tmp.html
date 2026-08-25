@@ -1,0 +1,57 @@
+<div class="max-w-2xl mx-auto bg-white dark:bg-[#1A1A1A] border border-border/50 rounded-[2.5rem] p-8 space-y-8 shadow-lg">
+  <!-- En-tête du Reçu -->
+  <div class="flex justify-between items-center border-b border-border/50 pb-6">
+    <div>
+      <h1 class="text-2xl font-black text-main-text dark:text-white">IMMOSUR MALI</h1>
+      <p class="text-xs text-text-muted font-bold">Plateforme Immobilière & Tiers de Confiance</p>
+    </div>
+    <div class="text-right">
+      <span class="text-xs text-text-muted block">Réf. Reçu</span>
+      <strong class="text-sm dark:text-white">REC-2026-0822-6024</strong>
+    </div>
+  </div>
+
+  <!-- Détails Transaction -->
+  <div class="space-y-4">
+    <h3 class="text-sm font-black uppercase tracking-wider text-brand">Détails de la Transaction</h3>
+    <div class="bg-slate-50 dark:bg-white/5 rounded-2xl p-5 space-y-3 text-sm">
+      <div class="flex justify-between">
+        <span class="text-text-muted">Moyen de paiement :</span>
+        <span class="font-bold dark:text-white">Orange Money WebPay</span>
+      </div>
+      <div class="flex justify-between">
+        <span class="text-text-muted">ID de transaction :</span>
+        <span class="font-mono text-xs dark:text-white">6fa4b25f-4ecd-4213-8ef0-2b1cfae5ef04</span>
+      </div>
+      <div class="flex justify-between">
+        <span class="text-text-muted">Montant Payé :</span>
+        <span class="font-black text-brand text-base">15 000.00 XOF</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Détails du Bien -->
+  <div class="space-y-4">
+    <h3 class="text-sm font-black uppercase tracking-wider text-brand">Bien Immobilier</h3>
+    <div class="bg-slate-50 dark:bg-white/5 rounded-2xl p-5 space-y-3 text-sm">
+      <div class="flex justify-between">
+        <span class="text-text-muted">Intitulé :</span>
+        <span class="font-bold dark:text-white">Sada immobilier (Meublé)</span>
+      </div>
+      <div class="flex justify-between">
+        <span class="text-text-muted">Localisation :</span>
+        <span class="font-bold dark:text-white">Korofina, Bamako</span>
+      </div>
+      <div class="flex justify-between">
+        <span class="text-text-muted">Gestionnaire :</span>
+        <span class="font-bold dark:text-white">Papa (Tél: 69485836)</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bouton d'action -->
+  <button type="button" (click)="downloadReceipt('6fa4b25f-4ecd-4213-8ef0-2b1cfae5ef04')"
+    class="w-full py-4 bg-main-text dark:bg-brand text-white rounded-2xl font-black text-sm shadow-xl shadow-brand/20 transition-all cursor-pointer active:scale-[0.98]">
+    Télécharger le reçu PDF
+  </button>
+</div>

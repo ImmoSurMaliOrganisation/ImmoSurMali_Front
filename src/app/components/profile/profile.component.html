@@ -1,22 +1,19 @@
 <div
-  class="max-w-5xl mx-auto px-4 py-4 md:py-10 pb-32 md:pb-10 space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+  class="max-w-5xl mx-auto px-4 py-4 md:py-10 pb-32 md:pb-10 space-y-6 md:space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
 
-  <!-- GLOBAL HERO -->
+  <!-- GLOBAL HERO HEADER -->
   <div
-    class="bg-white dark:bg-[#1A1A1A] border border-border/50 rounded-[2rem] md:rounded-[3rem] p-4 sm:p-6 md:p-8 flex flex-col md:flex-row items-center gap-4 sm:gap-6 md:gap-8 shadow-sm">
-
+    class="bg-white dark:bg-[#1A1A1A] border border-border/50 rounded-[2rem] md:rounded-[2.5rem] p-6 md:p-8 lg:p-10 flex flex-col md:flex-row items-center gap-6 md:gap-8 shadow-sm">
     <!-- AVATAR -->
     <div class="relative group" [class.hidden]="isEditing()" [class.md:block]="isEditing()">
-      <div
-        class="w-20 h-20 sm:w-24 sm:h-24 md:w-32 md:h-32 rounded-full overflow-hidden border-4 border-brand shadow-xl">
+      <div class="w-28 h-28 md:w-32 md:h-32 rounded-full overflow-hidden border-4 border-brand shadow-xl">
         <img [src]="avatarUrl()" class="w-full h-full object-cover" alt="User Avatar" />
       </div>
-      @if (isEditing()) {
+
       <button type="button" aria-label="Change photo"
-        class="absolute bottom-0 right-0 bg-main-text dark:bg-brand text-white p-2 rounded-full border-2 md:border-4 border-white dark:border-[#1A1A1A] hover:scale-110 transition-all cursor-pointer">
-        <svg lucideCamera class="w-3.5 h-3.5 md:w-4 md:h-4"></svg>
+        class="absolute bottom-1 right-1 bg-main-text dark:bg-brand text-white p-2.5 rounded-full border-4 border-white dark:border-[#1A1A1A] hover:scale-110 transition-all cursor-pointer">
+        <svg lucideCamera class="w-4 h-4"></svg>
       </button>
-      }
     </div>
 
     <!-- USER INFO -->
@@ -31,11 +28,11 @@
       </p>
       <div class="flex flex-wrap justify-center md:justify-start gap-2 pt-1">
         <span
-          class="px-3 py-0.5 md:py-1 rounded-full bg-brand/10 text-brand text-[9px] md:text-[10px] font-black uppercase tracking-wider">
+          class="px-3 py-1 rounded-full bg-brand/10 text-brand text-[10px] font-black uppercase tracking-wider">
           Verified User
         </span>
         <span
-          class="px-3 py-0.5 md:py-1 rounded-full bg-slate-100 dark:bg-white/5 text-text-muted text-[9px] md:text-[10px] font-black uppercase tracking-wider">
+          class="px-3 py-1 rounded-full bg-slate-100 dark:bg-white/5 text-text-muted text-[10px] font-black uppercase tracking-wider">
           Member since 2026
         </span>
       </div>
@@ -45,11 +42,10 @@
     <app-button [variant]="isEditing() ? 'danger' : 'outline'" (onClick)="isEditing.set(!isEditing())">
       {{ isEditing() ? 'Cancel Edition' : 'Edit Settings' }}
     </app-button>
-
   </div>
 
   <!-- MAIN GRID -->
-  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-10">
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8">
 
     <!-- MOBILE TABS -->
     <div
@@ -78,61 +74,71 @@
 
     <!-- DESKTOP SIDEBAR -->
     <div class="hidden lg:block space-y-6">
-      <div class="bg-slate-50 dark:bg-white/5 rounded-[2.5rem] p-8 space-y-6">
-        <h3 class="text-xl font-black text-main-text dark:text-white">Section</h3>
+      <div
+        class="bg-slate-50 dark:bg-white/5 border border-border/50 shadow-sm rounded-[2rem] md:rounded-[2.5rem] p-6 space-y-4 transition-all duration-300">
+        <h3 class="text-xl font-black text-main-text dark:text-white px-2">Section</h3>
 
-        <button type="button" (click)="activeSection.set('profile')"
-          class="w-full flex items-center justify-between p-4 bg-white dark:bg-[#121212] rounded-2xl hover:border-brand/50 border transition-all group cursor-pointer shadow-sm"
-          [class]="activeSection() === 'profile' ? 'border-brand' : 'border-transparent'">
-          <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-xl bg-brand/10 flex items-center justify-center text-brand">
-              <svg lucideUser class="w-5 h-5"></svg>
+        <div class="space-y-2.5">
+          <!-- Profile Tab -->
+          <button type="button" (click)="activeSection.set('profile')"
+            class="w-full flex items-center justify-between p-4 bg-white dark:bg-[#121212] rounded-2xl border transition-all group cursor-pointer shadow-sm hover:border-brand/50"
+            [class]="activeSection() === 'profile' ? 'border-brand' : 'border-transparent'">
+            <div class="flex items-center gap-3.5">
+              <div class="w-10 h-10 rounded-xl bg-brand/10 flex items-center justify-center text-brand shrink-0">
+                <svg lucideUser class="w-5 h-5"></svg>
+              </div>
+              <span class="font-bold text-sm text-main-text dark:text-white/90">Profile</span>
             </div>
-            <span class="font-bold text-sm text-main-text dark:text-white/80"> Profile </span>
-          </div>
-          <svg lucideChevronRight class="w-4 h-4 text-text-muted group-hover:translate-x-1 transition-transform"></svg>
-        </button>
+            <svg lucideChevronRight
+              class="w-4 h-4 text-text-muted group-hover:translate-x-1 transition-transform"></svg>
+          </button>
 
-        <button type="button" (click)="activeSection.set('password')"
-          class="w-full flex items-center justify-between p-4 bg-white dark:bg-[#121212] rounded-2xl hover:border-brand/50 border transition-all group cursor-pointer shadow-sm"
-          [class]="activeSection() === 'password' ? 'border-brand' : 'border-transparent'">
-          <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-xl bg-brand/10 flex items-center justify-center text-brand">
-              <svg lucideKeyRound class="w-5 h-5"></svg>
+          <!-- Password Tab -->
+          <button type="button" (click)="activeSection.set('password')"
+            class="w-full flex items-center justify-between p-4 bg-white dark:bg-[#121212] rounded-2xl border transition-all group cursor-pointer shadow-sm hover:border-brand/50"
+            [class]="activeSection() === 'password' ? 'border-brand' : 'border-transparent'">
+            <div class="flex items-center gap-3.5">
+              <div class="w-10 h-10 rounded-xl bg-brand/10 flex items-center justify-center text-brand shrink-0">
+                <svg lucideKeyRound class="w-5 h-5"></svg>
+              </div>
+              <span class="font-bold text-sm text-main-text dark:text-white/90">Password</span>
             </div>
-            <span class="font-bold text-sm text-main-text dark:text-white/80"> Password </span>
-          </div>
-          <svg lucideChevronRight class="w-4 h-4 text-text-muted group-hover:translate-x-1 transition-transform"></svg>
-        </button>
+            <svg lucideChevronRight
+              class="w-4 h-4 text-text-muted group-hover:translate-x-1 transition-transform"></svg>
+          </button>
 
-        <button type="button" (click)="activeSection.set('notifications')"
-          class="w-full flex items-center justify-between p-4 bg-white dark:bg-[#121212] rounded-2xl hover:border-brand/50 border transition-all group cursor-pointer shadow-sm"
-          [class]="activeSection() === 'notifications' ? 'border-brand' : 'border-transparent'">
-          <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-500">
-              <svg lucideBellRing class="w-5 h-5"></svg>
+          <!-- Notifications Tab -->
+          <button type="button" (click)="activeSection.set('notifications')"
+            class="w-full flex items-center justify-between p-4 bg-white dark:bg-[#121212] rounded-2xl border transition-all group cursor-pointer shadow-sm hover:border-brand/50"
+            [class]="activeSection() === 'notifications' ? 'border-brand' : 'border-transparent'">
+            <div class="flex items-center gap-3.5">
+              <div class="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-500 shrink-0">
+                <svg lucideBellRing class="w-5 h-5"></svg>
+              </div>
+              <span class="font-bold text-sm text-main-text dark:text-white/90">Notifications</span>
             </div>
-            <span class="font-bold text-sm text-main-text dark:text-white/80"> Notifications </span>
-          </div>
-          <svg lucideChevronRight class="w-4 h-4 text-text-muted group-hover:translate-x-1 transition-transform"></svg>
-        </button>
+            <svg lucideChevronRight
+              class="w-4 h-4 text-text-muted group-hover:translate-x-1 transition-transform"></svg>
+          </button>
+        </div>
       </div>
 
+      <!-- Logout Button -->
       <app-button variant="danger" [fullWidth]="true" (onClick)="logout()">
-        <svg lucideLogOut class="w-4 h-4"></svg>
+        <svg lucideLogOut class="w-5 h-5"></svg>
         Sign out everywhere
       </app-button>
     </div>
 
     <!-- CONTENT PANEL -->
     <div
-      class="lg:col-span-2 bg-white dark:bg-[#1A1A1A] border border-border/50 shadow-sm rounded-[2.5rem] md:rounded-[3rem] p-6 md:p-12 transition-all duration-300">
+      class="lg:col-span-2 bg-white dark:bg-[#1A1A1A] border border-border/50 shadow-sm rounded-[2rem] md:rounded-[2.5rem] p-6 md:p-8 lg:p-10 transition-all duration-300">
 
       <!-- PROFILE SECTION -->
       @if (activeSection() === 'profile') {
       <div class="animate-in fade-in duration-500 space-y-8">
         <h2 class="text-2xl font-black mb-6 dark:text-white">Personal Information</h2>
-        <form [formGroup]="profileForm" (ngSubmit)="saveProfile()" class="space-y-8">
+        <form [formGroup]="profileForm" (ngSubmit)="saveProfile()" class="space-y-6">
           <app-form-input label="Full Name" [control]="profileForm.controls['fullName']" [readonly]="!isEditing()" />
           <app-form-input label="Email" type="email" [control]="profileForm.controls['email']"
             [readonly]="!isEditing()" />
@@ -152,9 +158,9 @@
 
       <!-- PASSWORD SECTION -->
       @if (activeSection() === 'password') {
-      <div class="animate-in slide-in-from-right-10 duration-300 space-y-10">
+      <div class="animate-in slide-in-from-right-10 duration-300 space-y-8">
         <h2 class="text-2xl font-black mb-6 dark:text-white">Change Password</h2>
-        <form [formGroup]="passwordForm" (ngSubmit)="updatePassword()" class="space-y-8">
+        <form [formGroup]="passwordForm" (ngSubmit)="updatePassword()" class="space-y-6">
           <div class="space-y-4">
             <app-form-input label="Current Password" type="password" placeholder="••••••••"
               [control]="passwordForm.controls['currentPassword']" [readonly]="!isEditing()" />
@@ -182,7 +188,7 @@
         <form [formGroup]="notificationsForm" (ngSubmit)="saveNotifications()" class="space-y-6">
           <div class="space-y-3 sm:space-y-4">
             <label
-              class="flex items-center justify-between gap-4 p-4 sm:p-6 rounded-2xl sm:rounded-[2rem] bg-slate-50 dark:bg-white/5 border border-transparent hover:border-border/40 transition-all select-none"
+              class="flex items-center justify-between gap-4 p-4 sm:p-5 rounded-2xl bg-slate-50 dark:bg-white/5 border border-transparent hover:border-border/40 transition-all select-none"
               [class.cursor-pointer]="isEditing()" [class.opacity-60]="!isEditing()">
               <div class="space-y-0.5">
                 <h3 class="font-black text-sm sm:text-base dark:text-white">Email Notifications</h3>
@@ -193,7 +199,7 @@
             </label>
 
             <label
-              class="flex items-center justify-between gap-4 p-4 sm:p-6 rounded-2xl sm:rounded-[2rem] bg-slate-50 dark:bg-white/5 border border-transparent hover:border-border/40 transition-all select-none"
+              class="flex items-center justify-between gap-4 p-4 sm:p-5 rounded-2xl bg-slate-50 dark:bg-white/5 border border-transparent hover:border-border/40 transition-all select-none"
               [class.cursor-pointer]="isEditing()" [class.opacity-60]="!isEditing()">
               <div class="space-y-0.5">
                 <h3 class="font-black text-sm sm:text-base dark:text-white">Push Notifications</h3>
@@ -219,7 +225,7 @@
   </div>
 
   <!-- MOBILE LOGOUT BUTTON -->
-  <div class="block lg:hidden pt-4">
+  <div class="block lg:hidden pt-2">
     <app-button variant="danger" [fullWidth]="true" (onClick)="logout()">
       <svg lucideLogOut class="w-4 h-4"></svg>
       Sign out everywhere
