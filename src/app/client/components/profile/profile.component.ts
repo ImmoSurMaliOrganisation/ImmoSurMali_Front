@@ -18,7 +18,7 @@ import {
   LucideMapPin,
   LucideUser,
 } from '@lucide/angular';
-import { FormInputComponent } from '../../shared/components/form-input.component';
+import { FormInputComponent } from '../../shared/components/form-input/form-input.component';
 import { ButtonComponent } from '../../shared/components/button.component';
 
 @Component({
