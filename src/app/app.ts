@@ -20,20 +20,4 @@ export class App {
     return this.router.url === '/auth';
   }
 
-  serverMessage: string = 'Chargement...';
-
-  constructor(private http: HttpClient) {}
-
-  ngOnInit() {
-    this.http.get('http://localhost:8080/api/test', { responseType: 'text' }).subscribe({
-      next: (response) => {
-        this.serverMessage = response;
-        console.log('Réponse du back :', response);
-      },
-      error: (error) => {
-        this.serverMessage = 'Erreur de connexion au serveur ou CORS !';
-        console.error('Erreur :', error);
-      },
-    });
-  }
 }
