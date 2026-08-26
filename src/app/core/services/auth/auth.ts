@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { Observable, tap } from 'rxjs';
 import { StorageService } from '../storage/storage';
 import { UserRole } from '../../models/user-role.enum';
+import { environment } from '../../../../environments/environment';
 
 export interface LoginRequest {
   email: string;
@@ -18,6 +19,14 @@ export interface AuthResponse {
   role: UserRole;
 }
 
+// Interface pour la requête d'inscription client (Swagger)
+export interface RegisterClientRequest {
+  nom: string;
+  email: string;
+  motDePasse: string;
+  telephone: string;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -26,7 +35,8 @@ export class AuthService {
   private router = inject(Router);
   private storageService = inject(StorageService);
 
-  private readonly API_URL = 'http://localhost:8081/api/v1/auth';
+  private readonly API_URL = `${environment.apiUrl}/v1/auth`;
+  private readonly BASE_USERS_URL = `${environment.apiUrl}/v1/users/auth`;
 
   // Keys constantes pour le storage
   private readonly TOKEN_KEY = 'auth_token';
@@ -48,7 +58,18 @@ export class AuthService {
       }),
     );
   }
-
+  /**
+   * Inscription d'un nouveau client avec sauvegarde automatique de la session
+   */
+  registerClient(data: RegisterClientRequest): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(`${this.BASE_USERS_URL}/register/client`, data).pipe(
+      tap((response) => {
+        if (response && response.token) {
+          this.saveSession(response.token, response.role);
+        }
+      }),
+    );
+  }
   /**
    * Enregistre le jeton et le rôle dans le storage puis met à jour les signals
    */

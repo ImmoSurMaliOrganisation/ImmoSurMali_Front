@@ -1,0 +1,165 @@
+<div class="min-h-screen grid grid-cols-1 lg:grid-cols-2 bg-white dark:bg-[#121212] overflow-hidden relative">
+  
+  <!-- BOUTON THEME TOGGLE (HAUT DROITE) -->
+  <button
+    type="button"
+    (click)="themeService.toggleDarkMode()"
+    class="absolute top-6 right-6 z-50 p-3 rounded-2xl bg-slate-100 dark:bg-white/10 text-main-text dark:text-white hover:scale-110 active:scale-95 transition-all shadow-md cursor-pointer flex items-center justify-center"
+    [title]="themeService.isDark() ? 'Passer en mode clair' : 'Passer en mode sombre'"
+  >
+    <svg [lucideIcon]="themeService.isDark() ? LucideSun : LucideMoon" class="w-5 h-5 text-brand"></svg>
+  </button>
+
+  <!-- BANNIÈRE VISUELLE GAUCHE -->
+  <div class="hidden lg:block relative overflow-hidden group">
+    <img src="https://images.unsplash.com/photo-1613490493576-7fde63acd811?q=80&w=2071" alt="ImmoSur Mali"
+      class="absolute inset-0 w-full h-full object-cover transition-transform duration-[5000ms] group-hover:scale-110" />
+    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+    <div class="absolute bottom-12 left-12 right-12 space-y-4 animate-in slide-in-from-bottom-10 duration-1000">
+      <div class="w-12 h-1 bg-brand rounded-full"></div>
+      <h2 class="text-4xl font-black text-white leading-tight">
+        {{ isLoginMode() ? 'Bienvenue sur votre espace ImmoSur Mali.' : 'Commencez votre expérience dès aujourd’hui.' }}
+      </h2>
+    </div>
+  </div>
+
+  <!-- SECTION DROITE : FORMULAIRE + SVG GÉOMÉTRIQUE -->
+  <div class="flex flex-col justify-center px-8 md:px-20 lg:px-32 relative overflow-hidden">
+    
+    <!-- SVG ARRIÈRE-PLAN GÉOMÉTRIQUE -->
+    <svg class="absolute inset-0 w-full h-full pointer-events-none opacity-20 dark:opacity-30 drop-shadow-[0_0_15px_rgba(255,77,77,0.2)] transition-all duration-700 ease-in-out transform origin-center scale-125"
+         xmlns="http://www.w3.org/2000/svg" 
+         viewBox="0 0 600 600" 
+         preserveAspectRatio="xMidYMid slice">
+      <g stroke-linejoin="round" 
+         stroke-linecap="round" 
+         stroke-width="3" 
+         fill="none" 
+         transform="rotate(45 300 300)">
+        <rect x="20" y="20" width="560" height="560" rx="60" ry="60" class="stroke-brand/40" />
+        <rect x="40" y="40" width="520" height="520" rx="52" ry="52" class="stroke-main-text/30 dark:stroke-white/20" />
+        <rect x="60" y="60" width="480" height="480" rx="44" ry="44" class="stroke-brand/40" />
+        <rect x="80" y="80" width="440" height="440" rx="36" ry="36" class="stroke-main-text/40 dark:stroke-white/30" />
+        <rect x="100" y="100" width="400" height="400" rx="28" ry="28" class="stroke-brand/60" />
+        <rect x="120" y="120" width="360" height="360" rx="20" ry="20" class="stroke-main-text/50 dark:stroke-white/40" />
+      </g>
+    </svg>
+
+    <!-- CONTENU DU FORMULAIRE (AU-DESSUS DU SVG SUR L'AXE Z) -->
+    <div class="max-w-md w-full mx-auto space-y-8 animate-in fade-in slide-in-from-right-10 duration-700 z-10">
+
+      <div class="space-y-2">
+        <h3 class="text-3xl font-black text-main-text dark:text-white tracking-tight">
+          {{ isLoginMode() ? 'Connexion' : 'Créer un compte' }}
+        </h3>
+        <p class="text-text-muted font-bold">
+          {{ isLoginMode() ? 'Saisissez vos identifiants pour vous connecter.' : 'Remplissez les informations ci-dessous.' }}
+        </p>
+      </div>
+
+      <!-- ALERTE DE SUCCÈS -->
+      @if (showSuccessMessage()) {
+        <div class="p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-500 text-sm font-bold flex items-center gap-3 animate-in fade-in duration-300">
+          <svg lucideCheckCircle2 class="w-5 h-5 shrink-0"></svg>
+          <span>{{ isLoginMode() ? 'Connexion réussie ! Redirection...' : 'Compte créé avec succès !' }}</span>
+        </div>
+      }
+
+      <!-- ALERTE D'ERREUR -->
+      @if (errorMessage()) {
+        <div class="p-4 rounded-2xl bg-red-500/10 border border-red-500/20 text-red-500 text-sm font-bold animate-in fade-in duration-300">
+          {{ errorMessage() }}
+        </div>
+      }
+
+      <form [formGroup]="authForm" (ngSubmit)="onSubmit()" class="space-y-5">
+
+        <!-- CHAMP NOM COMPLET (INSCRIPTION SEULEMENT) -->
+        @if (!isLoginMode()) {
+          <div class="animate-in fade-in slide-in-from-top-4 duration-500">
+            <app-form-input
+              label="Nom complet"
+              type="text"
+              placeholder="Sidy Diarra"
+              [control]="authForm.controls.fullName"
+            />
+          </div>
+        }
+
+        <!-- CHAMP EMAIL -->
+        <app-form-input
+          label="Adresse Email"
+          type="email"
+          placeholder="sidy@example.com"
+          [control]="authForm.controls.email"
+        />
+
+        <!-- CHAMP TÉLÉPHONE (INSCRIPTION SEULEMENT) -->
+        @if (!isLoginMode()) {
+          <div class="animate-in fade-in slide-in-from-top-4 duration-500">
+            <app-form-input
+              label="Numéro de Téléphone"
+              type="tel"
+              placeholder="+223 70 00 00 00"
+              [control]="authForm.controls.phone"
+            />
+          </div>
+        }
+
+        <!-- CHAMP MOT DE PASSE -->
+        <div class="space-y-1">
+          <div class="flex justify-between items-center px-2">
+            @if (isLoginMode()) {
+              <div class="w-full text-right">
+                <a href="#" class="text-xs font-black text-brand hover:underline">Mot de passe oublié ?</a>
+              </div>
+            }
+          </div>
+          <app-form-input
+            label="Mot de passe"
+            type="password"
+            placeholder="••••••••"
+            [control]="authForm.controls.password"
+          />
+        </div>
+
+        <!-- CONDITIONS D'UTILISATION (INSCRIPTION SEULEMENT) -->
+        @if (!isLoginMode()) {
+          <div class="flex items-start gap-3 px-2 animate-in fade-in slide-in-from-top-2 duration-500">
+            <div class="relative flex items-center">
+              <input type="checkbox" formControlName="acceptTerms" id="terms"
+                class="peer appearance-none w-5 h-5 border-2 border-border rounded-md checked:bg-brand checked:border-brand transition-all cursor-pointer" />
+              <svg lucideCheck class="absolute w-3.5 h-3.5 text-white left-0.5 pointer-events-none opacity-0 peer-checked:opacity-100 transition-opacity"></svg>
+            </div>
+            <label for="terms" class="text-xs font-bold text-text-muted leading-tight cursor-pointer select-none">
+              J'accepte les <a href="#" class="text-brand hover:underline">Conditions d'utilisation</a> et la <a href="#" class="text-brand hover:underline">Politique de confidentialité</a>.
+            </label>
+          </div>
+        }
+
+        <!-- BOUTON DE SOUMISSION -->
+        <div class="pt-4">
+          <app-button
+            type="submit"
+            variant="primary"
+            [fullWidth]="true"
+            [loading]="isLoading()"
+            [disabled]="authForm.invalid || showSuccessMessage()"
+          >
+            {{ showSuccessMessage() ? 'Validation...' : isLoading() ? 'Traitement...' : (isLoginMode() ? 'Se connecter' : 'Créer mon compte') }}
+          </app-button>
+        </div>
+
+      </form>
+
+      <!-- BASCULE / SWITCH -->
+      <p class="text-center text-text-muted font-bold text-sm">
+        {{ isLoginMode() ? "Vous n'avez pas de compte ?" : 'Vous avez déjà un compte ?' }}
+        <button type="button" (click)="toggleMode()" class="text-brand hover:underline ml-1 font-black cursor-pointer">
+          {{ isLoginMode() ? 'Créer un compte' : 'Se connecter' }}
+        </button>
+      </p>
+
+    </div>
+  </div>
+</div>
