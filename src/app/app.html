@@ -1,4 +1,4 @@
-@if (!isAuthPage()) {
+<!-- @if (!isAuthPage()) {
   <app-navigation />
 }
 
@@ -6,5 +6,12 @@
   class="bg-background transition-colors duration-500 min-h-screen"
   [class.pt-16]="!isAuthPage()"
 >
+  <router-outlet />
+</main> -->
+
+
+
+<!-- src/app/app.component.html -->
+<main class="bg-background transition-colors duration-500 min-h-screen">
   <router-outlet />
 </main>

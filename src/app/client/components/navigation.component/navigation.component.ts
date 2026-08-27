@@ -11,6 +11,7 @@ import {
 } from '@lucide/angular';
 import { NavigationService } from '../../shared/services/navigation.service';
 import { RouterLink } from '@angular/router';
+import { ThemeService } from '../../../core/services/theme';
 
 @Component({
   selector: 'app-navigation',
@@ -30,11 +31,9 @@ import { RouterLink } from '@angular/router';
 })
 export class NavigationComponent {
   activeTab = signal('home');
-  isDark = signal(false);
+  public themeService = inject(ThemeService);
+
   public navService: NavigationService = inject(NavigationService);
 
-  toggleDarkMode() {
-    this.isDark.update((v) => !v);
-    document.documentElement.classList.toggle('dark');
-  }
+
 }
