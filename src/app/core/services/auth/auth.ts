@@ -71,6 +71,25 @@ export class AuthService {
     );
   }
   /**
+   * Inscription Agence avec Multipart (FormData: Champs + Justificatifs RCCM/NIF)
+   * POST /api/v1/auth/register/agence
+   */
+  registerAgence(formData: FormData): Observable<any> {
+    return this.http.post<any>(`${environment.apiUrl}/v1/auth/register/agence`, formData);
+  }
+
+  /**
+   * Inscription Propriétaire
+   * POST /api/v1/auth/register/proprietaire (ou selon ton endpoint Swagger)
+   */
+  registerProprietaire(data: any): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(
+      `${environment.apiUrl}/v1/auth/register/proprietaire`,
+      data,
+    );
+  }
+
+  /**
    * Enregistre le jeton et le rôle dans le storage puis met à jour les signals
    */
   saveSession(token: string, role: UserRole): void {

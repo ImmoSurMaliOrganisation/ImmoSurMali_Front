@@ -1,0 +1,256 @@
+<div class="h-screen grid grid-cols-1 lg:grid-cols-12 bg-white dark:bg-[#121212] overflow-hidden relative">
+
+    <!-- BOUTON TOGGLE THÈME -->
+    <button (click)="themeService.toggleDarkMode()" type="button"
+        class="absolute top-5 right-5 z-50 p-2.5 rounded-2xl bg-slate-100 dark:bg-white/5 hover:bg-slate-200 dark:hover:bg-white/10 text-main-text dark:text-white transition-all active:scale-90 cursor-pointer"
+        title="Changer de thème">
+        @if (!themeService.isDark()) {
+        <svg lucideMoon class="w-5 h-5 text-main-text"></svg>
+        } @else {
+        <svg lucideSun class="w-5 h-5 text-yellow-400"></svg>
+        }
+    </button>
+
+    <!-- BANNIÈRE VISUELLE GAUCHE (5/12EME) -->
+    <div class="hidden lg:block lg:col-span-5 relative overflow-hidden group h-full">
+        <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070" alt="ImmoSur Pro"
+            class="absolute inset-0 w-full h-full object-cover transition-transform duration-[5000ms] group-hover:scale-110" />
+        <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
+        <div class="absolute bottom-12 left-8 right-8 space-y-4">
+            <div class="w-12 h-1 bg-brand rounded-full"></div>
+            <h2 class="text-3xl xl:text-4xl font-black text-white leading-tight">
+                Espace Professionnel & Partenaires ImmoSur Mali.
+            </h2>
+            <p class="text-white/80 font-semibold text-sm">Gérez vos biens, vos agences et développez votre activité en
+                toute sécurité.</p>
+        </div>
+    </div>
+
+    <!-- CONTAINER FORMULAIRE DROITE (7/12EME) -->
+    <div
+        class="lg:col-span-7 flex flex-col justify-center px-6 md:px-12 lg:px-16 relative overflow-y-auto h-full py-8 overflow-x-hidden">
+        <!-- PATTERN SVG - ARCHITECTURE GRID -->
+        <svg class="absolute inset-0 w-full h-full pointer-events-none opacity-20 dark:opacity-30"
+            xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+            <defs>
+                <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+                    <path d="M 40 0 L 0 0 0 40" fill="none" class="stroke-brand/50" stroke-width="2" />
+                </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#grid)" />
+        </svg>
+
+        <!-- LARGEUR FORMULAIRE (max-w-2xl) -->
+        <div class="max-w-2xl w-full mx-auto space-y-5 z-10 my-auto">
+
+            <!-- ENTÊTE -->
+            <div class="space-y-1">
+                <h3 class="text-2xl md:text-3xl font-black text-main-text dark:text-white tracking-tight">Espace
+                    Professionnel</h3>
+                <p class="text-text-muted font-bold text-xs md:text-sm">Créez votre compte bailleur ou enregistrez votre
+                    agence.</p>
+            </div>
+
+            <!-- SWITCH TYPE DE COMPTE -->
+            <div
+                class="grid grid-cols-2 p-1.5 bg-slate-100 dark:bg-white/5 rounded-2xl gap-2 border border-slate-200 dark:border-white/10">
+                <button type="button" (click)="setAccountType('PROPRIETAIRE')"
+                    [class]="accountType() === 'PROPRIETAIRE' ? 'bg-brand text-white shadow-md' : 'text-text-muted hover:text-main-text dark:hover:text-white'"
+                    class="py-2.5 rounded-xl font-black text-xs uppercase tracking-wider transition-all cursor-pointer">
+                    Propriétaire
+                </button>
+                <button type="button" (click)="setAccountType('AGENCE')"
+                    [class]="accountType() === 'AGENCE' ? 'bg-brand text-white shadow-md' : 'text-text-muted hover:text-main-text dark:hover:text-white'"
+                    class="py-2.5 rounded-xl font-black text-xs uppercase tracking-wider transition-all cursor-pointer">
+                    Agence Immobilière
+                </button>
+            </div>
+
+            <!-- STEPPER INDICATOR (SI AGENCE) -->
+            @if (accountType() === 'AGENCE') {
+            <div
+                class="flex items-center justify-between px-4 py-2 bg-slate-50 dark:bg-white/5 rounded-xl border border-slate-200/60 dark:border-white/5">
+                <div class="flex items-center gap-2">
+                    <span
+                        [class]="currentStep() >= 1 ? 'bg-brand text-white' : 'bg-slate-200 dark:bg-white/10 text-text-muted'"
+                        class="w-6 h-6 rounded-full flex items-center justify-center font-black text-xs">1</span>
+                    <span class="text-xs font-bold text-main-text dark:text-white">Informations</span>
+                </div>
+                <div class="h-0.5 w-12 bg-slate-200 dark:bg-white/10"></div>
+                <div class="flex items-center gap-2">
+                    <span
+                        [class]="currentStep() === 2 ? 'bg-brand text-white' : 'bg-slate-200 dark:bg-white/10 text-text-muted'"
+                        class="w-6 h-6 rounded-full flex items-center justify-center font-black text-xs">2</span>
+                    <span class="text-xs font-bold text-main-text dark:text-white">Justificatifs RCCM/NIF</span>
+                </div>
+            </div>
+            }
+
+            <!-- MESSAGE DE SUCCÈS -->
+            @if (showSuccessMessage()) {
+            <div
+                class="p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-500 text-sm font-bold space-y-2 animate-in fade-in">
+                <div class="flex items-center gap-2 text-base">
+                    <svg lucideCheckCircle2 class="w-6 h-6"></svg>
+                    <span>{{ accountType() === 'AGENCE' ? 'Demande soumise avec succès !' : 'Compte créé avec succès !'
+                        }}</span>
+                </div>
+                @if (accountType() === 'AGENCE') {
+                <p class="text-xs text-emerald-600 dark:text-emerald-400 font-medium">Votre compte est actuellement
+                    <strong>EN ATTENTE DE VALIDATION</strong>. Nos équipes analysent vos justificatifs sous 24h à 48h.
+                </p>
+                }
+            </div>
+            }
+
+            <!-- ALERTE ERREUR -->
+            @if (errorMessage()) {
+            <div
+                class="p-3.5 rounded-2xl bg-red-500/10 border border-red-500/20 text-red-500 text-xs font-bold animate-in fade-in">
+                {{ errorMessage() }}
+            </div>
+            }
+
+            @if (!showSuccessMessage()) {
+            <form [formGroup]="proForm" (ngSubmit)="onSubmit()" class="space-y-4">
+
+                <!-- ÉTAPE 1 : INFOS GÉNÉRALES -->
+                @if (accountType() === 'PROPRIETAIRE' || currentStep() === 1) {
+
+                @if (accountType() === 'AGENCE') {
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <app-form-input label="Nom de l'agence" type="text" placeholder="Ex: Cabinet Immo Bamako"
+                        [control]="proForm.controls.nom" />
+
+                    <app-form-input label="Adresse physique" type="text" placeholder="ACI 2000, Bamako"
+                        [control]="proForm.controls.adresse" />
+                </div>
+                } @else {
+                <app-form-input label="Nom complet" type="text" placeholder="Moussa Traoré"
+                    [control]="proForm.controls.nom" />
+                }
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <app-form-input label="Adresse Email" type="email" placeholder="contact@domaine.ml"
+                        [control]="proForm.controls.email" />
+
+                    <app-form-input label="Téléphone" type="tel" placeholder="+223 70 00 00 00"
+                        [control]="proForm.controls.telephone" />
+                </div>
+
+                <app-form-input label="Mot de passe" type="password" placeholder="••••••••"
+                    [control]="proForm.controls.password" />
+                }
+
+                <!-- ÉTAPE 2 : DOCUMENTS RCCM (COL 1) ET NIF (COL 2) -->
+                @if (accountType() === 'AGENCE' && currentStep() === 2) {
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+                    <!-- COLONNE 1 : RCCM (OBLIGATOIRE) -->
+                    <div
+                        class="space-y-3 p-4 bg-slate-50 dark:bg-white/5 rounded-2xl border border-slate-200/80 dark:border-white/10">
+                        <label
+                            class="text-xs font-black uppercase tracking-wider text-main-text dark:text-white block border-b border-slate-200 dark:border-white/10 pb-2">
+                            Document RCCM <span class="text-red-500">*</span>
+                        </label>
+
+                        <app-form-input label="Numéro RCCM" type="text" placeholder="MA-BKO-2026-A-12345"
+                            [control]="proForm.controls.rccm" />
+
+                        <div class="space-y-1">
+                            <label class="text-[11px] font-black uppercase tracking-widest text-text-muted ml-1">Joindre
+                                la pièce (PDF/Img)</label>
+                            <input type="file" (change)="onFileSelected($event, 'rccm')" accept=".pdf,.png,.jpg,.jpeg"
+                                class="w-full text-xs text-text-muted file:mr-2 file:py-1.5 file:px-2.5 file:rounded-lg file:border-0 file:text-[11px] file:font-black file:bg-brand/10 file:text-brand hover:file:bg-brand/20 cursor-pointer border border-slate-200 dark:border-white/10 rounded-xl p-1 bg-white dark:bg-black/20" />
+                        </div>
+                    </div>
+
+                    <!-- COLONNE 2 : NIF (OPTIONNEL) -->
+                    <div
+                        class="space-y-3 p-4 bg-slate-50 dark:bg-white/5 rounded-2xl border border-slate-200/80 dark:border-white/10">
+                        <label
+                            class="text-xs font-black uppercase tracking-wider text-main-text dark:text-white block border-b border-slate-200 dark:border-white/10 pb-2">
+                            Document NIF <span class="text-text-muted text-[10px] lowercase">(optionnel)</span>
+                        </label>
+
+                        <app-form-input label="Numéro NIF" type="text" placeholder="123456789A"
+                            [control]="proForm.controls.nif" />
+
+                        <div class="space-y-1">
+                            <label class="text-[11px] font-black uppercase tracking-widest text-text-muted ml-1">Joindre
+                                la pièce (PDF/Img)</label>
+                            <input type="file" (change)="onFileSelected($event, 'nif')" accept=".pdf,.png,.jpg,.jpeg"
+                                class="w-full text-xs text-text-muted file:mr-2 file:py-1.5 file:px-2.5 file:rounded-lg file:border-0 file:text-[11px] file:font-black file:bg-brand/10 file:text-brand hover:file:bg-brand/20 cursor-pointer border border-slate-200 dark:border-white/10 rounded-xl p-1 bg-white dark:bg-black/20" />
+                        </div>
+                    </div>
+
+                </div>
+                }
+
+                <!-- CONDITIONS ET ATTESTATION (DISPONIBLES POUR PROPRIÉTAIRE ET ÉTAPE 2 AGENCE) -->
+                @if (accountType() === 'PROPRIETAIRE' || currentStep() === 2) {
+                <div class="space-y-2 pt-1">
+
+                    <!-- ATTESTATION DES PIÈCES (AGENCE SEULEMENT) -->
+                    @if (accountType() === 'AGENCE') {
+                    <div class="flex items-start gap-2.5">
+                        <input type="checkbox" formControlName="acceptTruth" id="terms-truth"
+                            class="w-4 h-4 rounded border-2 border-border accent-brand cursor-pointer mt-0.5" />
+                        <label for="terms-truth" class="text-xs font-bold text-text-muted cursor-pointer leading-tight">
+                            J'atteste sur l'honneur de l'exactitude des pièces justificatives fournies.
+                        </label>
+                    </div>
+                    }
+
+                    <!-- CONDITIONS GÉNÉRALES D'UTILISATION (POUR TOUS) -->
+                    <div class="flex items-start gap-2.5">
+                        <input type="checkbox" formControlName="acceptTerms" id="terms-cgu"
+                            class="w-4 h-4 rounded border-2 border-border accent-brand cursor-pointer mt-0.5" />
+                        <label for="terms-cgu" class="text-xs font-bold text-text-muted cursor-pointer leading-tight">
+                            J'accepte les <a href="#" class="text-brand hover:underline font-extrabold">Conditions
+                                Générales d'Utilisation</a> et la <a href="#"
+                                class="text-brand hover:underline font-extrabold">Politique de Confidentialité</a>.
+                        </label>
+                    </div>
+
+                </div>
+                }
+
+                <!-- ACTIONS BOUTONS -->
+                <div class="pt-2 flex gap-3">
+                    @if (accountType() === 'AGENCE' && currentStep() === 2) {
+                    <app-button type="button" variant="outline" (click)="prevStep()" [disabled]="isLoading()">
+                        Retour
+                    </app-button>
+                    }
+
+                    @if (accountType() === 'AGENCE' && currentStep() === 1) {
+                    <app-button type="button" variant="primary" [fullWidth]="true" (click)="nextStep()">
+                        Continuer vers les justificatifs
+                    </app-button>
+                    }
+
+                    @if (accountType() === 'PROPRIETAIRE' || currentStep() === 2) {
+                    <app-button type="submit" variant="primary" [fullWidth]="true" [loading]="isLoading()"
+                        [disabled]="proForm.invalid">
+                        {{ accountType() === 'AGENCE' ? 'Soumettre le dossier Agence' : 'Créer mon compte Propriétaire'
+                        }}
+                    </app-button>
+                    }
+                </div>
+            </form>
+            }
+            <!-- LIEN VERS LA PAGE DE CONNEXION -->
+            <div class="text-center pt-2 border-t border-slate-100 dark:border-white/5">
+                <p class="text-xs font-bold text-text-muted">
+                    Vous avez déjà un compte ?
+                    <a routerLink="/login" class="text-brand hover:underline font-extrabold transition-all ml-1">
+                        Se connecter
+                    </a>
+                </p>
+            </div>
+
+        </div>
+    </div>
+</div>
