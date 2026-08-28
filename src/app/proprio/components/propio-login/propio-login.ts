@@ -213,4 +213,13 @@ export class PropioLogin {
       });
     }
   }
+  removeFile(type: 'rccm' | 'nif'): void {
+  if (type === 'rccm') {
+    this.rccmFile.set(null);
+    this.rccmPreviewUrl.set(null);
+  } else {
+    this.nifFile.set(null);
+    this.nifPreviewUrl.set(null);
+  }
+}
 }

@@ -146,44 +146,95 @@
                 @if (accountType() === 'AGENCE' && currentStep() === 2) {
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<!-- COLONNE 1 : RCCM -->
+<div class="space-y-3 p-4 bg-slate-50 dark:bg-white/5 rounded-2xl border border-slate-200/80 dark:border-white/10">
+    <label class="text-xs font-black uppercase tracking-wider text-main-text dark:text-white block border-b border-slate-200 dark:border-white/10 pb-2">
+        Document RCCM <span class="text-red-500">*</span>
+    </label>
 
-                    <!-- COLONNE 1 : RCCM (OBLIGATOIRE) -->
-                    <div
-                        class="space-y-3 p-4 bg-slate-50 dark:bg-white/5 rounded-2xl border border-slate-200/80 dark:border-white/10">
-                        <label
-                            class="text-xs font-black uppercase tracking-wider text-main-text dark:text-white block border-b border-slate-200 dark:border-white/10 pb-2">
-                            Document RCCM <span class="text-red-500">*</span>
-                        </label>
+    <app-form-input label="Numéro RCCM" type="text" placeholder="EX:MA-BKO-2026-A-12345" [control]="proForm.controls.rccm" />
 
-                        <app-form-input label="Numéro RCCM" type="text" placeholder="MA-BKO-2026-A-12345"
-                            [control]="proForm.controls.rccm" />
+    <!-- ZONE D'UPLOAD RCCM -->
+    <div class="space-y-1">
+        <label class="text-[11px] font-black uppercase tracking-widest text-text-muted ml-1">Joindre la pièce (PDF/Img)</label>
+        
+        @if (!rccmFile()) {
+        <!-- État initial : Zone Drag & Drop -->
+        <label class="flex flex-col items-center justify-center w-full h-28 border-2 border-dashed border-slate-300 dark:border-white/20 rounded-2xl cursor-pointer bg-white dark:bg-black/20 hover:bg-slate-100 dark:hover:bg-white/5 transition-all">
+            <div class="flex flex-col items-center justify-center py-3 text-center px-2">
+                <svg class="w-6 h-6 text-brand mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                </svg>
+                <p class="text-xs font-bold text-main-text dark:text-white"><span class="text-brand">Cliquez</span> ou déposez le fichier</p>
+                <p class="text-[10px] text-text-muted">PDF, PNG, JPG (max. 5MB)</p>
+            </div>
+            <input type="file" (change)="onFileSelected($event, 'rccm')" accept=".pdf,.png,.jpg,.jpeg" class="hidden" />
+        </label>
+        } @else {
+        <!-- État sélectionné : Preview du fichier -->
+        <div class="relative flex items-center gap-3 p-2.5 bg-white dark:bg-black/30 border border-slate-200 dark:border-white/10 rounded-2xl">
+            @if (rccmPreviewUrl() !== 'pdf') {
+                <img [src]="rccmPreviewUrl()" class="w-12 h-12 object-cover rounded-xl border" alt="Preview RCCM" />
+            } @else {
+                <div class="w-12 h-12 rounded-xl bg-red-500/10 text-red-500 flex items-center justify-center font-black text-xs">PDF</div>
+            }
+            <div class="flex-1 min-w-0">
+                <p class="text-xs font-bold text-main-text dark:text-white truncate">{{ rccmFile()?.name }}</p>
+                <p class="text-[10px] text-text-muted">{{ (rccmFile()?.size || 0) / 1024 / 1024 | number:'1.1-2' }} MB</p>
+            </div>
+            <button type="button" (click)="removeFile('rccm')" class="p-1.5 rounded-xl bg-slate-100 dark:bg-white/10 text-red-500 hover:bg-red-500/10 transition-all">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+        }
+    </div>
+</div>
 
-                        <div class="space-y-1">
-                            <label class="text-[11px] font-black uppercase tracking-widest text-text-muted ml-1">Joindre
-                                la pièce (PDF/Img)</label>
-                            <input type="file" (change)="onFileSelected($event, 'rccm')" accept=".pdf,.png,.jpg,.jpeg"
-                                class="w-full text-xs text-text-muted file:mr-2 file:py-1.5 file:px-2.5 file:rounded-lg file:border-0 file:text-[11px] file:font-black file:bg-brand/10 file:text-brand hover:file:bg-brand/20 cursor-pointer border border-slate-200 dark:border-white/10 rounded-xl p-1 bg-white dark:bg-black/20" />
-                        </div>
-                    </div>
+<!-- COLONNE 2 : NIF -->
+<div class="space-y-3 p-4 bg-slate-50 dark:bg-white/5 rounded-2xl border border-slate-200/80 dark:border-white/10">
+    <label class="text-xs font-black uppercase tracking-wider text-main-text dark:text-white block border-b border-slate-200 dark:border-white/10 pb-2">
+        Document NIF <span class="text-text-muted text-[10px] lowercase">(optionnel)</span>
+    </label>
 
-                    <!-- COLONNE 2 : NIF (OPTIONNEL) -->
-                    <div
-                        class="space-y-3 p-4 bg-slate-50 dark:bg-white/5 rounded-2xl border border-slate-200/80 dark:border-white/10">
-                        <label
-                            class="text-xs font-black uppercase tracking-wider text-main-text dark:text-white block border-b border-slate-200 dark:border-white/10 pb-2">
-                            Document NIF <span class="text-text-muted text-[10px] lowercase">(optionnel)</span>
-                        </label>
+    <app-form-input label="Numéro NIF" type="text" placeholder="EX:123456789A" [control]="proForm.controls.nif" />
 
-                        <app-form-input label="Numéro NIF" type="text" placeholder="123456789A"
-                            [control]="proForm.controls.nif" />
-
-                        <div class="space-y-1">
-                            <label class="text-[11px] font-black uppercase tracking-widest text-text-muted ml-1">Joindre
-                                la pièce (PDF/Img)</label>
-                            <input type="file" (change)="onFileSelected($event, 'nif')" accept=".pdf,.png,.jpg,.jpeg"
-                                class="w-full text-xs text-text-muted file:mr-2 file:py-1.5 file:px-2.5 file:rounded-lg file:border-0 file:text-[11px] file:font-black file:bg-brand/10 file:text-brand hover:file:bg-brand/20 cursor-pointer border border-slate-200 dark:border-white/10 rounded-xl p-1 bg-white dark:bg-black/20" />
-                        </div>
-                    </div>
+    <!-- ZONE D'UPLOAD NIF -->
+    <div class="space-y-1">
+        <label class="text-[11px] font-black uppercase tracking-widest text-text-muted ml-1">Joindre la pièce (PDF/Img)</label>
+        
+        @if (!nifFile()) {
+        <label class="flex flex-col items-center justify-center w-full h-28 border-2 border-dashed border-slate-300 dark:border-white/20 rounded-2xl cursor-pointer bg-white dark:bg-black/20 hover:bg-slate-100 dark:hover:bg-white/5 transition-all">
+            <div class="flex flex-col items-center justify-center py-3 text-center px-2">
+                <svg class="w-6 h-6 text-brand mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                </svg>
+                <p class="text-xs font-bold text-main-text dark:text-white"><span class="text-brand">Cliquez</span> ou déposez le fichier</p>
+                <p class="text-[10px] text-text-muted">PDF, PNG, JPG (max. 5MB)</p>
+            </div>
+            <input type="file" (change)="onFileSelected($event, 'nif')" accept=".pdf,.png,.jpg,.jpeg" class="hidden" />
+        </label>
+        } @else {
+        <div class="relative flex items-center gap-3 p-2.5 bg-white dark:bg-black/30 border border-slate-200 dark:border-white/10 rounded-2xl">
+            @if (nifPreviewUrl() !== 'pdf') {
+                <img [src]="nifPreviewUrl()" class="w-12 h-12 object-cover rounded-xl border" alt="Preview NIF" />
+            } @else {
+                <div class="w-12 h-12 rounded-xl bg-red-500/10 text-red-500 flex items-center justify-center font-black text-xs">PDF</div>
+            }
+            <div class="flex-1 min-w-0">
+                <p class="text-xs font-bold text-main-text dark:text-white truncate">{{ nifFile()?.name }}</p>
+                <p class="text-[10px] text-text-muted">{{ (nifFile()?.size || 0) / 1024 / 1024 | number:'1.1-2' }} MB</p>
+            </div>
+            <button type="button" (click)="removeFile('nif')" class="p-1.5 rounded-xl bg-slate-100 dark:bg-white/10 text-red-500 hover:bg-red-500/10 transition-all">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+        }
+    </div>
+</div>
 
                 </div>
                 }
