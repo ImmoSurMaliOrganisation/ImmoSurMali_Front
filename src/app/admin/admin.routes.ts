@@ -5,13 +5,19 @@ import { Dashboard } from './components/dashboard/dashboard';
 import { adminGuard } from '../core/guards/admin.guard';
 
 export const ADMIN_ROUTES: Routes = [
- {
+  {
+    path: 'login',
+    component: LoginComponent,
+  },
+  // 2. Layout Administrateur qui englobe uniquement les pages protégées
+  {
     path: '',
     component: AdminLayout,
+    canActivate: [adminGuard], // Sécurise tout l'espace admin d'un coup
     children: [
-      { path: '', redirectTo: 'login', pathMatch: 'full' },
-      { path: 'login', component: LoginComponent },
-      { path: 'dashboard', component: Dashboard, canActivate: [adminGuard], }
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+      { path: 'dashboard', component: Dashboard },
+    
     ]
   }
 ];
