@@ -42,7 +42,6 @@ export class AuthService {
   private storageService = inject(StorageService);
 
   private readonly API_URL = `${environment.apiUrl}/v1/auth`;
-  private readonly BASE_USERS_URL = `${environment.apiUrl}/v1/users/auth`;
 
   private readonly TOKEN_KEY = 'auth_token';
   private readonly ROLE_KEY = 'user_role';
@@ -78,7 +77,7 @@ export class AuthService {
    * Inscription d'un nouveau client
    */
   registerClient(data: RegisterClientRequest): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.BASE_USERS_URL}/register/client`, data).pipe(
+    return this.http.post<AuthResponse>(`${this.API_URL}/register/client`, data).pipe(
       tap((response) => {
         if (response && response.token) {
           const userData: UserInfo = {

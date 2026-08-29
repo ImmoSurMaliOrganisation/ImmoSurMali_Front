@@ -1,0 +1,262 @@
+<div class="space-y-6 animate-in">
+  
+  <!-- EN-TÊTE PAGE -->
+  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div>
+      <h1 class="text-xl font-black text-[var(--color-main-text)] flex items-center gap-2.5">
+        <svg lucideUsers class="w-6 h-6 text-[var(--color-brand)]"></svg>
+        Gestion des Utilisateurs
+      </h1>
+      <p class="text-xs text-text-muted mt-1">Gérez tous les comptes inscrits sur la plateforme ImmoSur Mali.</p>
+    </div>
+  </div>
+
+  <!-- FILTRES PAR RÔLES (ONGLETS BENTO) -->
+  <div class="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar">
+    <button 
+      (click)="selectedRoleFilter.set('TOUS')"
+      [class]="selectedRoleFilter() === 'TOUS' ? 'bg-[var(--color-brand)] text-white shadow-md' : 'bg-[var(--color-card-bg)] text-text-muted border border-[var(--color-border)] hover:text-[var(--color-main-text)]'"
+      class="px-4 py-2 rounded-2xl text-xs font-bold transition-all shrink-0 flex items-center gap-2">
+      <span>Tous</span>
+      <span class="px-1.5 py-0.5 text-[10px] font-black rounded-full bg-white/20">{{ countTotal() }}</span>
+    </button>
+
+    <button 
+      (click)="selectedRoleFilter.set('CLIENT')"
+      [class]="selectedRoleFilter() === 'CLIENT' ? 'bg-[var(--color-brand)] text-white shadow-md' : 'bg-[var(--color-card-bg)] text-text-muted border border-[var(--color-border)] hover:text-[var(--color-main-text)]'"
+      class="px-4 py-2 rounded-2xl text-xs font-bold transition-all shrink-0 flex items-center gap-2">
+      <svg lucideUser class="w-3.5 h-3.5"></svg>
+      <span>Clients</span>
+    </button>
+
+    <!-- CORRECTION ICI: 'PROPRIETAIRE_PART' au lieu de 'PROPRIETAIRE' -->
+    <button 
+      (click)="selectedRoleFilter.set('PROPRIETAIRE_PART')"
+      [class]="selectedRoleFilter() === 'PROPRIETAIRE_PART' ? 'bg-[var(--color-brand)] text-white shadow-md' : 'bg-[var(--color-card-bg)] text-text-muted border border-[var(--color-border)] hover:text-[var(--color-main-text)]'"
+      class="px-4 py-2 rounded-2xl text-xs font-bold transition-all shrink-0 flex items-center gap-2">
+      <svg lucideHome class="w-3.5 h-3.5"></svg>
+      <span>Propriétaires</span>
+    </button>
+
+    <!-- CORRECTION ICI: 'AGENCE_IMMOBILIERE' au lieu de 'AGENCE' -->
+    <button 
+      (click)="selectedRoleFilter.set('AGENCE_IMMOBILIERE')"
+      [class]="selectedRoleFilter() === 'AGENCE_IMMOBILIERE' ? 'bg-[var(--color-brand)] text-white shadow-md' : 'bg-[var(--color-card-bg)] text-text-muted border border-[var(--color-border)] hover:text-[var(--color-main-text)]'"
+      class="px-4 py-2 rounded-2xl text-xs font-bold transition-all shrink-0 flex items-center gap-2">
+      <svg lucideBuilding2 class="w-3.5 h-3.5"></svg>
+      <span>Agences</span>
+    </button>
+  </div>
+
+  <!-- BARRE DE RECHERCHE -->
+  <div class="relative max-w-md">
+    <svg lucideSearch class="w-4 h-4 text-text-muted absolute left-3.5 top-1/2 -translate-y-1/2"></svg>
+    <input 
+      type="text" 
+      [ngModel]="searchQuery()" 
+      (ngModelChange)="onSearchChange($event)"
+      placeholder="Rechercher par nom, email ou téléphone..." 
+      class="w-full pl-10 pr-4 py-2.5 rounded-2xl bg-[var(--color-card-bg)] border border-[var(--color-border)] text-xs font-bold text-[var(--color-main-text)] focus:outline-none focus:border-[var(--color-brand)] transition-colors">
+  </div>
+
+  <!-- TABLEAU CARTE BENTO -->
+  @if (isLoading()) {
+    <div class="p-12 text-center text-xs text-text-muted font-bold">
+      Chargement des données...
+    </div>
+  } @else if (users().length > 0) {
+    <div class="bg-[var(--color-card-bg)] rounded-[var(--radius-2xl)] border border-[var(--color-border)] shadow-[var(--shadow-bento)] overflow-hidden">
+      <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse">
+          <thead>
+            <tr class="border-b border-[var(--color-border)] bg-black/5 dark:bg-white/5 text-[11px] font-black uppercase text-text-muted">
+              <th class="p-4">Utilisateur</th>
+              <th class="p-4">Contacts</th>
+              <th class="p-4">Rôle</th>
+              <th class="p-4">Statut</th>
+              <th class="p-4">Inscription</th>
+              <th class="p-4 text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-[var(--color-border)] text-xs">
+            @for (user of users(); track user.id) {
+              <tr class="hover:bg-black/5 dark:hover:bg-white/5 transition-colors">
+                <td class="p-4">
+                  <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-xl bg-[var(--color-brand)]/10 text-[var(--color-brand)] font-black text-xs flex items-center justify-center shrink-0">
+                      {{ user.nom ? user.nom.charAt(0) : 'U' }}
+                    </div>
+                    <div>
+                      <p class="font-black text-[var(--color-main-text)]">{{ user.nom }}</p>
+                      @if (user.annoncesCount) {
+                        <p class="text-[10px] text-text-muted font-bold">{{ user.annoncesCount }} annonce(s)</p>
+                      }
+                    </div>
+                  </div>
+                </td>
+                <td class="p-4">
+                  <p class="font-bold text-[var(--color-main-text)]">{{ user.email }}</p>
+                  <p class="text-[10px] text-text-muted">{{ user.telephone }}</p>
+                </td>
+                <td class="p-4">
+                  <!-- CORRECTION DES CLASSES NGCLASS AVEC LES ENUMS EXACTES -->
+                  <span [ngClass]="{
+                    'bg-blue-500/10 text-blue-500': user.role === 'CLIENT',
+                    'bg-purple-500/10 text-purple-500': user.role === 'PROPRIETAIRE_PART',
+                    'bg-amber-500/10 text-amber-500': user.role === 'AGENCE_IMMOBILIERE',
+                    'bg-red-500/10 text-red-500': user.role === 'ADMIN'
+                  }" class="px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider inline-block">
+                    {{ user.role }}
+                  </span>
+                </td>
+                <td class="p-4">
+                  <span [ngClass]="{
+                    'bg-emerald-500/10 text-emerald-500': user.userStatut === 'ACTIF',
+                    'bg-red-500/10 text-red-500': user.userStatut === 'SUSPENDU'
+                  }" class="px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider inline-flex items-center gap-1.5">
+                    <span [ngClass]="user.userStatut === 'ACTIF' ? 'bg-emerald-500' : 'bg-red-500'" class="w-1.5 h-1.5 rounded-full"></span>
+                    {{ user.userStatut }}
+                  </span>
+                </td>
+                <td class="p-4 text-text-muted font-bold">
+                  {{ user.dateCreation | date:'dd/MM/yyyy' }}
+                </td>
+                <td class="p-4 text-right">
+                  <div class="flex items-center justify-end gap-1.5">
+                    <button 
+                      (click)="openDetails(user)" 
+                      title="Voir détails"
+                      class="p-2 rounded-xl bg-black/5 dark:bg-white/5 text-text-muted hover:text-[var(--color-main-text)] transition-all">
+                      <svg lucideEye class="w-4 h-4"></svg>
+                    </button>
+                    @if (user.role !== 'ADMIN') {
+                      <button 
+                        (click)="toggleUserStatus(user)" 
+                        [title]="user.userStatut === 'ACTIF' ? 'Suspendre' : 'Activer'"
+                        [class]="user.userStatut === 'ACTIF' ? 'bg-amber-500/10 text-amber-500 hover:bg-amber-500 hover:text-white' : 'bg-emerald-500/10 text-emerald-500 hover:bg-emerald-500 hover:text-white'"
+                        class="p-2 rounded-xl transition-all">
+                        @if (user.userStatut === 'ACTIF') {
+                          <svg lucideUserX class="w-4 h-4"></svg>
+                        } @else {
+                          <svg lucideUserCheck class="w-4 h-4"></svg>
+                        }
+                      </button>
+                      <button 
+                        (click)="openDeleteModal(user)" 
+                        title="Supprimer l'utilisateur"
+                        class="p-2 rounded-xl bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white transition-all">
+                        <svg lucideTrash2 class="w-4 h-4"></svg>
+                      </button>
+                    }
+                  </div>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <!-- BARRE DE PAGINATION -->
+      <div class="flex flex-col sm:flex-row items-center justify-between p-4 border-t border-[var(--color-border)] gap-3 bg-black/5 dark:bg-white/5 text-xs">
+        <span class="text-text-muted font-bold">
+          Page <strong class="text-[var(--color-main-text)]">{{ currentPage() }}</strong> sur <strong class="text-[var(--color-main-text)]">{{ totalPages() }}</strong> ({{ totalElements() }} résultats)
+        </span>
+
+        <div class="flex items-center gap-2">
+          <button 
+            (click)="goToPage(currentPage() - 1)" 
+            [disabled]="currentPage() === 1"
+            class="p-2 rounded-xl border border-[var(--color-border)] bg-[var(--color-card-bg)] text-[var(--color-main-text)] disabled:opacity-40 disabled:cursor-not-allowed hover:bg-black/5 dark:hover:bg-white/5 transition-all">
+            <svg lucideChevronLeft class="w-4 h-4"></svg>
+          </button>
+          
+          <button 
+            (click)="goToPage(currentPage() + 1)" 
+            [disabled]="currentPage() === totalPages()"
+            class="p-2 rounded-xl border border-[var(--color-border)] bg-[var(--color-card-bg)] text-[var(--color-main-text)] disabled:opacity-40 disabled:cursor-not-allowed hover:bg-black/5 dark:hover:bg-white/5 transition-all">
+            <svg lucideChevronRight class="w-4 h-4"></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  } @else {
+    <div class="bg-[var(--color-card-bg)] rounded-[var(--radius-2xl)] border border-[var(--color-border)] p-12 text-center space-y-3">
+      <div class="w-12 h-12 rounded-full bg-black/5 dark:bg-white/5 text-text-muted flex items-center justify-center mx-auto">
+        <svg lucideUserX class="w-6 h-6"></svg>
+      </div>
+      <h3 class="text-sm font-black text-[var(--color-main-text)]">Aucun utilisateur trouvé</h3>
+      <p class="text-xs text-text-muted max-w-sm mx-auto">Aucun compte ne correspond à vos critères de recherche.</p>
+    </div>
+  }
+
+</div>
+
+<!-- MODALE DÉTAILS -->
+@if (selectedUser(); as user) {
+  <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in">
+    <div class="bg-[var(--color-card-bg)] rounded-[var(--radius-3xl)] border border-[var(--color-border)] max-w-md w-full p-6 space-y-6 shadow-[var(--shadow-bento)]">
+      <div class="flex items-center justify-between border-b border-[var(--color-border)] pb-4">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-2xl bg-[var(--color-brand)]/10 text-[var(--color-brand)] font-black text-sm flex items-center justify-center">
+            {{ user.nom ? user.nom.charAt(0) : 'U' }}
+          </div>
+          <div>
+            <h3 class="text-base font-black text-[var(--color-main-text)]">{{ user.nom }}</h3>
+            <p class="text-xs text-text-muted">{{ user.email }}</p>
+          </div>
+        </div>
+        <button (click)="closeDetails()" class="p-2 rounded-xl hover:bg-black/5 dark:hover:bg-white/5 text-text-muted">
+          <svg lucideX class="w-5 h-5"></svg>
+        </button>
+      </div>
+      <div class="space-y-3 text-xs">
+        <div class="flex justify-between py-2 border-b border-[var(--color-border)]">
+          <span class="text-text-muted font-bold">Téléphone</span>
+          <span class="font-black text-[var(--color-main-text)]">{{ user.telephone }}</span>
+        </div>
+        <div class="flex justify-between py-2 border-b border-[var(--color-border)]">
+          <span class="text-text-muted font-bold">Rôle</span>
+          <span class="font-black text-[var(--color-brand)]">{{ user.role }}</span>
+        </div>
+        <div class="flex justify-between py-2 border-b border-[var(--color-border)]">
+          <span class="text-text-muted font-bold">Statut du compte</span>
+          <span class="font-black" [ngClass]="user.userStatut === 'ACTIF' ? 'text-emerald-500' : 'text-red-500'">{{ user.userStatut }}</span>
+        </div>
+        <div class="flex justify-between py-2 border-b border-[var(--color-border)]">
+          <span class="text-text-muted font-bold">Inscrit le</span>
+          <span class="font-black text-[var(--color-main-text)]">{{ user.dateCreation | date:'dd/MM/yyyy' }}</span>
+        </div>
+      </div>
+      <div class="pt-2">
+        <button (click)="closeDetails()" class="w-full py-2.5 rounded-xl bg-black/5 dark:bg-white/5 text-[var(--color-main-text)] font-extrabold text-xs">
+          Fermer
+        </button>
+      </div>
+    </div>
+  </div>
+}
+
+<!-- MODALE DE SUPPRESSION -->
+@if (userToDelete(); as user) {
+  <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in">
+    <div class="bg-[var(--color-card-bg)] rounded-[var(--radius-3xl)] border border-[var(--color-border)] max-w-sm w-full p-6 space-y-4 shadow-[var(--shadow-bento)]">
+      <div class="flex items-center gap-3 text-red-500">
+        <div class="p-2 rounded-xl bg-red-500/10">
+          <svg lucideAlertCircle class="w-6 h-6"></svg>
+        </div>
+        <h3 class="text-base font-black text-[var(--color-main-text)]">Confirmer la suppression</h3>
+      </div>
+      <p class="text-xs text-text-muted">
+        Êtes-vous sûr de vouloir supprimer le compte de <strong class="text-[var(--color-main-text)]">{{ user.nom }}</strong> ? Cette action est irréversible.
+      </p>
+      <div class="flex items-center gap-3 pt-2">
+        <button (click)="closeDeleteModal()" class="flex-1 py-2.5 rounded-xl bg-black/5 dark:bg-white/5 text-text-muted font-bold text-xs hover:text-[var(--color-main-text)]">
+          Annuler
+        </button>
+        <button (click)="confirmDelete()" class="flex-1 py-2.5 rounded-xl bg-red-500 text-white font-extrabold text-xs hover:bg-red-600 transition-all shadow-md shadow-red-500/20">
+          Supprimer
+        </button>
+      </div>
+    </div>
+  </div>
+}

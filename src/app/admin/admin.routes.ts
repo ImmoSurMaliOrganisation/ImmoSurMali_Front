@@ -3,6 +3,7 @@ import { LoginComponent } from './components/login/login.component';
 import { AdminLayout } from './admin-layout/admin-layout';
 import { Dashboard } from './components/dashboard/dashboard';
 import { adminGuard } from '../core/guards/admin.guard';
+import { Users } from './components/users/users';
 
 export const ADMIN_ROUTES: Routes = [
   {
@@ -17,7 +18,7 @@ export const ADMIN_ROUTES: Routes = [
     children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'dashboard', component: Dashboard },
-    
-    ]
-  }
+      { path: 'users', component: Users },
+    ],
+  },
 ];
