@@ -66,8 +66,7 @@
           </p>
 
           <!-- VALIDATION AGENCE -->
-          <a routerLink="/admin/agences"
-            routerLinkActive="bg-brand/10 text-brand font-black border-r-4 border-brand"
+          <a routerLink="/admin/agences" routerLinkActive="bg-brand/10 text-brand font-black border-r-4 border-brand"
             (click)="isSidebarOpen.set(false)"
             class="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold text-text-muted hover:text-main-text dark:hover:text-white hover:bg-slate-50 dark:hover:bg-white/5 transition-all group">
             <div class="flex items-center gap-3">
@@ -76,10 +75,13 @@
             </div>
 
             <!-- BADGE DU NOMBRE DE DEMANDES -->
+            <!-- BADGE DU NOMBRE DE DEMANDES DYNAMIQUE -->
+            @if (agenceService.nombreAgencesEnAttente() > 0) {
             <span
-              class="inline-flex items-center justify-center min-w-[20px] h-5 px-1.5 text-[11px] font-black rounded-full bg-red-600 text-white shadow-sm shrink-0">
-              2
+              class="inline-flex items-center justify-center min-w-[20px] h-5 px-1.5 text-[11px] font-black rounded-full bg-brand text-white shadow-sm shrink-0 animate-in">
+              {{ agenceService.nombreAgencesEnAttente() }}
             </span>
+            }
           </a>
 
           <a routerLink="/admin/users" routerLinkActive="bg-brand/10 text-brand font-black border-r-4 border-brand"
@@ -174,7 +176,7 @@
       </div>
 
       <!-- BOUTON SE DÉCONNECTER -->
-      <app-button (click)="logout()" [fullWidth]="true" type="button" [size]="'sm'" [variant]="'danger'"> 
+      <app-button (click)="logout()" [fullWidth]="true" type="button" [size]="'sm'" [variant]="'danger'">
         <svg lucideLogOut class="w-4 h-4"></svg>
         <span>Se déconnecter</span>
       </app-button>

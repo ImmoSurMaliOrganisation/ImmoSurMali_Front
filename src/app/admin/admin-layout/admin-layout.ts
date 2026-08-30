@@ -18,6 +18,7 @@ import {
 } from '@lucide/angular';
 import { CommonModule } from '@angular/common';
 import { ButtonComponent } from "../../client/shared/components/button.component";
+import { AgenceAdminService } from '../_services/agence-admin.service';
 
 @Component({
   selector: 'app-admin-layout',
@@ -48,6 +49,7 @@ export class AdminLayout {
   public authService = inject(AuthService);
   public themeService = inject(ThemeService);
   private router = inject(Router);
+  public agenceService = inject(AgenceAdminService);
 
   // ÉTAT DE LA SIDEBAR MOBILE
   isSidebarOpen = signal(false);

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal, computed } from '@angular/core';
 import { Observable, of, delay } from 'rxjs';
 import { AgenceAdmin, StatutAgence } from '../_models/agence.model';
 
@@ -6,17 +6,20 @@ import { AgenceAdmin, StatutAgence } from '../_models/agence.model';
   providedIn: 'root',
 })
 export class AgenceAdminService {
-  private mockAgences!: AgenceAdmin[];
-  // Jeu de données complet (mock data) pour simuler le backend
+  // Utilisation d'un Signal pour les agences afin de rendre les compteurs réactifs
+  private mockAgences = signal<AgenceAdmin[]>([]);
+
   constructor() {
     // Optionnel : Générer par exemple 30 agences au démarrage pour tester la pagination
     this.genererMockAgences(30);
   }
 
- /**
-   * Méthode pour générer un nombre personnalisé d'agences factices avec des documents en ligne
-   */
-/**
+  // Signal calculé pour compter automatiquement les agences en attente
+  public nombreAgencesEnAttente = computed(() => 
+    this.mockAgences().filter(a => a.statut === 'EN_ATTENTE').length
+  );
+  
+  /**
    * Méthode pour générer un nombre personnalisé d'agences factices avec des documents en ligne
    */
   public genererMockAgences(nombreTotal: number): void {
@@ -38,15 +41,14 @@ export class AgenceAdminService {
       'Sanita Logement',
     ];
 
-    // Exemples d'URLs en ligne (alternance entre images et PDF de test)
     const documentsExemples = [
       {
-        rccmUrl: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf', // PDF en ligne
-        nifUrl: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=800&q=80' // Image en ligne
+        rccmUrl: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
+        nifUrl: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=800&q=80'
       },
       {
-        rccmUrl: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80', // Image en ligne
-        nifUrl: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf' // PDF en ligne
+        rccmUrl: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80',
+        nifUrl: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf'
       }
     ];
 
@@ -75,40 +77,44 @@ export class AgenceAdminService {
       });
     }
 
-    this.mockAgences = agencesGenerees;
+    // Mise à jour du signal
+    this.mockAgences.set(agencesGenerees);
   }
+
   // Récupérer toutes les agences pour la gestion globale
   getToutesLesAgences(): Observable<AgenceAdmin[]> {
-    return of(this.mockAgences).pipe(delay(300));
+    return of(this.mockAgences()).pipe(delay(300));
   }
 
   /**
    * Récupérer une agence par son ID (pour la page de détails)
    */
   public getAgenceById(id: number): Observable<AgenceAdmin | undefined> {
-    const agence = this.mockAgences.find(a => a.id === id);
+    const agence = this.mockAgences().find(a => a.id === id);
     return of(agence);
   }
 
   // Valider une agence en attente
   validerDemande(id: number): Observable<AgenceAdmin> {
-    this.mockAgences = this.mockAgences.map((a) =>
+    const updatedList = this.mockAgences().map((a) =>
       a.id === id
         ? { ...a, statut: 'VALIDE' as StatutAgence, isVerifier: true, motifRejet: undefined }
         : a,
     );
-    const updated = this.mockAgences.find((a) => a.id === id)!;
+    this.mockAgences.set(updatedList);
+    const updated = this.mockAgences().find((a) => a.id === id)!;
     return of(updated).pipe(delay(300));
   }
 
   // Rejeter une agence avec un motif obligatoire
   rejeterDemande(id: number, motif: string): Observable<AgenceAdmin> {
-    this.mockAgences = this.mockAgences.map((a) =>
+    const updatedList = this.mockAgences().map((a) =>
       a.id === id
         ? { ...a, statut: 'REJETE' as StatutAgence, isVerifier: false, motifRejet: motif }
         : a,
     );
-    const updated = this.mockAgences.find((a) => a.id === id)!;
+    this.mockAgences.set(updatedList);
+    const updated = this.mockAgences().find((a) => a.id === id)!;
     return of(updated).pipe(delay(300));
   }
 }
