@@ -1,4 +1,4 @@
-import { Component, effect, OnDestroy, signal } from '@angular/core';
+import { Component, OnDestroy, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   FormsModule,
@@ -11,7 +11,6 @@ import {
 import {
   LucideBellRing,
   LucideCamera,
-  LucideChevronLeft,
   LucideChevronRight,
   LucideKeyRound,
   LucideLogOut,
@@ -34,7 +33,6 @@ import { ButtonComponent } from '../../shared/components/button.component';
     LucideChevronRight,
     LucideBellRing,
     LucideChevronRight,
-    LucideChevronLeft,
     LucideLogOut,
     LucideUser,
     FormInputComponent,

@@ -25,6 +25,7 @@ import { AuthService } from '../../../core/services/auth/auth';
 import { ThemeService } from '../../../core/services/theme';
 import { FormInputComponent } from '../../shared/components/form-input/form-input.component';
 import { ButtonComponent } from '../../shared/components/button.component';
+import { UserRole } from '../../../core/models/user-role.enum';
 
 @Component({
   selector: 'app-auth',
@@ -116,19 +117,31 @@ export class AuthComponent {
     if (this.isLoginMode()) {
       // MODE CONNEXION
       this.authService.login({ email, motDePasse: password }).subscribe({
-        next: (response) => {
+        next: (response: any) => {
           this.isLoading.set(false);
+          this.showSuccessMessage.set(true);
 
-          if (response.role === 'CLIENT' || response.role === 'PROPRIETAIRE') {
-            this.showSuccessMessage.set(true);
+          // Redirection dynamique pour TOUS les rôles
+          setTimeout(() => {
+            switch (response.role) {
+              case UserRole.ADMIN:
+              case 'ADMIN':
+                this.router.navigate(['/admin/dashboard']);
+                break;
 
-            setTimeout(() => {
-              this.router.navigate(['/profile']);
-            }, 1200);
-          } else {
-            this.authService.logout();
-            this.errorMessage.set('Accès refusé : Privilèges insuffisants pour cet espace.');
-          }
+              case UserRole.AGENCE:
+              case UserRole.PROPRIETAIRE:
+              case 'AGENCE':
+              case 'PROPRIETAIRE':
+                this.router.navigate(['/pro/dashboard']);
+                break;
+
+              case 'CLIENT':
+              default:
+                this.router.navigate(['/profile']);
+                break;
+            }
+          }, 1200);
         },
         error: (err) => {
           this.isLoading.set(false);

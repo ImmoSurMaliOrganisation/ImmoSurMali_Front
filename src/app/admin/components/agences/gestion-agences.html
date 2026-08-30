@@ -1,0 +1,173 @@
+<div class="p-6 max-w-7xl mx-auto space-y-6">
+  
+  <!-- En-tête -->
+  <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+    <div>
+      <h1 class="text-2xl font-black text-main-text dark:text-white">Gestion des Agences Immobilières</h1>
+      <p class="text-xs text-text-muted mt-0.5">Suivi des inscriptions, modération et vérification des dossiers</p>
+    </div>
+  </div>
+
+  @if (errorMessage()) {
+    <div class="p-4 text-xs font-bold text-red-700 bg-red-100 dark:bg-red-950/30 dark:text-red-400 rounded-xl shadow-sm">
+      {{ errorMessage() }}
+    </div>
+  }
+
+  <!-- BARRE DE FILTRES PAR ONGLETS & RECHERCHE -->
+  <div class="bg-white dark:bg-[#151518] p-4 rounded-2xl border border-slate-200/80 dark:border-white/10 shadow-sm flex flex-col md:flex-row justify-between items-center gap-4">
+    
+    <!-- Onglets de filtres par statut -->
+    <div class="flex flex-wrap gap-1 w-full md:w-auto overflow-x-auto">
+      <button (click)="changerFiltre('TOUTES')" 
+        [class.bg-brand]="selectedFilter() === 'TOUTES'" [class.text-white]="selectedFilter() === 'TOUTES'"
+        [class.bg-slate-100]="selectedFilter() !== 'TOUTES'" [class.dark:bg-white/5]="selectedFilter() !== 'TOUTES'"
+        class="px-3.5 py-2 rounded-xl text-xs font-bold transition-all">
+        Toutes
+      </button>
+
+      <button (click)="changerFiltre('EN_ATTENTE')" 
+        [class.bg-brand]="selectedFilter() === 'EN_ATTENTE'" [class.text-white]="selectedFilter() === 'EN_ATTENTE'"
+        [class.bg-slate-100]="selectedFilter() !== 'EN_ATTENTE'" [class.dark:bg-white/5]="selectedFilter() !== 'EN_ATTENTE'"
+        class="px-3.5 py-2 rounded-xl text-xs font-bold transition-all">
+        En attente
+      </button>
+
+      <button (click)="changerFiltre('VALIDE')" 
+        [class.bg-brand]="selectedFilter() === 'VALIDE'" [class.text-white]="selectedFilter() === 'VALIDE'"
+        [class.bg-slate-100]="selectedFilter() !== 'VALIDE'" [class.dark:bg-white/5]="selectedFilter() !== 'VALIDE'"
+        class="px-3.5 py-2 rounded-xl text-xs font-bold transition-all">
+        Validées
+      </button>
+
+      <button (click)="changerFiltre('REJETE')" 
+        [class.bg-brand]="selectedFilter() === 'REJETE'" [class.text-white]="selectedFilter() === 'REJETE'"
+        [class.bg-slate-100]="selectedFilter() !== 'REJETE'" [class.dark:bg-white/5]="selectedFilter() !== 'REJETE'"
+        class="px-3.5 py-2 rounded-xl text-xs font-bold transition-all">
+        Rejetées
+      </button>
+
+      <button (click)="changerFiltre('SUSPENDU')" 
+        [class.bg-brand]="selectedFilter() === 'SUSPENDU'" [class.text-white]="selectedFilter() === 'SUSPENDU'"
+        [class.bg-slate-100]="selectedFilter() !== 'SUSPENDU'" [class.dark:bg-white/5]="selectedFilter() !== 'SUSPENDU'"
+        class="px-3.5 py-2 rounded-xl text-xs font-bold transition-all">
+        Suspendues
+      </button>
+    </div>
+
+    <!-- Champ de recherche textuelle -->
+    <div class="w-full md:w-80">
+      <input 
+        type="text" 
+        [ngModel]="searchQuery()" 
+        (ngModelChange)="onSearchChange($event)"
+        placeholder="Rechercher par nom, email, RCCM..." 
+        class="w-full bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl px-4 py-2 text-xs text-main-text dark:text-white focus:ring-2 focus:ring-brand focus:outline-none"
+      />
+    </div>
+
+  </div>
+
+  <!-- TABLEAU DES AGENCES -->
+  <div class="bg-white dark:bg-[#151518] shadow-sm rounded-2xl overflow-hidden border border-slate-200/80 dark:border-white/10 flex flex-col justify-between">
+    <div class="overflow-x-auto">
+      @if (isLoading()) {
+        <div class="p-12 text-center text-text-muted text-xs">Chargement des agences...</div>
+      } @else if (paginatedAgences().length === 0) {
+        <div class="p-12 text-center text-text-muted text-xs">Aucune agence trouvée pour ce filtre ou cette recherche.</div>
+      } @else {
+        <table class="min-w-full divide-y divide-slate-200 dark:divide-white/10">
+          <thead class="bg-slate-50 dark:bg-white/5">
+            <tr>
+              <th class="px-6 py-3.5 text-left text-[10px] font-black uppercase tracking-wider text-text-muted">Agence / Adresse</th>
+              <th class="px-6 py-3.5 text-left text-[10px] font-black uppercase tracking-wider text-text-muted">Contacts</th>
+              <th class="px-6 py-3.5 text-left text-[10px] font-black uppercase tracking-wider text-text-muted">RCCM</th>
+              <th class="px-6 py-3.5 text-left text-[10px] font-black uppercase tracking-wider text-text-muted">Statut</th>
+              <th class="px-6 py-3.5 text-right text-[10px] font-black uppercase tracking-wider text-text-muted">Action</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-200 dark:divide-white/10">
+            @for (agence of paginatedAgences(); track agence.id) {
+              <tr class="hover:bg-slate-50/60 dark:hover:bg-white/5 transition-colors">
+                
+                <!-- Nom et Adresse -->
+                <td class="px-6 py-4">
+                  <div class="font-black text-xs text-main-text dark:text-white">{{ agence.nomAgence }}</div>
+                  <div class="text-[11px] text-text-muted">{{ agence.adresse }}</div>
+                </td>
+
+                <!-- Contacts -->
+                <td class="px-6 py-4 text-xs text-text-muted">
+                  <div>{{ agence.email }}</div>
+                  <div class="text-[11px] text-text-muted/70">{{ agence.telephone }}</div>
+                </td>
+
+                <!-- RCCM -->
+                <td class="px-6 py-4 text-xs font-mono text-main-text dark:text-white">
+                  {{ agence.rccm }}
+                </td>
+
+                <!-- Statut -->
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <span class="px-2.5 py-1 inline-flex text-[10px] font-black rounded-full uppercase tracking-wider"
+                    [class.bg-yellow-100]="agence.statut === 'EN_ATTENTE'" [class.text-yellow-800]="agence.statut === 'EN_ATTENTE'"
+                    [class.bg-emerald-100]="agence.statut === 'VALIDE'" [class.text-emerald-800]="agence.statut === 'VALIDE'"
+                    [class.bg-red-100]="agence.statut === 'REJETE'" [class.text-red-800]="agence.statut === 'REJETE'"
+                    [class.bg-slate-200]="agence.statut === 'SUSPENDU'" [class.text-slate-800]="agence.statut === 'SUSPENDU'" 
+                    >
+                    {{ agence.statut }}
+                  </span>
+                </td>
+
+                <!-- Action vers les détails -->
+                <td class="px-6 py-4 whitespace-nowrap text-right text-xs font-medium">
+                  <a [routerLink]="['/admin/agences/details', agence.id]" 
+                     class="inline-flex items-center gap-1.5 px-3.5 py-2 bg-brand/10 text-brand hover:bg-brand hover:text-white rounded-xl font-bold transition-all shadow-sm">
+                    Examiner
+                  </a>
+                </td>
+
+              </tr>
+            }
+          </tbody>
+        </table>
+      }
+    </div>
+
+    <!-- BARRE DE PAGINATION (Bas du tableau) -->
+    @if (filteredAgences().length > 0) {
+      <div class="px-6 py-4 border-t border-slate-200/80 dark:border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 bg-slate-50/50 dark:bg-white/[0.02]">
+        <div class="text-xs text-text-muted">
+          Affichage de <span class="font-bold text-main-text dark:text-white">{{ ((currentPage() - 1) * pageSize()) + 1 }}</span> à 
+          <span class="font-bold text-main-text dark:text-white">{{ mathMin(currentPage() * pageSize(), filteredAgences().length) }}</span> sur 
+          <span class="font-bold text-main-text dark:text-white">{{ filteredAgences().length }}</span> agences
+        </div>
+
+        <div class="flex items-center gap-1.5">
+          <!-- Bouton Précédent -->
+          <button 
+            (click)="changerPage(currentPage() - 1)" 
+            [disabled]="currentPage() === 1"
+            class="px-3 py-1.5 rounded-xl text-xs font-bold bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 text-main-text dark:text-white disabled:opacity-40 disabled:cursor-not-allowed hover:bg-slate-100 dark:hover:bg-white/10 transition-all">
+            Précédent
+          </button>
+
+          <!-- Indicateur de page -->
+          <span class="px-3 py-1.5 text-xs font-bold text-text-muted">
+            Page {{ currentPage() }} sur {{ totalPages() }}
+          </span>
+
+          <!-- Bouton Suivant -->
+          <button 
+            (click)="changerPage(currentPage() + 1)" 
+            [disabled]="currentPage() === totalPages()"
+            class="px-3 py-1.5 rounded-xl text-xs font-bold bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 text-main-text dark:text-white disabled:opacity-40 disabled:cursor-not-allowed hover:bg-slate-100 dark:hover:bg-white/10 transition-all">
+            Suivant
+          </button>
+        </div>
+      </div>
+    }
+
+  </div>
+
+</div>
