@@ -3,6 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
 import { PageResponse, Role, User } from '../_models/user.model';
 import { environment } from '../../../environments/environment';
+import { ExtendedUserAdmin } from '../components/users/users';
 
 @Injectable({
   providedIn: 'root',
@@ -45,11 +46,13 @@ export class UserService {
     return this.http.get<User>(`${this.apiUrl}/${id}`);
   }
 
-  /**
-   * Modifie le statut d'un utilisateur (ex: ACTIF, SUSPENDU)
-   */
-  updateUserStatut(id: number, statut: string): Observable<User> {
-    return this.http.patch<User>(`${this.apiUrl}/${id}/toggle-status`, {});
+  suspendUser(id: number): Observable<ExtendedUserAdmin> {
+    return this.http.patch<ExtendedUserAdmin>(`${this.apiUrl}/${id}/suspend`, {});
+  }
+
+  // Pour l'activation
+  activateUser(id: number): Observable<ExtendedUserAdmin> {
+    return this.http.patch<ExtendedUserAdmin>(`${this.apiUrl}/${id}/activate`, {});
   }
 
   /**

@@ -58,12 +58,15 @@ export class Users {
   pageSize = signal<number>(10);
   isLoading = signal<boolean>(false);
 
+  // ÉTATS DE NOTIFICATION
+  successMessage = signal<string | null>(null);
+  errorMessage = signal<string | null>(null);
 
   private debouncedSearch = toObservable(this.searchQuery).pipe(
     debounceTime(300),
     distinctUntilChanged()
   );
-
+private refreshTrigger = signal<number>(0);
   private debouncedSearchSignal = toSignal(this.debouncedSearch, { initialValue: '' });
 
   // SIGNAL COMBINÉ DES PARAMÈTRES D'API (Inclut le rôle et la recherche)
@@ -72,6 +75,7 @@ export class Users {
     search: this.debouncedSearchSignal(),
     page: this.currentPage() - 1,
     size: this.pageSize(),
+    refresh: this.refreshTrigger()
   }));
 
   // RECUPÉRATION AUTOMATIQUE VIA LE BACKEND
@@ -126,17 +130,35 @@ export class Users {
   }
 
   // ACTIONS SUR LES UTILISATEURS
-  toggleUserStatus(user: ExtendedUserAdmin) {
-    const nextStatus = user.userStatut === 'ACTIF' ? 'SUSPENDU' : 'ACTIF';
-    this.userService.updateUserStatut(user.id, nextStatus).subscribe({
-      next: () => {
-        // Force le rechargement du signal en touchant à la page courante
+toggleUserStatus(user: ExtendedUserAdmin) {
+    const isActif = user.userStatut === 'ACTIF';
+    const actionName = isActif ? 'suspendu' : 'activé';
+    
+    const request$ = isActif 
+      ? this.userService.suspendUser(user.id) 
+      : this.userService.activateUser(user.id);
+
+    request$.subscribe({
+      next: (updatedUser) => {
+        // 1. Forcer le rechargement via votre trigger ou rafraîchissement
         this.currentPage.update((p) => p);
+
+        // 2. Afficher le message de succès
+        this.successMessage.set(`Utilisateur ${user.email || user.id} avec succès ${actionName}.`);
+        this.errorMessage.set(null);
+
+        // Effacer le message après 3 secondes
+        setTimeout(() => this.successMessage.set(null), 3000);
+        this.refreshTrigger.update(v => v + 1); // <--- Déclenche le rechargement automatique
       },
-      error: (err) => console.error('Erreur lors du changement de statut:', err),
+      error: (err) => {
+        console.error('Erreur lors du changement de statut:', err);
+        this.errorMessage.set("Une erreur est survenue lors de la modification du statut.");
+        this.successMessage.set(null);
+        setTimeout(() => this.errorMessage.set(null), 4000);
+      },
     });
   }
-
   openDetails(user: ExtendedUserAdmin) {
     this.selectedUser.set(user);
   }
