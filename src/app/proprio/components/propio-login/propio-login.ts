@@ -49,8 +49,8 @@ export class PropioLogin {
   LucideSun = LucideSun;
   LucideMoon = LucideMoon;
 
-  // Regex OHADA/Mali
-  private rccmRegex = '^M[L|A]-[A-Z]{3}-\\d{4}-[A|B]-\\d{1,6}$';
+ // Regex assouplie OHADA/Mali (accepte par exemple MA-BKO-2026-1234A ou les formats standards)
+  private rccmRegex = '^[A-Z0-9\\s-_]{5,30}$';
   private nifRegex = '^\\d{9}[A-Z]$';
 
   proForm = this.fb.nonNullable.group({
@@ -149,6 +149,15 @@ export class PropioLogin {
   }
 
   onSubmit(): void {
+    console.log('Formulaire invalide ? ', this.proForm.invalid);
+    console.log('Erreurs par champ :', {
+      nom: this.proForm.controls.nom.errors,
+      email: this.proForm.controls.email.errors,
+      rccm: this.proForm.controls.rccm.errors,
+      adresse: this.proForm.controls.adresse.errors,
+      acceptTruth: this.proForm.controls.acceptTruth.errors,
+      acceptTerms: this.proForm.controls.acceptTerms.errors,
+    });
     if (this.proForm.invalid) {
       this.proForm.markAllAsTouched();
       this.errorMessage.set('Veuillez remplir correctement tous les champs obligatoires.');
@@ -167,17 +176,30 @@ export class PropioLogin {
 
     if (this.accountType() === 'AGENCE') {
       const formData = new FormData();
-      formData.append('nomAgence', val.nom);
-      formData.append('email', val.email);
-      formData.append('motDePasse', val.password);
-      formData.append('telephone', val.telephone);
-      formData.append('adresse', val.adresse);
-      formData.append('rccm', val.rccm);
-      if (this.rccmFile()) formData.append('rccmDocument', this.rccmFile()!);
 
-      if (val.nif) formData.append('nif', val.nif);
-      if (this.nifFile()) formData.append('nifDocument', this.nifFile()!);
+      // 1. Créer le DTO
+      const dto = {
+        nomAgence: val.nom,
+        email: val.email,
+        motDePasse: val.password,
+        telephone: val.telephone,
+        adresse: val.adresse,
+        rccm: val.rccm,
+        nif: val.nif || null
+      };
 
+      // 2. 🟢 L'ajouter obligatoirement au FormData sous la clé 'data'
+      formData.append('data', new Blob([JSON.stringify(dto)], { type: 'application/json' }));
+
+      // 3. Ajouter les fichiers
+      if (this.rccmFile()) {
+        formData.append('rccmDocument', this.rccmFile()!);
+      }
+      if (this.nifFile()) {
+        formData.append('nifDocument', this.nifFile()!);
+      }
+
+      // 4. Envoyer au service
       this.authService.registerAgence(formData).subscribe({
         next: () => {
           this.isLoading.set(false);
@@ -190,7 +212,7 @@ export class PropioLogin {
           );
         },
       });
-    } else {
+    }else {
       const payload = {
         nom: val.nom,
         email: val.email,
@@ -214,12 +236,12 @@ export class PropioLogin {
     }
   }
   removeFile(type: 'rccm' | 'nif'): void {
-  if (type === 'rccm') {
-    this.rccmFile.set(null);
-    this.rccmPreviewUrl.set(null);
-  } else {
-    this.nifFile.set(null);
-    this.nifPreviewUrl.set(null);
+    if (type === 'rccm') {
+      this.rccmFile.set(null);
+      this.rccmPreviewUrl.set(null);
+    } else {
+      this.nifFile.set(null);
+      this.nifPreviewUrl.set(null);
+    }
   }
-}
 }
