@@ -66,16 +66,16 @@
           </p>
 
           <!-- VALIDATION AGENCE -->
-          <a routerLink="/admin/agences-validation"
+          <a routerLink="/admin/agences"
             routerLinkActive="bg-brand/10 text-brand font-black border-r-4 border-brand"
             (click)="isSidebarOpen.set(false)"
             class="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold text-text-muted hover:text-main-text dark:hover:text-white hover:bg-slate-50 dark:hover:bg-white/5 transition-all group">
             <div class="flex items-center gap-3">
               <svg lucideBuilding2 class="w-4 h-4 transition-transform group-hover:scale-110"></svg>
-              <span>Validation Agences</span>
+              <span>Agences </span>
             </div>
 
-            <!-- BADGE DU NOMBRE DE DEMANDES (CORRIGÉ) -->
+            <!-- BADGE DU NOMBRE DE DEMANDES -->
             <span
               class="inline-flex items-center justify-center min-w-[20px] h-5 px-1.5 text-[11px] font-black rounded-full bg-red-600 text-white shadow-sm shrink-0">
               2
@@ -127,7 +127,7 @@
       </nav>
     </div>
 
-    <!-- PIED DE LA SIDEBAR : PROFIL ADMIN ET DÉCONNEXION -->
+    <!-- PIED DE LA SIDEBAR : PROFIL ADMIN, THÈME, SITE PUBLIC ET DÉCONNEXION -->
     <div class="p-4 border-t border-slate-100 dark:border-white/5 bg-slate-50/50 dark:bg-black/20 space-y-3 shrink-0">
 
       <!-- CARTE UTILISATEUR ADMIN -->
@@ -152,70 +152,42 @@
         </div>
       </div>
 
-      <!-- BOUTON SE DÉCONNECTER -->
-      <app-button (click)="logout()" [fullWidth]="true" type="button" [size]="'sm'" [variant]="'danger'"> <svg lucideLogOut
-          class="w-4 h-4"></svg>
-        <span>Se déconnecter</span>
-      </app-button>
-
-
-    </div>
-  </aside>
-
-  <!-- 2. CONTENU PRINCIPAL + HEADER EN HAUT -->
-  <div class="flex-1 flex flex-col min-w-0 h-full overflow-hidden">
-
-    <!-- HEADER SUPÉRIEUR ADMIN -->
-    <header
-      class="h-16 bg-white dark:bg-[#18181b] border-b border-slate-200 dark:border-white/10 px-4 md:px-8 flex items-center justify-between shrink-0">
-
-      <!-- BOUTON BURGER (MOBILE) & STATUT -->
-      <div class="flex items-center gap-3">
-        <button (click)="toggleSidebar()"
-          class="md:hidden p-2 rounded-xl bg-slate-100 dark:bg-white/5 text-main-text dark:text-white hover:bg-slate-200 dark:hover:bg-white/10 transition-colors">
-          <svg lucideMenu class="w-5 h-5"></svg>
-        </button>
-        <span
-          class="text-xs font-extrabold px-3 py-1 bg-emerald-500/10 text-emerald-500 rounded-full flex items-center gap-1.5">
-          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-          Système Actif
-        </span>
-      </div>
-
-      <!-- ACTIONS DROITE (NOTIFS & THÈME) -->
-      <div class="flex items-center gap-2">
-
-        <!-- BOUTON NOTIFICATIONS -->
-        <button type="button"
-          class="p-2 rounded-xl bg-slate-100 dark:bg-white/5 text-text-muted hover:text-main-text dark:hover:text-white transition-all relative">
-          <svg lucideBell class="w-4 h-4"></svg>
-          <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-brand rounded-full"></span>
-        </button>
-
+      <!-- BOUTONS UTILES DU BAS (TOGGLE THÈME & LIEN SITE PUBLIC) -->
+      <div class="grid grid-cols-2 gap-2">
         <!-- TOGGLE DARK MODE -->
         <button (click)="themeService.toggleDarkMode()" type="button"
-          class="p-2 rounded-xl bg-slate-100 dark:bg-white/5 text-main-text dark:text-white hover:bg-slate-200 dark:hover:bg-white/10 transition-all">
+          class="flex items-center justify-center gap-2 p-2 rounded-xl bg-white dark:bg-white/5 border border-slate-200/60 dark:border-white/10 text-xs font-bold text-main-text dark:text-white hover:bg-slate-100 dark:hover:bg-white/10 transition-all shadow-sm">
           @if (!themeService.isDark()) {
           <svg lucideMoon class="w-4 h-4"></svg>
+          <span>Sombre</span>
           } @else {
           <svg lucideSun class="w-4 h-4 text-yellow-400"></svg>
+          <span>Clair</span>
           }
         </button>
 
         <!-- RETOUR VERS LE SITE PUBLIC -->
         <a routerLink="/"
-          class="hidden sm:inline-flex items-center gap-1.5 ml-2 px-3 py-1.5 rounded-xl border border-slate-200 dark:border-white/10 text-xs font-bold text-text-muted hover:text-main-text dark:hover:text-white transition-all">
-          Voir le site public
+          class="flex items-center justify-center gap-1.5 p-2 rounded-xl bg-white dark:bg-white/5 border border-slate-200/60 dark:border-white/10 text-xs font-bold text-text-muted hover:text-main-text dark:hover:text-white transition-all shadow-sm">
+          <span>Site public</span>
         </a>
       </div>
 
-    </header>
+      <!-- BOUTON SE DÉCONNECTER -->
+      <app-button (click)="logout()" [fullWidth]="true" type="button" [size]="'sm'" [variant]="'danger'"> 
+        <svg lucideLogOut class="w-4 h-4"></svg>
+        <span>Se déconnecter</span>
+      </app-button>
 
-    <!-- ZONE DE CONTENU DYNAMIQUE -->
+    </div>
+  </aside>
+
+  <!-- 2. CONTENU PRINCIPAL SANS HEADER -->
+  <div class="flex-1 flex flex-col min-w-0 h-full overflow-hidden">
+    <!-- ZONE DE CONTENU DYNAMIQUE (Prend tout l'espace vertical disponible) -->
     <main class="flex-1 overflow-y-auto p-4 md:p-8">
       <router-outlet></router-outlet>
     </main>
-
   </div>
 
 </div>

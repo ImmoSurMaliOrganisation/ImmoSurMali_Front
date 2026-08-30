@@ -85,6 +85,9 @@ private refreshTrigger = signal<number>(0);
       switchMap((params) =>
         this.userService.getUsers(params.role, params.search, params.page, params.size).pipe(
           catchError((err) => {
+              this.errorMessage.set("Une erreur est survenue lors de la recuperation des utilisateurs.");
+        this.successMessage.set(null);
+        setTimeout(() => this.errorMessage.set(null), 4000);
             console.error('Erreur lors du chargement:', err);
             return of({
               content: [],
