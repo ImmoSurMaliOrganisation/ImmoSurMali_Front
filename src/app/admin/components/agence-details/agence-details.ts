@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { AgenceAdminService } from '../../_services/agence-admin.service';
-import { AgenceAdmin } from '../../_models/agence.model';
+import { AgenceAdminDetails } from '../../_models/agence.model';
 import { SafeUrlPipe } from '../../../core/pipes/safe-url.pipe';
 import {
   LucideAlertCircle,
@@ -19,6 +19,7 @@ import {
   LucideX,
   LucideXCircle,
 } from '@lucide/angular';
+import { MediaService } from '../../../core/services/media.service';
 
 @Component({
   selector: 'app-agence-details',
@@ -49,7 +50,15 @@ export class AgenceDetails implements OnInit {
   private router = inject(Router);
   private agenceService = inject(AgenceAdminService);
 
-  agence = signal<AgenceAdmin | null | undefined>(null);
+  // Injection du service média
+  public mediaService = inject(MediaService);
+
+  // Signaux pour la visionneuse
+  selectedPreviewUrl = signal<string | null>(null);
+  selectedPreviewTitle = signal<string>('');
+  isFullScreen = signal<boolean>(false);
+
+  agence = signal<AgenceAdminDetails | null | undefined>(null);
   isLoading = signal<boolean>(true);
 
   // Messages & Modale de rejet
@@ -58,15 +67,7 @@ export class AgenceDetails implements OnInit {
   showRejectModal = signal<boolean>(false);
   motifRejetInput = signal<string>('');
 
-  // Document actuellement sélectionné pour l'aperçu
-  selectedPreviewUrl = signal<string | null>(null);
-  selectedPreviewTitle = signal<string>('');
-
   safePreviewUrl = computed(() => this.selectedPreviewUrl() ?? '');
-  // État pour savoir si la prévisualisation est en plein écran (agrandie)
-  isFullScreen = signal<boolean>(false);
-
-  isPdfPreview = computed(() => this.selectedPreviewUrl()?.toLowerCase().endsWith('.pdf') ?? false);
 
   ngOnInit() {
     const idParam = this.route.snapshot.paramMap.get('id');
@@ -75,11 +76,18 @@ export class AgenceDetails implements OnInit {
     }
   }
 
-  // Initialiser la prévisualisation d'un document
-  initialiserPreview(url: string, title: string) {
-    this.selectedPreviewUrl.set(url);
+  // Méthode pour initialiser l'aperçu avec l'URL formatée par le service
+  initialiserPreview(relativePath: string | null | undefined, title: string) {
+    if (!relativePath) return;
+
+    const absoluteUrl = this.mediaService.getFileUrl(relativePath);
+    this.selectedPreviewUrl.set(absoluteUrl);
     this.selectedPreviewTitle.set(title);
-    this.isFullScreen.set(false);
+  }
+
+  // Vérifie si le fichier affiché est un PDF
+  isPdfPreview(): boolean {
+    return this.mediaService.isPdf(this.selectedPreviewUrl());
   }
 
   basculerPleinEcran() {
@@ -89,7 +97,9 @@ export class AgenceDetails implements OnInit {
   chargerAgence(id: number) {
     this.isLoading.set(true);
     this.agenceService.getAgenceById(id).subscribe({
-      next: (data) => {
+      next: (data: AgenceAdminDetails | null | undefined) => {
+        console.log(data);
+        
         this.agence.set(data);
         if (data?.motifRejet) {
           this.motifRejetInput.set(data.motifRejet);

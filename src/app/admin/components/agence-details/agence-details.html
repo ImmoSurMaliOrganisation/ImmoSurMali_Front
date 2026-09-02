@@ -1,8 +1,9 @@
 <div class="p-6 max-w-7xl mx-auto space-y-6 animate-in">
-  
+
   <!-- NAVIGATION DE RETOUR -->
   <div class="flex items-center justify-between">
-    <a routerLink="/admin/agences" class="inline-flex items-center gap-2 text-xs font-bold text-text-muted hover:text-main-text dark:hover:text-white transition-colors bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 px-4 py-2 rounded-xl shadow-sm">
+    <a routerLink="/admin/agences"
+      class="inline-flex items-center gap-2 text-xs font-bold text-text-muted hover:text-main-text dark:hover:text-white transition-colors bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 px-4 py-2 rounded-xl shadow-sm">
       <svg lucideArrowLeft class="w-4 h-4"></svg>
       <span>Retour à la liste des agences</span>
     </a>
@@ -14,287 +15,341 @@
 
   <!-- NOTIFICATIONS FLASH -->
   @if (successMessage()) {
-    <div class="p-4 text-xs font-bold text-emerald-700 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-900/50 rounded-2xl shadow-sm flex items-center gap-3">
-      <svg lucideCheckCircle2 class="w-5 h-5 shrink-0 text-emerald-600 dark:text-emerald-400"></svg>
-      <span>{{ successMessage() }}</span>
-    </div>
+  <div
+    class="p-4 text-xs font-bold text-emerald-700 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-900/50 rounded-2xl shadow-sm flex items-center gap-3">
+    <svg lucideCheckCircle2 class="w-5 h-5 shrink-0 text-emerald-600 dark:text-emerald-400"></svg>
+    <span>{{ successMessage() }}</span>
+  </div>
   }
   @if (errorMessage()) {
-    <div class="p-4 text-xs font-bold text-red-700 bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/50 rounded-2xl shadow-sm flex items-center gap-3">
-      <svg lucideAlertCircle class="w-5 h-5 shrink-0 text-red-600 dark:text-red-400"></svg>
-      <span>{{ errorMessage() }}</span>
-    </div>
+  <div
+    class="p-4 text-xs font-bold text-red-700 bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/50 rounded-2xl shadow-sm flex items-center gap-3">
+    <svg lucideAlertCircle class="w-5 h-5 shrink-0 text-red-600 dark:text-red-400"></svg>
+    <span>{{ errorMessage() }}</span>
+  </div>
   }
 
   @if (isLoading()) {
-    <div class="p-20 text-center flex flex-col items-center justify-center space-y-3 bg-white dark:bg-[#151518] rounded-3xl border border-slate-200/80 dark:border-white/10 shadow-sm">
-      <div class="w-8 h-8 border-4 border-brand border-t-transparent rounded-full animate-spin"></div>
-      <p class="text-xs font-bold text-text-muted">Chargement des données de l'agence...</p>
-    </div>
+  <div
+    class="p-20 text-center flex flex-col items-center justify-center space-y-3 bg-white dark:bg-[#151518] rounded-3xl border border-slate-200/80 dark:border-white/10 shadow-sm">
+    <div class="w-8 h-8 border-4 border-brand border-t-transparent rounded-full animate-spin"></div>
+    <p class="text-xs font-bold text-text-muted">Chargement des données de l'agence...</p>
+  </div>
   } @else if (agence(); as ag) {
-    
-    <!-- EN-TÊTE PRINCIPAL (HERO CARD) -->
-    <div class="bg-white dark:bg-[#151518] rounded-3xl border border-slate-200/80 dark:border-white/10 p-6 md:p-8 shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-      
-      <div class="flex items-center gap-4">
-        <!-- Avatar / Logo de l'agence -->
-        <div class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-brand/20 to-brand/5 border border-brand/20 flex items-center justify-center text-brand font-black text-2xl shadow-inner shrink-0">
-          {{ ag.nomAgence.charAt(0) }}
+
+  <!-- EN-TÊTE PRINCIPAL (HERO CARD) -->
+  <div
+    class="bg-white dark:bg-[#151518] rounded-3xl border border-slate-200/80 dark:border-white/10 p-6 md:p-8 shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+
+    <div class="flex items-center gap-4">
+      <!-- Avatar / Logo de l'agence -->
+      <div
+        class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-brand/20 to-brand/5 border border-brand/20 flex items-center justify-center text-brand font-black text-2xl shadow-inner shrink-0">
+        {{ ag.nomAgence!.charAt(0) }}
+      </div>
+
+      <div class="space-y-1.5">
+        <div class="flex flex-wrap items-center gap-3">
+          <h1 class="text-xl md:text-2xl font-black text-main-text dark:text-white tracking-tight">{{ ag.nomAgence }}
+          </h1>
+
+          <!-- BADGE DE STATUT -->
+          <span
+            class="px-3 py-1 text-[10px] font-black rounded-full uppercase tracking-widest shadow-sm inline-flex items-center gap-1.5"
+            [class.bg-yellow-500/10]="ag.userStatut === 'EN_ATTENTE'"
+            [class.text-yellow-600]="ag.userStatut === 'EN_ATTENTE'" [class.border]="true"
+            [class.border-yellow-500/20]="ag.userStatut === 'EN_ATTENTE'"
+            [class.bg-emerald-500/10]="ag.userStatut === 'VALIDE'" [class.text-emerald-600]="ag.userStatut === 'VALIDE'"
+            [class.border-emerald-500/20]="ag.userStatut === 'VALIDE'"
+            [class.bg-red-500/10]="ag.userStatut === 'REJETE'" [class.text-red-600]="ag.userStatut === 'REJETE'"
+            [class.border-red-500/20]="ag.userStatut === 'REJETE'"
+            [class.bg-slate-500/10]="ag.userStatut === 'SUSPENDU'" [class.text-slate-600]="ag.userStatut === 'SUSPENDU'"
+            [class.border-slate-500/20]="ag.userStatut === 'SUSPENDU'">
+            <span class="w-1.5 h-1.5 rounded-full" [class.bg-yellow-500]="ag.userStatut === 'EN_ATTENTE'"
+              [class.bg-emerald-500]="ag.userStatut === 'VALIDE'" [class.bg-red-500]="ag.userStatut === 'REJETE'"
+              [class.bg-slate-500]="ag.userStatut === 'SUSPENDU'"></span>
+            {{ ag.userStatut }}
+          </span>
         </div>
-        
-        <div class="space-y-1.5">
-          <div class="flex flex-wrap items-center gap-3">
-            <h1 class="text-xl md:text-2xl font-black text-main-text dark:text-white tracking-tight">{{ ag.nomAgence }}</h1>
-            
-            <!-- BADGE DE STATUT -->
-            <span class="px-3 py-1 text-[10px] font-black rounded-full uppercase tracking-widest shadow-sm inline-flex items-center gap-1.5"
-              [class.bg-yellow-500/10]="ag.statut === 'EN_ATTENTE'" [class.text-yellow-600]="ag.statut === 'EN_ATTENTE'" [class.border]="true" [class.border-yellow-500/20]="ag.statut === 'EN_ATTENTE'"
-              [class.bg-emerald-500/10]="ag.statut === 'VALIDE'" [class.text-emerald-600]="ag.statut === 'VALIDE'" [class.border-emerald-500/20]="ag.statut === 'VALIDE'"
-              [class.bg-red-500/10]="ag.statut === 'REJETE'" [class.text-red-600]="ag.statut === 'REJETE'" [class.border-red-500/20]="ag.statut === 'REJETE'"
-              [class.bg-slate-500/10]="ag.statut === 'SUSPENDU'" [class.text-slate-600]="ag.statut === 'SUSPENDU'" [class.border-slate-500/20]="ag.statut === 'SUSPENDU'">
-              <span class="w-1.5 h-1.5 rounded-full"
-                [class.bg-yellow-500]="ag.statut === 'EN_ATTENTE'"
-                [class.bg-emerald-500]="ag.statut === 'VALIDE'"
-                [class.bg-red-500]="ag.statut === 'REJETE'"
-                [class.bg-slate-500]="ag.statut === 'SUSPENDU'"></span>
-              {{ ag.statut }}
-            </span>
+
+        <p class="text-xs text-text-muted flex items-center gap-2">
+          <span>Dossier soumis le : <strong class="text-main-text dark:text-white">{{ ag.dateCreation }}</strong></span>
+          <span>&bull;</span>
+          <span>Vérification : <strong [class.text-emerald-500]="ag.isVerifier"
+              [class.text-amber-500]="!ag.isVerifier">{{ ag.isVerifier ? 'Vérifié' : 'En attente de contrôle'
+              }}</strong></span>
+        </p>
+      </div>
+    </div>
+
+    <!-- BOUTONS D'ACTION RAPIDE (SI EN ATTENTE) -->
+    @if (ag.userStatut === 'EN_ATTENTE') {
+    <div class="flex items-center gap-3 w-full md:w-auto">
+      <button (click)="validerAgence()"
+        class="flex-1 md:flex-none px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition-all shadow-lg shadow-emerald-600/20 flex items-center justify-center gap-2 cursor-pointer">
+        <svg lucideCheck class="w-4 h-4"></svg>
+        <span>Valider l'agence</span>
+      </button>
+
+      <button (click)="showRejectModal.set(true)"
+        class="flex-1 md:flex-none px-5 py-2.5 bg-red-600 hover:bg-red-700 text-white rounded-xl text-xs font-bold transition-all shadow-lg shadow-red-600/20 flex items-center justify-center gap-2 cursor-pointer">
+        <svg lucideX class="w-4 h-4"></svg>
+        <span>Rejeter</span>
+      </button>
+    </div>
+    }
+  </div>
+
+  <!-- GRILLE PRINCIPALE BENTO : INFOS GAUCHE & PREVIEW INTÉGRÉE DROITE -->
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+
+    <!-- COLONNE GAUCHE : Coordonnées, Dossier Légal & Motif Rejet (7 colonnes) -->
+    <div class="lg:col-span-7 space-y-6">
+
+      <!-- SECTION COORDONNÉES -->
+      <div
+        class="bg-white dark:bg-[#151518] rounded-3xl border border-slate-200/80 dark:border-white/10 p-6 shadow-sm space-y-4">
+        <div class="flex items-center gap-3 pb-3 border-b border-slate-100 dark:border-white/5">
+          <div class="p-2 rounded-xl bg-brand/10 text-brand">
+            <svg lucideContact class="w-4 h-4"></svg>
+          </div>
+          <h2 class="text-sm font-black text-main-text dark:text-white uppercase tracking-wider">Coordonnées de l'Agence
+          </h2>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+          <div
+            class="p-4 rounded-2xl bg-slate-50 dark:bg-white/5 border border-slate-200/60 dark:border-white/10 space-y-1">
+            <span class="text-text-muted font-medium block">Adresse Email</span>
+            <span class="font-bold text-main-text dark:text-white select-all">{{ ag.email }}</span>
           </div>
 
-          <p class="text-xs text-text-muted flex items-center gap-2">
-            <span>Dossier soumis le : <strong class="text-main-text dark:text-white">{{ ag.dateSoumission }}</strong></span>
-            <span>&bull;</span>
-            <span>Vérification : <strong [class.text-emerald-500]="ag.isVerifier" [class.text-amber-500]="!ag.isVerifier">{{ ag.isVerifier ? 'Vérifié' : 'En attente de contrôle' }}</strong></span>
-          </p>
+          <div
+            class="p-4 rounded-2xl bg-slate-50 dark:bg-white/5 border border-slate-200/60 dark:border-white/10 space-y-1">
+            <span class="text-text-muted font-medium block">Téléphone Professionnel</span>
+            <span class="font-bold text-main-text dark:text-white select-all">{{ ag.telephone }}</span>
+          </div>
+
+          <div
+            class="sm:col-span-2 p-4 rounded-2xl bg-slate-50 dark:bg-white/5 border border-slate-200/60 dark:border-white/10 space-y-1">
+            <span class="text-text-muted font-medium block">Adresse Physique / Siège</span>
+            <span class="font-bold text-main-text dark:text-white">{{ ag.adresse }}</span>
+          </div>
         </div>
       </div>
 
-      <!-- BOUTONS D'ACTION RAPIDE (SI EN ATTENTE) -->
-      @if (ag.statut === 'EN_ATTENTE') {
-        <div class="flex items-center gap-3 w-full md:w-auto">
-          <button (click)="validerAgence()" class="flex-1 md:flex-none px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition-all shadow-lg shadow-emerald-600/20 flex items-center justify-center gap-2">
-            <svg lucideCheck class="w-4 h-4"></svg>
-            <span>Valider l'agence</span>
-          </button>
-          
-          <button (click)="showRejectModal.set(true)" class="flex-1 md:flex-none px-5 py-2.5 bg-red-600 hover:bg-red-700 text-white rounded-xl text-xs font-bold transition-all shadow-lg shadow-red-600/20 flex items-center justify-center gap-2">
-            <svg lucideX class="w-4 h-4"></svg>
-            <span>Rejeter</span>
-          </button>
+      <!-- SECTION SÉLECTION DES DOCUMENTS (Utilisation de mediaService.getFileUrl) -->
+      <div
+        class="bg-white dark:bg-[#151518] rounded-3xl border border-slate-200/80 dark:border-white/10 p-6 shadow-sm space-y-4">
+        <div class="flex items-center gap-3 pb-3 border-b border-slate-100 dark:border-white/5">
+          <div class="p-2 rounded-xl bg-brand/10 text-brand">
+            <svg lucideShieldCheck class="w-4 h-4"></svg>
+          </div>
+          <h2 class="text-sm font-black text-main-text dark:text-white uppercase tracking-wider">Dossier Juridique &
+            Fiscal</h2>
         </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+          <!-- Bouton Sélection RCCM -->
+          @if (ag.rccmDocumentUrl) {
+          <button (click)="initialiserPreview(ag.rccmDocumentUrl, 'Registre de Commerce (RCCM) - ' + ag.rccm)"
+            class="p-4 rounded-2xl border text-left transition-all flex flex-col justify-between gap-2 shadow-sm cursor-pointer"
+            [class.border-brand]="selectedPreviewTitle().includes('RCCM')"
+            [class.bg-brand/5]="selectedPreviewTitle().includes('RCCM')"
+            [class.border-slate-200/80]="!selectedPreviewTitle().includes('RCCM')"
+            [class.dark:border-white/10]="!selectedPreviewTitle().includes('RCCM')">
+            <div class="flex items-center justify-between">
+              <span class="font-bold text-main-text dark:text-white">RCCM</span>
+              <svg lucideFileText class="w-4 h-4 text-brand"></svg>
+            </div>
+            <span class="font-mono text-[11px] text-text-muted truncate">{{ ag.rccm }}</span>
+          </button>
+          }
+
+          <!-- Bouton Sélection NIF -->
+          @if (ag.nifDocumentUrl) {
+          <button
+            (click)="initialiserPreview(ag.nifDocumentUrl, 'Identification Fiscale (NIF) - ' + (ag.nif || 'N/A'))"
+            class="p-4 rounded-2xl border text-left transition-all flex flex-col justify-between gap-2 shadow-sm cursor-pointer"
+            [class.border-brand]="selectedPreviewTitle().includes('NIF')"
+            [class.bg-brand/5]="selectedPreviewTitle().includes('NIF')"
+            [class.border-slate-200/80]="!selectedPreviewTitle().includes('NIF')"
+            [class.dark:border-white/10]="!selectedPreviewTitle().includes('NIF')">
+            <div class="flex items-center justify-between">
+              <span class="font-bold text-main-text dark:text-white">NIF</span>
+              <svg lucideFileText class="w-4 h-4 text-brand"></svg>
+            </div>
+            <span class="font-mono text-[11px] text-text-muted truncate">{{ ag.nif || 'Non fourni' }}</span>
+          </button>
+          }
+        </div>
+      </div>
+
+      <!-- ENCART MOTIF DE REJET (SI REJETE) -->
+      @if (ag.userStatut === 'REJETE' && ag.motifRejet) {
+      <div
+        class="bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-900/50 rounded-3xl p-6 shadow-sm space-y-3">
+        <div class="flex items-center gap-2 text-red-700 dark:text-red-400 font-black text-xs uppercase tracking-wider">
+          <svg lucideAlertTriangle class="w-4 h-4"></svg>
+          <span>Motif du Rejet</span>
+        </div>
+        <p
+          class="text-xs text-red-600 dark:text-red-300 leading-relaxed bg-white/60 dark:bg-black/20 p-4 rounded-2xl border border-red-100 dark:border-red-900/30">
+          {{ ag.motifRejet }}
+        </p>
+      </div>
+      }
+
+    </div>
+
+    <!-- COLONNE DROITE : CONSEIL DE MODÉRATION PUIS VISIONNEUSE (5 colonnes) -->
+    <div class="lg:col-span-5 sticky top-6 space-y-6">
+
+      <!-- Conseil de modération / Avertissement administrateur harmonisé -->
+      <div
+        class="bg-amber-50 dark:bg-amber-950/20 border-l-4 border-amber-500 p-5 rounded-2xl shadow-sm border border-slate-200/40 dark:border-white/5">
+        <div class="flex items-start gap-3.5">
+          <div class="p-2.5 bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-400 rounded-xl shrink-0">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+          </div>
+          <div class="space-y-1">
+            <h3 class="text-xs font-black uppercase tracking-wider text-amber-900 dark:text-amber-400">Rappel de
+              modération & Sécurité</h3>
+            <p class="text-xs text-amber-800/80 dark:text-amber-300/80 leading-relaxed">
+              Avant de valider ou de rejeter cette inscription, veuillez vérifier rigoureusement <strong>l'authenticité
+                des documents légaux</strong> (RCCM, NIF). Toute validation engage la responsabilité de la plateforme
+              sur la conformité de l'agence immobilière.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- VISIONNEUSE DE DOCUMENT INTÉGRÉE -->
+      <div
+        class="bg-white dark:bg-[#151518] rounded-3xl border border-slate-200/80 dark:border-white/10 shadow-sm overflow-hidden flex flex-col">
+
+        <!-- En-tête de la visionneuse -->
+        <div
+          class="p-4 border-b border-slate-100 dark:border-white/5 flex items-center justify-between bg-slate-50 dark:bg-white/5">
+          <div class="flex items-center gap-2 truncate">
+            <svg lucideEye class="w-4 h-4 text-brand shrink-0"></svg>
+            <span class="text-xs font-black text-main-text dark:text-white truncate">{{ selectedPreviewTitle() ||
+              'Aperçu du document' }}</span>
+          </div>
+
+          @if (selectedPreviewUrl()) {
+          <!-- Bouton Agrandir (Plein écran) -->
+          <button (click)="basculerPleinEcran()"
+            class="px-3 py-1.5 bg-brand/10 hover:bg-brand hover:text-white text-brand rounded-xl text-xs font-bold transition-all flex items-center gap-1 shrink-0 cursor-pointer">
+            <span>Agrandir ⤢</span>
+          </button>
+          }
+        </div>
+
+        <!-- Zone d'affichage du document sur la page -->
+        <div
+          class="w-full h-[460px] bg-slate-100 dark:bg-black/40 flex items-center justify-center relative overflow-hidden">
+          @if (selectedPreviewUrl(); as currentUrl) {
+          @if (mediaService.isPdf(currentUrl)) {
+          <iframe [src]="currentUrl | safeUrl" class="w-full h-full border-0"></iframe>
+          } @else {
+          <img [src]="currentUrl" alt="Aperçu document" class="w-full h-full object-contain p-2 select-none">
+          }
+          } @else {
+          <div class="text-center p-6 space-y-2">
+            <svg lucideFileSearch class="w-8 h-8 text-text-muted mx-auto opacity-50"></svg>
+            <p class="text-xs text-text-muted">Sélectionnez un document dans la section de gauche pour l'afficher ici.
+            </p>
+          </div>
+          }
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+  }
+
+  <!-- MODALE PLEIN ÉCRAN POUR AGRANDIR LE DOCUMENT -->
+  <!-- MODALE PLEIN ÉCRAN POUR AGRANDIR LE DOCUMENT -->
+  @if (isFullScreen() && selectedPreviewUrl()) {
+  <div
+    class="fixed inset-0 bg-black/90 backdrop-blur-md flex flex-col items-center justify-between p-4 md:p-6 z-50 animate-in">
+
+    <!-- En-tête de la modale (fixé en haut, largeur maximale) -->
+    <div
+      class="w-full max-w-7xl flex items-center justify-between bg-white dark:bg-[#18181b] px-6 py-3.5 rounded-2xl border border-slate-200 dark:border-white/10 shadow-2xl shrink-0">
+      <div class="flex items-center gap-2 truncate">
+        <svg lucideFileText class="w-4 h-4 text-brand shrink-0"></svg>
+        <span class="text-xs font-black text-main-text dark:text-white truncate">{{ selectedPreviewTitle() }}</span>
+      </div>
+
+      <button (click)="basculerPleinEcran()"
+        class="px-4 py-2 bg-brand/10 hover:bg-brand hover:text-white text-brand rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5">
+        <span>Fermer le plein écran</span>
+        <span>✕</span>
+      </button>
+    </div>
+
+    <!-- Contenu de la modale : s'adapte à tout l'espace restant de l'écran -->
+    <div
+      class="w-full max-w-7xl flex-1 my-4 bg-white/5 dark:bg-[#18181b]/50 rounded-3xl overflow-hidden shadow-2xl flex items-center justify-center relative border border-slate-200/20 dark:border-white/10">
+      @if (selectedPreviewUrl(); as currentUrl) {
+      @if (mediaService.isPdf(currentUrl)) {
+      <iframe [src]="currentUrl | safeUrl" class="w-full h-full border-0"></iframe>
+      } @else {
+      <img [src]="currentUrl" alt="Document agrandi" class="w-full h-full object-contain p-2 select-none">
+      }
       }
     </div>
 
-    <!-- GRILLE PRINCIPALE BENTO : INFOS GAUCHE & PREVIEW INTÉGRÉE DROITE -->
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-      
-      <!-- COLONNE GAUCHE : Coordonnées, Dossier Légal & Motif Rejet (7 colonnes) -->
-      <div class="lg:col-span-7 space-y-6">
-        
-        <!-- SECTION COORDONNÉES -->
-        <div class="bg-white dark:bg-[#151518] rounded-3xl border border-slate-200/80 dark:border-white/10 p-6 shadow-sm space-y-4">
-          <div class="flex items-center gap-3 pb-3 border-b border-slate-100 dark:border-white/5">
-            <div class="p-2 rounded-xl bg-brand/10 text-brand">
-              <svg lucideContact class="w-4 h-4"></svg>
-            </div>
-            <h2 class="text-sm font-black text-main-text dark:text-white uppercase tracking-wider">Coordonnées de l'Agence</h2>
-          </div>
-
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
-            <div class="p-4 rounded-2xl bg-slate-50 dark:bg-white/5 border border-slate-200/60 dark:border-white/10 space-y-1">
-              <span class="text-text-muted font-medium block">Adresse Email</span>
-              <span class="font-bold text-main-text dark:text-white select-all">{{ ag.email }}</span>
-            </div>
-
-            <div class="p-4 rounded-2xl bg-slate-50 dark:bg-white/5 border border-slate-200/60 dark:border-white/10 space-y-1">
-              <span class="text-text-muted font-medium block">Téléphone Professionnel</span>
-              <span class="font-bold text-main-text dark:text-white select-all">{{ ag.telephone }}</span>
-            </div>
-
-            <div class="sm:col-span-2 p-4 rounded-2xl bg-slate-50 dark:bg-white/5 border border-slate-200/60 dark:border-white/10 space-y-1">
-              <span class="text-text-muted font-medium block">Adresse Physique / Siège</span>
-              <span class="font-bold text-main-text dark:text-white">{{ ag.adresse }}</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- SECTION SÉLECTION DES DOCUMENTS (Pour alimenter la visionneuse de droite) -->
-        <div class="bg-white dark:bg-[#151518] rounded-3xl border border-slate-200/80 dark:border-white/10 p-6 shadow-sm space-y-4">
-          <div class="flex items-center gap-3 pb-3 border-b border-slate-100 dark:border-white/5">
-            <div class="p-2 rounded-xl bg-brand/10 text-brand">
-              <svg lucideShieldCheck class="w-4 h-4"></svg>
-            </div>
-            <h2 class="text-sm font-black text-main-text dark:text-white uppercase tracking-wider">Dossier Juridique & Fiscal</h2>
-          </div>
-
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-            <!-- Bouton Sélection RCCM -->
-            @if (ag.rccmDocumentUrl) {
-              <button (click)="initialiserPreview(ag.rccmDocumentUrl, 'Registre de Commerce (RCCM) - ' + ag.rccm)"
-                class="p-4 rounded-2xl border text-left transition-all flex flex-col justify-between gap-2 shadow-sm cursor-pointer"
-                [class.border-brand]="selectedPreviewTitle().includes('RCCM')"
-                [class.bg-brand/5]="selectedPreviewTitle().includes('RCCM')"
-                [class.border-slate-200/80]="!selectedPreviewTitle().includes('RCCM')"
-                [class.dark:border-white/10]="!selectedPreviewTitle().includes('RCCM')">
-                <div class="flex items-center justify-between">
-                  <span class="font-bold text-main-text dark:text-white">RCCM</span>
-                  <svg lucideFileText class="w-4 h-4 text-brand"></svg>
-                </div>
-                <span class="font-mono text-[11px] text-text-muted truncate">{{ ag.rccm }}</span>
-              </button>
-            }
-
-            <!-- Bouton Sélection NIF -->
-            @if (ag.nifDocumentUrl) {
-              <button (click)="initialiserPreview(ag.nifDocumentUrl, 'Identification Fiscale (NIF) - ' + (ag.nif || 'N/A'))"
-                class="p-4 rounded-2xl border text-left transition-all flex flex-col justify-between gap-2 shadow-sm cursor-pointer"
-                [class.border-brand]="selectedPreviewTitle().includes('NIF')"
-                [class.bg-brand/5]="selectedPreviewTitle().includes('NIF')"
-                [class.border-slate-200/80]="!selectedPreviewTitle().includes('NIF')"
-                [class.dark:border-white/10]="!selectedPreviewTitle().includes('NIF')">
-                <div class="flex items-center justify-between">
-                  <span class="font-bold text-main-text dark:text-white">NIF</span>
-                  <svg lucideFileText class="w-4 h-4 text-brand"></svg>
-                </div>
-                <span class="font-mono text-[11px] text-text-muted truncate">{{ ag.nif || 'Non fourni' }}</span>
-              </button>
-            }
-          </div>
-        </div>
-
-        <!-- ENCART MOTIF DE REJET (SI REJETE) -->
-        @if (ag.statut === 'REJETE' && ag.motifRejet) {
-          <div class="bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-900/50 rounded-3xl p-6 shadow-sm space-y-3">
-            <div class="flex items-center gap-2 text-red-700 dark:text-red-400 font-black text-xs uppercase tracking-wider">
-              <svg lucideAlertTriangle class="w-4 h-4"></svg>
-              <span>Motif du Rejet</span>
-            </div>
-            <p class="text-xs text-red-600 dark:text-red-300 leading-relaxed bg-white/60 dark:bg-black/20 p-4 rounded-2xl border border-red-100 dark:border-red-900/30">
-              {{ ag.motifRejet }}
-            </p>
-          </div>
-        }
-
-      </div>
-
-      <!-- COLONNE DROITE : CONSEIL DE MODÉRATION PUIS VISIONNEUSE (5 colonnes) -->
-      <div class="lg:col-span-5 sticky top-6 space-y-6">
-        
-        <!-- GUIDE DE MODÉRATION (PLACÉ AVANT LE PREVIEW) -->
-        <div class="bg-white dark:bg-[#151518] rounded-3xl border border-slate-200/80 dark:border-white/10 p-6 shadow-sm space-y-3">
-          <h3 class="text-xs font-black uppercase tracking-widest text-text-muted">Conseil de modération</h3>
-          <p class="text-xs text-text-muted leading-relaxed">
-            Utilisez le bouton <strong>Agrandir</strong> pour inspecter les moindres détails des documents juridiques avant de valider ou rejeter l'inscription de l'agence.
-          </p>
-        </div>
-
-        <!-- VISIONNEUSE DE DOCUMENT INTÉGRÉE -->
-        <div class="bg-white dark:bg-[#151518] rounded-3xl border border-slate-200/80 dark:border-white/10 shadow-sm overflow-hidden flex flex-col">
-          
-          <!-- En-tête de la visionneuse -->
-          <div class="p-4 border-b border-slate-100 dark:border-white/5 flex items-center justify-between bg-slate-50 dark:bg-white/5">
-            <div class="flex items-center gap-2 truncate">
-              <svg lucideEye class="w-4 h-4 text-brand shrink-0"></svg>
-              <span class="text-xs font-black text-main-text dark:text-white truncate">{{ selectedPreviewTitle() || 'Aperçu du document' }}</span>
-            </div>
-            
-            @if (selectedPreviewUrl()) {
-              <!-- Bouton Agrandir (Plein écran) -->
-              <button (click)="basculerPleinEcran()" class="px-3 py-1.5 bg-brand/10 hover:bg-brand hover:text-white text-brand rounded-xl text-xs font-bold transition-all flex items-center gap-1 shrink-0 cursor-pointer">
-                <span>Agrandir ⤢</span>
-              </button>
-            }
-          </div>
-
-          <!-- Zone d'affichage du document sur la page -->
-          <div class="w-full h-[460px] bg-slate-100 dark:bg-black/40 flex items-center justify-center relative overflow-hidden">
-            @if (selectedPreviewUrl()) {
-              @if (isPdfPreview()) {
-                <iframe [src]="safePreviewUrl() | safeUrl" class="w-full h-full border-0"></iframe>
-              } @else {
-                <img [src]="selectedPreviewUrl()" alt="Aperçu document" class="w-full h-full object-contain p-2 select-none">
-              }
-            } @else {
-              <div class="text-center p-6 space-y-2">
-                <svg lucideFileSearch class="w-8 h-8 text-text-muted mx-auto opacity-50"></svg>
-                <p class="text-xs text-text-muted">Sélectionnez un document dans la section de gauche pour l'afficher ici.</p>
-              </div>
-            }
-          </div>
-
-        </div>
-
-      </div>
-
-    </div>
+  </div>
   }
 
- <!-- MODALE PLEIN ÉCRAN POUR AGRANDIR LE DOCUMENT -->
-  @if (isFullScreen() && selectedPreviewUrl()) {
-    <div class="fixed inset-0 bg-[var(--color-main-bg)]/80 backdrop-blur-md flex flex-col items-center justify-center p-4 md:p-8 z-50 animate-in">
-      
-      <!-- En-tête de la modale -->
-      <div class="w-full max-w-5xl flex items-center justify-between bg-card px-6 py-3 rounded-[--radius-2xl] border border-border mb-4 shadow-[--shadow-bento]">
-        <div class="flex items-center gap-2 truncate">
-          <svg lucideFileText class="w-4 h-4 text-brand shrink-0"></svg>
-          <span class="text-xs font-black text-main-text truncate">{{ selectedPreviewTitle() }}</span>
-        </div>
+  <!-- MODALE DE SAISIE DU MOTIF DE REJET -->
+  @if (showRejectModal()) {
+  <div class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 animate-in">
+    <div
+      class="bg-white dark:bg-[#18181b] rounded-3xl max-w-lg w-full p-6 md:p-8 shadow-2xl border border-slate-200 dark:border-white/10 space-y-4">
 
-        <button (click)="basculerPleinEcran()" class="px-3.5 py-1.5 bg-brand/10 hover:bg-brand hover:text-white text-brand rounded-xl text-xs font-bold transition-all cursor-pointer">
-          Fermer le plein écran ✕
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="p-2.5 rounded-2xl bg-red-500/10 text-red-600">
+            <svg lucideXCircle class="w-6 h-6"></svg>
+          </div>
+          <div>
+            <h3 class="text-base font-black text-main-text dark:text-white">Motif du rejet du dossier</h3>
+            <p class="text-xs text-text-muted">Cette note sera transmise aux responsables de l'agence.</p>
+          </div>
+        </div>
+        <button (click)="showRejectModal.set(false)"
+          class="p-2 rounded-xl text-text-muted hover:bg-slate-100 dark:hover:bg-white/5 transition-colors cursor-pointer">
+          <svg lucideX class="w-5 h-5"></svg>
         </button>
       </div>
 
-      <!-- Contenu de la modale (Image ou PDF) -->
-      <div class="w-full max-w-5xl h-[80vh] bg-card rounded-[--radius-3xl] overflow-hidden shadow-[--shadow-bento] flex items-center justify-center relative border border-border">
-        @if (isPdfPreview()) {
-          <iframe [src]="safePreviewUrl() | safeUrl" class="w-full h-full border-0"></iframe>
-        } @else {
-          <img [src]="selectedPreviewUrl()" alt="Document agrandi" class="max-w-full max-h-full object-contain p-4 select-none">
-        }
-      </div>
-
-    </div>
-  }
-  <!-- MODALE DE SAISIE DU MOTIF DE REJET -->
-  @if (showRejectModal()) {
-    <div class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 animate-in">
-      <div class="bg-white dark:bg-[#18181b] rounded-3xl max-w-lg w-full p-6 md:p-8 shadow-2xl border border-slate-200 dark:border-white/10 space-y-4">
-        
-        <div class="flex items-center justify-between">
-          <div class="flex items-center gap-3">
-            <div class="p-2.5 rounded-2xl bg-red-500/10 text-red-600">
-              <svg lucideXCircle class="w-6 h-6"></svg>
-            </div>
-            <div>
-              <h3 class="text-base font-black text-main-text dark:text-white">Motif du rejet du dossier</h3>
-              <p class="text-xs text-text-muted">Cette note sera transmise aux responsables de l'agence.</p>
-            </div>
-          </div>
-          <button (click)="showRejectModal.set(false)" class="p-2 rounded-xl text-text-muted hover:bg-slate-100 dark:hover:bg-white/5 transition-colors cursor-pointer">
-            <svg lucideX class="w-5 h-5"></svg>
-          </button>
-        </div>
-        
-        <textarea 
-          [ngModel]="motifRejetInput()" 
-          (ngModelChange)="motifRejetInput.set($event)"
-          rows="4" 
-          placeholder="Ex: Le numéro RCCM fourni ne correspond pas au document officiel scanné..."
-          class="w-full bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-2xl p-4 text-xs text-main-text dark:text-white focus:ring-2 focus:ring-brand focus:outline-none resize-none">
+      <textarea [ngModel]="motifRejetInput()" (ngModelChange)="motifRejetInput.set($event)" rows="4"
+        placeholder="Ex: Le numéro RCCM fourni ne correspond pas au document officiel scanné..."
+        class="w-full bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-2xl p-4 text-xs text-main-text dark:text-white focus:ring-2 focus:ring-brand focus:outline-none resize-none">
         </textarea>
 
-        <div class="flex items-center justify-end gap-3 pt-2">
-          <button (click)="showRejectModal.set(false)" class="px-5 py-2.5 bg-slate-100 dark:bg-white/5 text-text-muted rounded-xl text-xs font-bold hover:bg-slate-200 dark:hover:bg-white/10 transition-colors cursor-pointer">
-            Annuler
-          </button>
-          <button (click)="confirmerRejet()" class="px-5 py-2.5 bg-red-600 hover:bg-red-700 text-white rounded-xl text-xs font-bold shadow-lg shadow-red-600/20 transition-all cursor-pointer">
-            Confirmer le rejet définitif
-          </button>
-        </div>
-
+      <div class="flex items-center justify-end gap-3 pt-2">
+        <button (click)="showRejectModal.set(false)"
+          class="px-5 py-2.5 bg-slate-100 dark:bg-white/5 text-text-muted rounded-xl text-xs font-bold hover:bg-slate-200 dark:hover:bg-white/10 transition-colors cursor-pointer">
+          Annuler
+        </button>
+        <button (click)="confirmerRejet()"
+          class="px-5 py-2.5 bg-red-600 hover:bg-red-700 text-white rounded-xl text-xs font-bold shadow-lg shadow-red-600/20 transition-all cursor-pointer">
+          Confirmer le rejet définitif
+        </button>
       </div>
+
     </div>
+  </div>
   }
 
 </div>
