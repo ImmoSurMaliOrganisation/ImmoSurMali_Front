@@ -119,15 +119,12 @@ export class AuthComponent {
           setTimeout(() => {
             switch (response.role) {
               case UserRole.ADMIN:
-              case 'ADMIN':
                 this.router.navigate(['/admin/dashboard']);
                 break;
 
               case UserRole.AGENCE:
               case UserRole.PROPRIETAIRE:
-              case 'AGENCE':
-              case 'PROPRIETAIRE':
-                this.router.navigate(['/pro/dashboard']);
+                this.router.navigate(['/proprio/dashboard']);
                 break;
 
               case 'CLIENT':

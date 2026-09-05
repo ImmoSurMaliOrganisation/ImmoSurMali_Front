@@ -1,0 +1,52 @@
+<div class="min-h-screen bg-slate-100 dark:bg-[#121212] transition-colors duration-300">
+  
+  <!-- BARRE DE NAVIGATION SUPÉRIEURE -->
+  <header class="border-b border-border/40 bg-white/80 dark:bg-[#1A1A1A]/80 backdrop-blur-md sticky top-0 z-30 px-6 py-4 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 rounded-xl bg-brand/10 text-brand flex items-center justify-center font-bold">
+        ISM
+      </div>
+      <div>
+        <h2 class="text-sm font-black text-main-text dark:text-white leading-tight">ImmoSur Mali</h2>
+        <p class="text-[11px] text-text-muted font-bold">Back-Office Admin</p>
+      </div>
+    </div>
+
+    <!-- ACTION DÉCONNEXION -->
+    <button
+      (click)="onLogout()"
+      type="button"
+      class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-red-500/10 hover:bg-red-500/20 text-red-500 text-xs font-bold transition-all active:scale-95"
+    >
+      <svg lucideLogOut class="w-4 h-4"></svg>
+      <span>Se déconnecter</span>
+    </button>
+  </header>
+
+  <!-- CONTENU PRINCIPAL -->
+  <main class="space-y-6 p-6 md:p-8">
+    
+    <!-- BANNIÈRE DE BIENVENUE -->
+    <div class="relative overflow-hidden rounded-[2rem] bg-gradient-to-r from-brand to-brand/90 dark:from-[#1A1A1A] dark:to-[#222222] p-8 md:p-10 text-white shadow-bento border border-white/10">
+      
+      <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-white/5 rounded-full blur-2xl pointer-events-none"></div>
+
+      <div class="relative z-10 max-w-2xl space-y-3">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md text-xs font-semibold tracking-wide">
+          <svg lucideShieldCheck class="w-4 h-4 text-emerald-400"></svg>
+          <span>Espace d'Administration Sécurisé</span>
+        </div>
+
+        <h1 class="text-3xl md:text-4xl font-black tracking-tight leading-tight">
+          Bienvenue sur le Back-Office, Admin ! 👋
+        </h1>
+
+        <p class="text-white/80 dark:text-text-muted text-sm md:text-base font-medium leading-relaxed">
+          Superviser l'ensemble de la plateforme ImmoSur Mali. Gérez les annonces, validez les accès et suivez l'activité globale en temps réel.
+        </p>
+      </div>
+
+    </div>
+
+  </main>
+</div>
