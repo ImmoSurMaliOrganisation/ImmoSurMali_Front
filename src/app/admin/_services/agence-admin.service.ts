@@ -75,15 +75,21 @@ export class AgenceAdminService {
     return of(updated).pipe(delay(300));
   }
 
-  // Rejeter une agence avec un motif obligatoire
-  rejeterDemande(id: number, motif: string): Observable<AgenceAdmin> {
-    const updatedList = this.agencesSignal().map((a) =>
-      a.id === id
-        ? { ...a, userStatut: 'SUSPENDU' as UserStatut, isVerifier: false, motifRejet: motif }
-        : a,
+// Rejeter une agence et récupérer le message de confirmation
+ rejeterDemande(id: number, motif: string): Observable<{ message: string }> {
+  // Transmettre uniquement le motif sous forme de chaîne de caractères
+  const payload = { motif: motif };
+
+  return this.http.patch<{ message: string }>(`${this.apiUrl}/${id}/rejeter`, payload).pipe(
+    tap(() => {
+        // Mise à jour du signal local
+        const updatedList = this.agencesSignal().map((a) =>
+          a.id === id
+            ? { ...a, userStatut: 'REJETE' as UserStatut, isVerifier: false, motifRejet: motif }
+            : a
+        );
+        this.agencesSignal.set(updatedList);
+      })
     );
-    this.agencesSignal.set(updatedList);
-    const updated = this.agencesSignal().find((a) => a.id === id)!;
-    return of(updated).pipe(delay(300));
   }
 }
