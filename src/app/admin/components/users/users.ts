@@ -43,7 +43,6 @@ export type RoleFilter = 'TOUS' | 'CLIENT' | 'PROPRIETAIRE_PART' | 'AGENCE_IMMOB
     LucideChevronLeft,
     LucideChevronRight,
     LucideAlertCircle,
-    LucideDynamicIcon,
   ],
   templateUrl: './users.html',
   styleUrl: './users.css',

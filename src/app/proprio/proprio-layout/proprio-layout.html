@@ -1,8 +1,166 @@
-<div class="admin-wrapper flex h-screen">
-  <!-- Optionnel: sidebar admin si connecté -->
-  <!-- <app-admin-sidebar /> -->
+<div
+  class="min-h-screen bg-slate-100 dark:bg-[#121212] text-main-text dark:text-white pb-20 md:pb-0 md:flex font-sans transition-colors duration-300">
 
-  <div class="flex-1 overflow-y-auto">
-    <router-outlet />
-  </div>
+  <!-- 1. HEADER MOBILE -->
+  <header
+    class="md:hidden sticky top-0 z-30 h-14 bg-white/90 dark:bg-[#1A1A1A]/90 backdrop-blur-md border-b border-border/50 px-4 flex items-center justify-between shadow-sm">
+    <div class="flex items-center gap-2">
+      <div class="w-8 h-8 rounded-xl bg-brand flex items-center justify-center text-white font-black text-xs shadow-sm">
+        IS
+      </div>
+      <span class="text-xs font-black tracking-tight">ImmoSur <span class="text-brand">Bailleur</span></span>
+    </div>
+
+    <!-- Actions Mobile : Theme Toggle & Notification Bell -->
+    <div class="flex items-center gap-2">
+      <button (click)="themeService.toggleDarkMode()" type="button"
+        [title]="themeService.isDark() ? 'Passer en mode clair' : 'Passer en mode sombre'"
+        class="p-2 rounded-xl bg-slate-50 dark:bg-white/5 border border-border/40 text-text-muted hover:text-main-text dark:hover:text-white active:scale-95 transition-all cursor-pointer">
+        @if (!themeService.isDark()) {
+        <svg lucideMoon class="w-4 h-4"></svg>
+        } @else {
+        <svg lucideSun class="w-4 h-4 text-yellow-400"></svg>
+        }
+      </button>
+
+      <a routerLink="/proprietaire/notifications" routerLinkActive="text-brand border-brand/30"
+        class="p-2 rounded-xl bg-slate-50 dark:bg-white/5 border border-border/40 text-text-muted hover:text-main-text dark:hover:text-white active:scale-95 transition-all relative">
+        <svg lucideBell class="w-4 h-4"></svg>
+        <span
+          class="absolute top-1.5 right-1.5 w-2 h-2 bg-brand rounded-full ring-2 ring-white dark:ring-[#1A1A1A] animate-pulse"></span>
+      </a>
+    </div>
+  </header>
+
+  <!-- 2. SIDEBAR DESKTOP -->
+  <aside
+    class="hidden md:flex flex-col justify-between w-64 bg-white dark:bg-[#1A1A1A] border-r border-border/50 shrink-0 h-screen sticky top-0 p-4 space-y-6">
+    <div class="space-y-6">
+
+      <!-- En-tête Sidebar : Logo -->
+      <div class="flex items-center justify-between px-2">
+        <a routerLink="/proprio/dashboard" class="flex items-center gap-2.5">
+          <div
+            class="w-9 h-9 rounded-2xl bg-brand flex items-center justify-center text-white font-black text-lg shadow-bento">
+            IS
+          </div>
+          <div>
+            <span class="text-base font-black tracking-tight block leading-none">ImmoSur <span
+                class="text-brand">Mali</span></span>
+            <span class="text-[10px] font-extrabold uppercase tracking-widest text-brand">Espace Bailleur</span>
+          </div>
+        </a>
+      </div>
+
+      <!-- Barre d'outils Desktop : Theme Switcher & Cloche -->
+      <div class="flex items-center gap-2 p-1.5 bg-slate-50 dark:bg-white/5 border border-border/50 rounded-2xl">
+        <button (click)="themeService.toggleDarkMode()" type="button"
+          class="flex-1 flex items-center justify-center gap-2 py-1.5 px-3 rounded-xl text-xs font-extrabold text-text-muted hover:text-main-text dark:hover:text-white hover:bg-white dark:hover:bg-white/10 transition-all cursor-pointer shadow-none hover:shadow-sm"
+          [title]="themeService.isDark() ? 'Passer en mode clair' : 'Passer en mode sombre'">
+          @if (!themeService.isDark()) {
+          <svg lucideMoon class="w-4 h-4"></svg>
+          <span>Sombre</span>
+          } @else {
+          <svg lucideSun class="w-4 h-4 text-yellow-400"></svg>
+          <span>Clair</span>
+          }
+        </button>
+
+        <a routerLink="/proprietaire/notifications" routerLinkActive="bg-white dark:bg-white/10 text-brand font-black"
+          class="p-2 rounded-xl text-text-muted hover:text-main-text dark:hover:text-white hover:bg-white dark:hover:bg-white/10 transition-all relative"
+          title="Notifications">
+          <svg lucideBell class="w-4 h-4"></svg>
+          <span
+            class="absolute top-1.5 right-1.5 w-2 h-2 bg-brand rounded-full ring-2 ring-white dark:ring-[#1A1A1A]"></span>
+        </a>
+      </div>
+
+      <!-- Bouton d'action Bento (Noir en Mode Clair / Blanc en Mode Sombre) -->
+      <a routerLink="/proprietaire/biens/nouveau"
+        class="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-2xl bg-main-text text-white dark:bg-white dark:text-black hover:bg-main-text/90 dark:hover:bg-slate-100 text-xs font-black shadow-bento hover:shadow-bento-hover transition-all cursor-pointer">
+        <svg lucidePlusCircle class="w-4 h-4"></svg>
+        <span>Publier un bien</span>
+      </a>
+      <!-- Liens de navigation (Sidebar Desktop) -->
+      <nav class="space-y-1.5">
+        @for (link of navLinks; track link.route) {
+        <a [routerLink]="link.route"
+          routerLinkActive="!bg-brand !text-white font-black shadow-bento shadow-brand/25 group"
+          class="flex items-center justify-between p-3 rounded-2xl text-xs font-bold text-text-muted hover:text-main-text dark:hover:text-white bg-transparent hover:bg-slate-100 dark:hover:bg-white/5 border border-transparent transition-all cursor-pointer">
+          <div class="flex items-center gap-3">
+            <span>{{ link.label }}</span>
+          </div>
+          @if (link.badge) {
+          <span
+            class="px-2.5 py-0.5 text-[10px] font-black rounded-full bg-brand/10 text-brand dark:bg-white/20 dark:text-white group-[.bg-brand]:bg-white/20 group-[.bg-brand]:text-white transition-colors">
+            {{ link.badge }}
+          </span>
+          }
+        </a>
+        }
+      </nav>
+    </div>
+
+    <!-- Profil utilisateur & Déconnexion -->
+    <div class="p-3 bg-slate-50 dark:bg-white/5 border border-border/50 rounded-2xl flex items-center justify-between">
+      <div class="flex items-center gap-2.5 min-w-0">
+        <div
+          class="w-9 h-9 rounded-xl bg-brand/10 text-brand font-black text-xs flex items-center justify-center shrink-0">
+          {{ authService.currentUser()?.nom?.charAt(0) || 'P' }}
+        </div>
+        <div class="text-xs font-black truncate max-w-[100px] text-main-text dark:text-white">
+          {{ authService.currentUser()?.nom || 'Propriétaire' }}
+        </div>
+      </div>
+      <button (click)="logout()" type="button"
+        class="p-2 text-brand hover:bg-brand/10 rounded-xl transition-all cursor-pointer" title="Déconnexion">
+        <svg lucideLogOut class="w-4 h-4"></svg>
+      </button>
+    </div>
+  </aside>
+
+  <!-- 3. ZONE DE CONTENU PRINCIPALE -->
+  <main class="flex-1 p-4 md:p-8 min-w-0 animate-in">
+    <router-outlet></router-outlet>
+  </main>
+
+  <!-- 4. BOTTOM NAVIGATION BAR (Mobile) -->
+  <nav
+    class="md:hidden fixed bottom-0 left-0 right-0 h-16 bg-white/90 dark:bg-[#1A1A1A]/90 backdrop-blur-md border-t border-border/50 z-40 px-2 flex items-center justify-around shadow-lg">
+
+    <a routerLink="/proprietaire/dashboard"
+      routerLinkActive="text-brand font-black bg-brand/10 dark:bg-brand/20 scale-105"
+      class="flex flex-col items-center justify-center gap-1 py-1.5 px-3 rounded-2xl min-w-[56px] text-text-muted transition-all duration-200">
+      <svg lucideLayoutDashboard class="w-5 h-5"></svg>
+      <span class="text-[10px]">Accueil</span>
+    </a>
+
+    <a routerLink="/proprietaire/biens" routerLinkActive="text-brand font-black bg-brand/10 dark:bg-brand/20 scale-105"
+      class="flex flex-col items-center justify-center gap-1 py-1.5 px-3 rounded-2xl min-w-[56px] text-text-muted transition-all duration-200">
+      <svg lucideBuilding class="w-5 h-5"></svg>
+      <span class="text-[10px]">Mes Biens</span>
+    </a>
+
+    <!-- BOUTON CENTRAL ACTION (FAB) -->
+    <a routerLink="/proprietaire/biens/nouveau"
+      class="-mt-6 w-12 h-12 rounded-full bg-brand text-white flex items-center justify-center shadow-bento hover:shadow-bento-hover active:scale-95 transition-all">
+      <svg lucidePlus class="w-6 h-6 stroke-[3]"></svg>
+    </a>
+
+    <a routerLink="/proprietaire/demandes"
+      routerLinkActive="text-brand font-black bg-brand/10 dark:bg-brand/20 scale-105"
+      class="flex flex-col items-center justify-center gap-1 py-1.5 px-3 rounded-2xl min-w-[56px] text-text-muted relative transition-all duration-200">
+      <svg lucideInbox class="w-5 h-5"></svg>
+      <span class="text-[10px]">Demandes</span>
+      <span class="absolute top-1 right-2 w-2 h-2 rounded-full bg-brand"></span>
+    </a>
+
+    <a routerLink="/proprietaire/profil" routerLinkActive="text-brand font-black bg-brand/10 dark:bg-brand/20 scale-105"
+      class="flex flex-col items-center justify-center gap-1 py-1.5 px-3 rounded-2xl min-w-[56px] text-text-muted transition-all duration-200">
+      <svg lucideUserCheck class="w-5 h-5"></svg>
+      <span class="text-[10px]">Profil</span>
+    </a>
+
+  </nav>
+
 </div>

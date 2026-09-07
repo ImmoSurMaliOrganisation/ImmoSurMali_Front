@@ -36,10 +36,8 @@ import { AgenceAdminService } from '../_services/agence-admin.service';
     LucideLogOut,
     LucideMoon,
     LucideSun,
-    LucideMenu,
     LucideX,
     LucideBuilding2,
-    LucideBell,
     ButtonComponent
 ],
   templateUrl: './admin-layout.html',
