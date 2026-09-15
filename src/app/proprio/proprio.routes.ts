@@ -15,6 +15,12 @@ export const PROPRIO_ROUTES: Routes = [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'dashboard', component: ProprioDashboard },
       { path: 'biens', component: ProprietaireBiens },
+      {
+            path: 'new-bien',
+            loadComponent: () => 
+              import('./components/create-bien/create-bien').then(m => m.CreateBien),
+            title: 'Publier un Bien'
+}
     ],
   },
 ];
