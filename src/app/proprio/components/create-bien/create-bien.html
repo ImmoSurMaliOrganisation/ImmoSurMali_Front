@@ -1,135 +1,123 @@
-<div class="min-h-screen pb-28 pt-4 px-4 sm:px-6 max-w-4xl mx-auto space-y-6">
+<div class="min-h-screen pb-32 pt-3 px-3 sm:px-6 max-w-4xl mx-auto space-y-5 relative">
 
-    <!-- PATTERN SVG - ARCHITECTURE GRID (Arrière-plan) -->
+  <!-- PATTERN SVG - ARCHITECTURE GRID (Arrière-plan) -->
   <svg class="absolute inset-0 w-full h-full pointer-events-none opacity-15 dark:opacity-25 -z-10"
-      xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
-      <defs>
-          <pattern id="grid-bien" width="40" height="40" patternUnits="userSpaceOnUse">
-              <path d="M 40 0 L 0 0 0 40" fill="none" class="stroke-brand/40" stroke-width="1.5" />
-          </pattern>
-      </defs>
-      <rect width="100%" height="100%" fill="url(#grid-bien)" />
+    xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+    <defs>
+      <pattern id="grid-bien" width="40" height="40" patternUnits="userSpaceOnUse">
+        <path d="M 40 0 L 0 0 0 40" fill="none" class="stroke-brand/40" stroke-width="1.5" />
+      </pattern>
+    </defs>
+    <rect width="100%" height="100%" fill="url(#grid-bien)" />
   </svg>
-  <!-- En-tête -->
-<!-- En-tête avec badge du type sélectionné -->
-<div class="flex items-center justify-between gap-4">
-  <a routerLink="/proprietaire/biens" class="p-2.5 rounded-2xl bg-slate-100 dark:bg-white/5 border border-border/50 text-main-text dark:text-white hover:bg-slate-200 transition-colors">
-    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7" />
-    </svg>
-  </a>
 
-  <div class="text-center space-y-1">
-    <h1 class="text-base sm:text-lg font-black text-main-text dark:text-white tracking-tight">
-      Publier un bien
-    </h1>
-    
-    <div class="flex items-center justify-center gap-2">
-      <span class="text-[11px] text-text-muted font-semibold">
-        Étape {{ currentStep() }} sur 5
-      </span>
+  <!-- En-tête avec badge du type sélectionné -->
+  <div class="flex items-center justify-between gap-2">
+    <a routerLink="/proprio/biens"
+      class="p-2.5 rounded-2xl bg-slate-100 dark:bg-white/5 border border-border/50 text-main-text dark:text-white hover:bg-slate-200 transition-colors">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7" />
+      </svg>
+    </a>
 
-      <!-- Badge persistent du type sélectionné -->
-      @if (currentTypeConfig()) {
-        <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-black bg-brand/10 text-brand border border-brand/20 shadow-xs">
+    <div class="text-center space-y-1">
+      <h1 class="text-base sm:text-lg font-black text-main-text dark:text-white tracking-tight">
+        Publier un bien
+      </h1>
+
+      <div class="flex items-center justify-center gap-2">
+        <span class="text-[11px] text-text-muted font-semibold">
+          Étape {{ currentStep() }} sur 5
+        </span>
+
+        <!-- Badge persistent du type sélectionné -->
+        @if (currentTypeConfig()) {
+        <span
+          class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-black bg-brand/10 text-brand border border-brand/20 shadow-xs">
           <span class="w-1.5 h-1.5 rounded-full bg-brand animate-pulse"></span>
           {{ currentTypeConfig()?.label }}
         </span>
-      }
+        }
+      </div>
     </div>
+
+    <div class="w-10"></div>
   </div>
 
-  <div class="w-10"></div>
-</div>
-
-  <!-- Barre de progression -->
+  <!-- Barre de progression bien alignée dans le flux du contenu -->
   <div class="w-full h-1.5 bg-slate-100 dark:bg-white/10 rounded-full overflow-hidden">
     <div class="h-full bg-brand transition-all duration-300 rounded-full" [style.width.%]="progressPercentage()"></div>
   </div>
 
   <!-- Rendu des Étapes -->
-  <form [formGroup]="bienForm" class="space-y-6">
+  <form [formGroup]="bienForm" class="space-y-4">
 
     <!-- Étape 1 : Bento Type Selector -->
     @if (currentStep() === 1) {
-      <app-step-type 
-        [selectedType]="selectedType()" 
-        (typeSelected)="onTypeSelected($event)">
-      </app-step-type>
+    <app-step-type [selectedType]="selectedType()" (typeSelected)="onTypeSelected($event)">
+    </app-step-type>
     }
     @if (currentStep() === 2) {
-  <app-step-general 
-    [form]="bienForm" 
-    [currentTypeConfig]="currentTypeConfig()">
-  </app-step-general>
-}
-<!-- Étape 3 : Localisation -->
-@if (currentStep() === 3) {
-  <app-step-location [form]="bienForm"></app-step-location>
-}
+    <app-step-general [form]="bienForm" [currentTypeConfig]="currentTypeConfig()">
+    </app-step-general>
+    }
+    <!-- Étape 3 : Localisation -->
+    @if (currentStep() === 3) {
+    <app-step-location [form]="bienForm"></app-step-location>
+    }
 
     <!-- Étape 4 : Caractéristiques Spécifiques Dynamic -->
     @if (currentStep() === 4) {
-      <ng-container [ngSwitch]="selectedType()">
-        <app-features-appartement *ngSwitchCase="'APPARTEMENT'" [form]="bienForm"></app-features-appartement>
-        <app-features-villa *ngSwitchCase="'VILLA'" [form]="bienForm"></app-features-villa>
-        <!-- Autres sous-composants ici... -->
-         
-      </ng-container>
+    <ng-container [ngSwitch]="selectedType()">
+      <app-features-appartement *ngSwitchCase="'APPARTEMENT'" [form]="bienForm"></app-features-appartement>
+      <app-features-villa *ngSwitchCase="'VILLA'" [form]="bienForm"></app-features-villa>
+      <app-features-terrain *ngSwitchCase="'TERRAIN'" [form]="bienForm"></app-features-terrain>
+      <!-- Autres sous-composants ici... -->
+
+    </ng-container>
     }
 
     <!-- Étape 5 : Médias -->
-@if (currentStep() === 5) {
-  <app-step-media 
-    [previews]="imagePreviews()" 
-    [errorMessage]="errorMessage()"
-    (filesChanged)="onFilesSelected($event)"
-    (imageRemoved)="removeImage($event)">
-  </app-step-media>
-}
+    @if (currentStep() === 5) {
+    <app-step-media [previews]="imagePreviews()" [errorMessage]="errorMessage()"
+      (filesChanged)="onFilesSelected($event)" (imageRemoved)="removeImage($event)">
+    </app-step-media>
+    }
   </form>
 
-<!-- Navigation Sticky (Toujours visible au bas de la fenêtre) -->
-<div class="sticky bottom-4 z-50 mt-4 pointer-events-none">
-  <div class="max-w-2xl mx-auto bg-white/95 dark:bg-[#1A1A1A]/95 backdrop-blur-xl border border-border/80 p-3 rounded-2xl shadow-2xl flex items-center justify-between gap-3 pointer-events-auto">
-    
-    <!-- Bouton Retour -->
-    @if (currentStep() > 1) {
-      <button 
-        (click)="prevStep()" 
-        type="button" 
+  <!-- Navigation Sticky (Toujours visible au bas de la fenêtre) -->
+  <div class="sticky bottom-4 z-50 mt-4 pointer-events-none">
+    <div
+      class="max-w-4xl mx-auto bg-white/95 dark:bg-[#1A1A1A]/95 backdrop-blur-xl border border-border/80 p-3 rounded-2xl shadow-2xl flex items-center justify-between gap-3 pointer-events-auto">
+
+      <!-- Bouton Retour -->
+      @if (currentStep() > 1) {
+      <button (click)="prevStep()" type="button"
         class="py-2.5 px-5 rounded-xl bg-slate-100 dark:bg-white/10 hover:bg-slate-200 dark:hover:bg-white/20 text-main-text dark:text-white text-xs font-black transition-all cursor-pointer">
         Retour
       </button>
-    } @else {
+      } @else {
       <div></div>
-    }
+      }
 
-    <!-- Indication Étape -->
-    <span class="text-[11px] font-bold text-text-muted">
-      Étape {{ currentStep() }} sur 5
-    </span>
+      <!-- Indication Étape
+      <span class="text-[11px] font-bold text-text-muted">
+        Étape {{ currentStep() }} sur 5
+      </span> -->
 
-    <!-- Bouton Suivant / Publier -->
-    @if (currentStep() < 5) {
-      <button 
-        (click)="nextStep()" 
-        [disabled]="!isStepValid(currentStep())" 
-        type="button" 
-        class="py-2.5 px-6 rounded-xl bg-brand disabled:opacity-40 text-white text-xs font-black shadow-md shadow-brand/20 hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer">
+      <!-- Bouton Suivant / Publier -->
+      @if (currentStep() < 5) { <button (click)="nextStep()" [disabled]="!isStepValid(currentStep())" type="button"
+        class="py-2.5 px-6 rounded-xl border border-brand bg-gradient-to-tl from-brand/20 via-brand/5 to-transparent dark:from-brand/30 dark:via-brand/10 dark:to-transparent ring-2 ring-brand text-xs font-black text-slate-900 dark:text-white shadow-bento shadow-md shadow-brand/20 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-40 transition-all cursor-pointer">
         Suivant
-      </button>
-    } @else {
-      <button 
-        (click)="onSubmit()" 
-        [disabled]="isSubmitting() || bienForm.invalid" 
-        type="button" 
-        class="py-2.5 px-6 rounded-xl bg-brand disabled:opacity-40 text-white text-xs font-black shadow-md shadow-brand/20 hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer">
-        {{ isSubmitting() ? 'Publication...' : "Publier l'annonce" }}
-      </button>
-    }
+        </button>
+        } @else {
+        <button (click)="onSubmit()" [disabled]="isSubmitting() || bienForm.invalid" type="button"
+          class="py-2.5 px-6 rounded-xl border border-brand bg-gradient-to-tl from-brand/20 via-brand/5 to-transparent dark:from-brand/30 dark:via-brand/10 dark:to-transparent ring-2 ring-brand text-xs font-black text-slate-900 dark:text-white shadow-bento shadow-md shadow-brand/20 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-40 transition-all cursor-pointer">
+          {{ isSubmitting() ? 'Publication...' : "Publier l'annonce" }}
+        </button>
+        }
 
+    </div>
   </div>
-</div>
 
 </div>

@@ -8,7 +8,6 @@ export interface CreateAppartementRequest {
   adresse?: string;
   latitude?: number;
   longitude?: number;
-  proprietaireId: number;
   nombreChambres?: number;
   estMeuble?: boolean;
   etage?: number;
@@ -38,7 +37,6 @@ export interface AppartementResponse {
   adresse: string;
   latitude: number;
   longitude: number;
-  proprietaireId: number;
   createdAt: string;
   nombreChambres: number;
   estMeuble: boolean;

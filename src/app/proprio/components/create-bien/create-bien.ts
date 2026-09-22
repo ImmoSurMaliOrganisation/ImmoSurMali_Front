@@ -10,6 +10,7 @@ import { StepGeneralComponent } from './step-general.component';
 import { ImagePreview, StepMediaComponent } from './step-media.component';
 import { StepLocationComponent } from './step-location.component';
 import { FeaturesAppartementComponent } from './features-appartement.component';
+import { FeaturesTerrainComponent } from './features-terrain.component';
 
 @Component({
   selector: 'app-create-bien',
@@ -24,6 +25,7 @@ import { FeaturesAppartementComponent } from './features-appartement.component';
     StepMediaComponent,
     StepLocationComponent,
     FeaturesAppartementComponent,
+    FeaturesTerrainComponent,
   ],
   templateUrl: './create-bien.html',
 })
@@ -79,14 +81,16 @@ export class CreateBien implements OnInit {
       garage: [false],
       ascenseur: [false],
       // Attributs Terrain / Ferme
+      typeTerrain: ['', Validators.required],
+      superficieTotale: [null, Validators.required],
       zonage: [''],
+      viabilise: [false],
+      cloture: [false],
       titreFoncier: [false],
       eau: [false],
       electricite: [false],
       accesGoudronne: [false],
       assainissement: [false],
-      constructible: [true],
-      proprietaireId: [1, Validators.required],
     });
   }
 

@@ -7,7 +7,7 @@ import { FormGroup, ReactiveFormsModule } from '@angular/forms';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   template: `
-    <div [formGroup]="form" class="space-y-4 max-w-2xl mx-auto animate-in">
+    <div [formGroup]="form" class="space-y-4 max-w-4xl mx-auto animate-in">
       <div class="grid grid-cols-2 gap-3">
         <div class="space-y-1">
           <label for="surfaceTerrain" class="text-xs font-bold text-main-text dark:text-white">Surface terrain (m²)</label>

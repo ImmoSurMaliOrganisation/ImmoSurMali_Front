@@ -8,7 +8,6 @@ export interface CreateVillaRequest {
   adresse: string;
   latitude?: number;
   longitude?: number;
-  proprietaireId: number;
 
   surfaceTerrain: number;
   nombreChambres?: number;
@@ -38,7 +37,6 @@ export interface VillaResponse {
   adresse: string;
   latitude?: number;
   longitude?: number;
-  proprietaireId: number;
   createdAt: string;
 
   surfaceTerrain: number;

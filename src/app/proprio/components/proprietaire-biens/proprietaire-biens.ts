@@ -1,4 +1,4 @@
-import { Component, signal, computed, ElementRef, ViewChild } from '@angular/core';
+import { Component, signal, computed, ElementRef, ViewChild, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import {
@@ -9,6 +9,7 @@ import {
   LucideBuilding2,
 } from '@lucide/angular';
 import { FormsModule } from '@angular/forms';
+import { BienService } from '../../../core/services/bien.service';
 
 export interface Bien {
   id: string;
@@ -27,64 +28,59 @@ export interface Bien {
   templateUrl: './proprietaire-biens.html',
 })
 export class ProprietaireBiens {
+  private bienService = inject(BienService);
+
   // Signals de sélection et filtres
   selectedType = signal<string>('TOUS');
   selectedStatut = signal<string>('TOUS');
   searchQuery = signal<string>('');
   isFilterDrawerOpen = signal<boolean>(false);
+  isLoading = signal<boolean>(true);
 
-  // Catégories avec compteurs
+  // Signal pour stocker les biens de manière réactive
+  biens = signal<any[]>([]);
+
+// Catégories avec compteurs (peuvent aussi être calculés dynamiquement si besoin)
   propertyTypes = [
-    { label: 'Tous les biens', value: 'TOUS', count: 12 },
-    { label: 'Appartements', value: 'APPARTEMENT', count: 5 },
-    { label: 'Maisons & Villas', value: 'MAISON', count: 3 },
-    { label: 'Terrains', value: 'TERRAIN', count: 2 },
-    { label: 'Immeubles', value: 'IMMEUBLE', count: 2 },
+    { label: 'Tous les biens', value: 'TOUS', count: 0 },
+    { label: 'Appartements', value: 'APPARTEMENT', count: 0 },
+    { label: 'Maisons & Villas', value: 'MAISON', count: 0 },
+    { label: 'Terrains', value: 'TERRAIN', count: 0 },
+    { label: 'Immeubles', value: 'IMMEUBLE', count: 0 },
   ];
 
-  // Source de données
-  biens = signal<Bien[]>([
-    {
-      id: '1',
-      titre: 'Appartement F3 Badalabougou',
-      type: 'APPARTEMENT',
-      statut: 'DISPONIBLE',
-      prix: 150000,
-      adresse: 'Badalabougou',
-      ref: 'ISM-001',
-    },
-    {
-      id: '2',
-      titre: 'Villa Duplex ACI 2000',
-      type: 'MAISON',
-      statut: 'LOUE',
-      prix: 450000,
-      adresse: 'ACI 2000',
-      ref: 'ISM-002',
-    },
-    {
-      id: '3',
-      titre: 'Terrain 500m² Sotuba',
-      type: 'TERRAIN',
-      statut: 'DISPONIBLE',
-      prix: 25000000,
-      adresse: 'Sotuba',
-      ref: 'ISM-003',
-    },
-  ]);
+  ngOnInit(): void {
+    this.chargerBiens();
+  }
 
-  // Calcul réactif de la liste filtrée
+  chargerBiens(): void {
+    this.isLoading.set(true);
+    this.bienService.getTousLesBiens().subscribe({
+      next: (data) => {
+        this.biens.set(data);
+        this.isLoading.set(false);
+        // Optionnel : Mettre à jour les compteurs dynamiquement ici
+      },
+      error: (err) => {
+        console.error('Erreur lors de la récupération des biens :', err);
+        this.isLoading.set(false);
+      }
+    });
+  }
+
+  // Calcul réactif de la liste filtrée (Attention : biens() est maintenant un Signal, donc on l'appelle avec des parenthèses)
   filteredBiens = computed(() => {
     const query = this.searchQuery().toLowerCase().trim();
     const type = this.selectedType();
     const statut = this.selectedStatut();
+    const list = this.biens(); // Appel du signal biens
 
-    return this.biens().filter((bien) => {
+    return list.filter((bien) => {
       const matchesQuery =
         !query ||
-        bien.titre.toLowerCase().includes(query) ||
-        bien.adresse.toLowerCase().includes(query) ||
-        bien.ref.toLowerCase().includes(query);
+        bien.titre?.toLowerCase().includes(query) ||
+        bien.adresse?.toLowerCase().includes(query) ||
+        bien.ref?.toLowerCase().includes(query);
 
       const matchesType = type === 'TOUS' || bien.type === type;
       const matchesStatut = statut === 'TOUS' || bien.statut === statut;
@@ -94,11 +90,11 @@ export class ProprietaireBiens {
   });
 
   // Indicateur de présence de filtres actifs
+
   hasActiveFilters = computed(() => {
     return this.searchQuery() !== '' || this.selectedStatut() !== 'TOUS';
   });
 
-  // Actions
   onSearchChange(value: string): void {
     this.searchQuery.set(value);
   }
@@ -108,13 +104,10 @@ export class ProprietaireBiens {
   }
   // Signals pour l'overlay mobile
   isSearchOverlayOpen = signal<boolean>(false);
-  
   @ViewChild('mobileSearchInput') mobileSearchInput?: ElementRef<HTMLInputElement>;
-
 
   openSearchOverlay(): void {
     this.isSearchOverlayOpen.set(true);
-    // Auto-focus sur l'input au moment de l'ouverture
     setTimeout(() => {
       this.mobileSearchInput?.nativeElement.focus();
     }, 100);

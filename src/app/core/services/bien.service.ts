@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { forkJoin, map, Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
 @Injectable({
@@ -76,7 +76,6 @@ export class BienService {
       adresse: formValue.adresse || '',
       latitude: Number(formValue.latitude) || 0,
       longitude: Number(formValue.longitude) || 0,
-      proprietaireId: Number(formValue.proprietaireId) || 1
     };
 
     switch (typeUpper) {
@@ -111,19 +110,56 @@ export class BienService {
           securite: Boolean(formValue.securite)
         };
 
-      case 'TERRAIN':
+     case 'TERRAIN':
       case 'FERME':
         return {
           ...commonData,
-          surfaceTerrain: Number(formValue.surfaceHabitable || formValue.surfaceTerrain) || 0,
+          typeTerrain: formValue.typeTerrain || 'CONSTRUCTIBLE',
+          superficieTotale: Number(formValue.superficieTotale) || 0,
           nombreFacades: Number(formValue.nombreFacades) || 1,
+          zonage: formValue.zonage || '',
           viabilise: Boolean(formValue.viabilise),
+          cloture: Boolean(formValue.cloture),
           titreFoncier: Boolean(formValue.titreFoncier),
-          angleRue: Boolean(formValue.angleRue)
+          eau: Boolean(formValue.eau),
+          electricite: Boolean(formValue.electricite),
+          accesGoudronne: Boolean(formValue.accesGoudronne),
+          assainissement: Boolean(formValue.assainissement)
         };
 
       default:
         return commonData;
     }
+  }
+
+
+
+  /**
+   * Récupère l'ensemble des biens en combinant les endpoints paginés du backend
+   */
+  getTousLesBiens(page: number = 0, size: number = 50): Observable<any[]> {
+    return forkJoin({
+      villas: this.http.get<any>(`${this.apiUrl}/villas?page=${page}&size=${size}`).pipe(
+        // Spring Data Page renvoie un objet avec la propriété 'content'
+        map(response => (response?.content || []).map((item: any) => ({ ...item, type: 'VILLA' })))
+      ),
+      appartements: this.http.get<any>(`${this.apiUrl}/appartements?page=${page}&size=${size}`).pipe(
+        map(response => (response?.content || []).map((item: any) => ({ ...item, type: 'APPARTEMENT' })))
+      ),
+      terrains: this.http.get<any>(`${this.apiUrl}/terrains?page=${page}&size=${size}`).pipe(
+        map(response => (response?.content || []).map((item: any) => ({ ...item, type: 'TERRAIN' })))
+      )
+      // Ajoutez les terrains si le endpoint existe sur le même modèle :
+      // terrains: this.http.get<any>(`${this.apiUrl}/terrains?page=${page}&size=${size}`).pipe(
+      //   map(response => (response?.content || []).map((item: any) => ({ ...item, type: 'TERRAIN' })))
+      // )
+    }).pipe(
+      map(results => [
+        ...results.villas,
+        ...results.appartements,
+        ...(results.terrains || [])
+        // ...(results.terrains || [])
+      ])
+    );
   }
 }

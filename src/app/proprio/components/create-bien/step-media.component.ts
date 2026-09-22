@@ -11,7 +11,7 @@ export interface ImagePreview {
   standalone: true,
   imports: [CommonModule],
   template: `
-    <div class="space-y-4 max-w-2xl mx-auto animate-in">
+    <div class="space-y-4 max-w-4xl mx-auto animate-in">
       
       <label class="text-xs font-black text-main-text dark:text-white uppercase tracking-wider">
         Photos du bien

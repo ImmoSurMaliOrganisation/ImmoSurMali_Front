@@ -7,7 +7,7 @@ import { FormGroup, ReactiveFormsModule } from '@angular/forms';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   template: `
-    <div [formGroup]="form" class="space-y-5 max-w-2xl mx-auto animate-in">
+    <div [formGroup]="form" class="space-y-4 max-w-4xl mx-auto animate-in">
       
       <!-- Ville & Quartier -->
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
