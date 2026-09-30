@@ -4,7 +4,7 @@ import { LucideMoon, LucideSun } from '@lucide/angular';
 import { ButtonComponent } from '../../../client/shared/components/button.component';
 import { FormInputComponent } from '../../../client/shared/components/form-input/form-input.component';
 import { ThemeService } from '../../../core/services/theme';
-import { Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../core/services/auth/auth';
 import { CommonModule } from '@angular/common';
 
@@ -49,7 +49,7 @@ export class PropioLogin {
   LucideSun = LucideSun;
   LucideMoon = LucideMoon;
 
- // Regex assouplie OHADA/Mali (accepte par exemple MA-BKO-2026-1234A ou les formats standards)
+  // Regex assouplie OHADA/Mali (accepte par exemple MA-BKO-2026-1234A ou les formats standards)
   private rccmRegex = '^[A-Z0-9\\s-_]{5,30}$';
   private nifRegex = '^\\d{9}[A-Z]$';
 
@@ -67,6 +67,22 @@ export class PropioLogin {
     acceptTruth: [false], // Attestation d'exactitude (Agence)
     acceptTerms: [false, [Validators.requiredTrue]], // CGU (Tous)
   });
+
+  private route = inject(ActivatedRoute);
+
+  sessionMessage: string | null = null;
+  ngOnInit(): void {
+    this.route.queryParams.subscribe((params) => {
+      if (params['reason'] === 'session_expired') {
+        this.sessionMessage =
+          'Votre session a expiré pour des raisons de sécurité. Veuillez vous reconnecter.';
+        // Optionnel : Disparition automatique après 6 secondes
+        setTimeout(() => {
+          this.sessionMessage = null;
+        }, 6000);
+      }
+    });
+  }
 
   setAccountType(type: AccountType): void {
     this.accountType.set(type);
@@ -185,7 +201,7 @@ export class PropioLogin {
         telephone: val.telephone,
         adresse: val.adresse,
         rccm: val.rccm,
-        nif: val.nif || null
+        nif: val.nif || null,
       };
 
       // 2. 🟢 L'ajouter obligatoirement au FormData sous la clé 'data'
@@ -212,7 +228,7 @@ export class PropioLogin {
           );
         },
       });
-    }else {
+    } else {
       const payload = {
         nom: val.nom,
         email: val.email,

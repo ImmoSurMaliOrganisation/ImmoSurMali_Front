@@ -1,7 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
 import { AuthService } from '../../../core/services/auth/auth';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormInputComponent } from '../../../client/shared/components/form-input/form-input.component';
 import { ButtonComponent } from '../../../client/shared/components/button.component';
 
@@ -29,7 +29,7 @@ export class LoginComponent {
 
   // Signal pour afficher la notification de succès en vert
   showSuccessMessage = signal(false);
-  
+
   // Signal pour lancer l'agrandissement SVG et la disparition de la carte
   isSuccessExit = signal(false);
 
@@ -42,8 +42,22 @@ export class LoginComponent {
     email: ['', [Validators.required, Validators.email]],
     motDePasse: ['', [Validators.required, Validators.minLength(6)]],
   });
+  private route = inject(ActivatedRoute);
+  sessionMessage: string | null = null;
+  ngOnInit(): void {
+    this.route.queryParams.subscribe((params) => {
+      if (params['reason'] === 'session_expired') {
+        this.sessionMessage =
+          'Votre session a expiré pour des raisons de sécurité. Veuillez vous reconnecter.';
+        // Optionnel : Disparition automatique après 6 secondes
+        setTimeout(() => {
+          this.sessionMessage = null;
+        }, 6000);
+      }
+    });
+  }
 
-onSubmit(): void {
+  onSubmit(): void {
     if (this.loginForm.invalid) {
       this.loginForm.markAllAsTouched();
       return;
@@ -70,21 +84,20 @@ onSubmit(): void {
           setTimeout(() => {
             this.router.navigate(['/admin/dashboard']);
           }, 1800);
-
         } else {
           this.authService.logout();
           this.errorMessage.set(
-            "Accès refusé : Ce compte ne possède pas les privilèges d'administrateur."
+            "Accès refusé : Ce compte ne possède pas les privilèges d'administrateur.",
           );
         }
       },
       error: (err) => {
         this.isLoading.set(false);
         if (err.status === 401) {
-          this.errorMessage.set("Email ou mot de passe incorrect.");
+          this.errorMessage.set('Email ou mot de passe incorrect.');
         } else {
           this.errorMessage.set(
-            err.error?.message || "Une erreur est survenue lors de la connexion au serveur."
+            err.error?.message || 'Une erreur est survenue lors de la connexion au serveur.',
           );
         }
       },

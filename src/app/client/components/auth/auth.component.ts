@@ -20,7 +20,7 @@ import {
   LucideSun,
   LucideMoon,
 } from '@lucide/angular';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../../core/services/auth/auth';
 import { ThemeService } from '../../../core/services/theme';
 import { FormInputComponent } from '../../shared/components/form-input/form-input.component';
@@ -66,6 +66,22 @@ export class AuthComponent {
     phone: [''],
     acceptTerms: [false],
   });
+
+  private route = inject(ActivatedRoute);
+
+  sessionMessage: string | null = null;
+  ngOnInit(): void {
+    this.route.queryParams.subscribe((params) => {
+      if (params['reason'] === 'session_expired') {
+        this.sessionMessage =
+          'Votre session a expiré pour des raisons de sécurité. Veuillez vous reconnecter.';
+        // Optionnel : Disparition automatique après 6 secondes
+        setTimeout(() => {
+          this.sessionMessage = null;
+        }, 6000);
+      }
+    });
+  }
 
   togglePassword(): void {
     this.showPassword.update((v) => !v);

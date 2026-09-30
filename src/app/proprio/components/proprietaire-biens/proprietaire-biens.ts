@@ -7,6 +7,8 @@ import {
   LucideHome,
   LucideTrees,
   LucideBuilding2,
+  LucideMapPin,
+  LucideMaximize2,
 } from '@lucide/angular';
 import { FormsModule } from '@angular/forms';
 import { BienService } from '../../../core/services/bien.service';
@@ -24,7 +26,15 @@ export interface Bien {
 @Component({
   selector: 'app-proprietaire-biens',
   standalone: true,
-  imports: [CommonModule, RouterLink, LucidePlusCircle, FormsModule],
+  imports: [
+    CommonModule,
+    RouterLink,
+    LucidePlusCircle,
+    FormsModule,
+    LucideBuilding2,
+    LucideMapPin,
+    LucideMaximize2,
+  ],
   templateUrl: './proprietaire-biens.html',
 })
 export class ProprietaireBiens {
@@ -40,7 +50,7 @@ export class ProprietaireBiens {
   // Signal pour stocker les biens de manière réactive
   biens = signal<any[]>([]);
 
-// Catégories avec compteurs (peuvent aussi être calculés dynamiquement si besoin)
+  // Catégories avec compteurs (peuvent aussi être calculés dynamiquement si besoin)
   propertyTypes = [
     { label: 'Tous les biens', value: 'TOUS', count: 0 },
     { label: 'Appartements', value: 'APPARTEMENT', count: 0 },
@@ -64,10 +74,23 @@ export class ProprietaireBiens {
       error: (err) => {
         console.error('Erreur lors de la récupération des biens :', err);
         this.isLoading.set(false);
-      }
+      },
     });
   }
 
+  getMainImageUrl(bien: any): string | null {
+    if (!bien.medias || bien.medias.length === 0) return null;
+    const principal = bien.medias.find((m: any) => m.estPrincipal);
+    const media = principal ? principal : bien.medias[0];
+
+    if (!media.url) return null;
+
+    // Si l'URL est relative, on ajoute l'URL de base du backend
+    if (media.url.startsWith('/uploads')) {
+      return `http://localhost:8081${media.url}`; // Remplacez par le port de votre backend si nécessaire
+    }
+    return media.url;
+  }
   // Calcul réactif de la liste filtrée (Attention : biens() est maintenant un Signal, donc on l'appelle avec des parenthèses)
   filteredBiens = computed(() => {
     const query = this.searchQuery().toLowerCase().trim();
