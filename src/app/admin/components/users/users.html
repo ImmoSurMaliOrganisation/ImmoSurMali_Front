@@ -53,20 +53,22 @@
     </div>
 
     <!-- Message de Succès -->
-@if (successMessage()) {
-  <div class="mb-4 p-4 text-sm text-green-700 bg-green-100 rounded-lg flex items-center justify-between shadow-sm" role="alert">
-    <span>{{ successMessage() }}</span>
-    <button (click)="successMessage.set(null)" class="text-green-700 font-bold">&times;</button>
-  </div>
-}
+    @if (successMessage()) {
+    <div class="mb-4 p-4 text-sm text-green-700 bg-green-100 rounded-lg flex items-center justify-between shadow-sm"
+        role="alert">
+        <span>{{ successMessage() }}</span>
+        <button (click)="successMessage.set(null)" class="text-green-700 font-bold">&times;</button>
+    </div>
+    }
 
-<!-- Message d'Erreur -->
-@if (errorMessage()) {
-  <div class="mb-4 p-4 text-sm text-red-700 bg-red-100 rounded-lg flex items-center justify-between shadow-sm" role="alert">
-    <span>{{ errorMessage() }}</span>
-    <button (click)="errorMessage.set(null)" class="text-red-700 font-bold">&times;</button>
-  </div>
-}
+    <!-- Message d'Erreur -->
+    @if (errorMessage()) {
+    <div class="mb-4 p-4 text-sm text-red-700 bg-red-100 rounded-lg flex items-center justify-between shadow-sm"
+        role="alert">
+        <span>{{ errorMessage() }}</span>
+        <button (click)="errorMessage.set(null)" class="text-red-700 font-bold">&times;</button>
+    </div>
+    }
 
     <!-- TABLEAU CARTE BENTO -->
     @if (isLoading()) {
@@ -125,6 +127,8 @@
                         <td class="p-4">
                             <span [ngClass]="{
                     'bg-emerald-500/10 text-emerald-500': user.userStatut === 'ACTIF',
+                    'bg-amber-500/10 text-amber-500': user.userStatut === 'EN_ATTENTE',
+                    'bg-violet-500/10 text-violet-500': user.userStatut === 'REJETE',
                     'bg-red-500/10 text-red-500': user.userStatut === 'SUSPENDU'
                   }" class="px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider inline-flex items-center gap-1.5">
                                 <span [ngClass]="user.userStatut === 'ACTIF' ? 'bg-emerald-500' : 'bg-red-500'"
