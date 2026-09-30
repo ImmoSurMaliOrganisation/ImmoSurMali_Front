@@ -127,7 +127,7 @@ export class AuthService {
   /**
    * Déconnexion globale
    */
-  logout(): void {
+  logout(expired: boolean = false): void {
     const currentRole = this.currentUserRole();
 
     // Nettoyage complet du stockage et des Signals
@@ -139,10 +139,17 @@ export class AuthService {
     this.currentUserRole.set(null);
     this.currentUser.set(null);
 
+    // Préparation des options de navigation (avec ou sans message d'expiration)
+    const extras = expired ? { queryParams: { reason: 'session_expired' } } : {};
+
     if (currentRole === UserRole.ADMIN) {
-      this.router.navigate(['/admin/login']);
-    } else {
-      this.router.navigate(['/auth']);
+      this.router.navigate(['/admin/login'], extras);
+    }else if (currentRole === UserRole.AGENCE || currentRole === UserRole.PROPRIETAIRE) {
+      this.router.navigate(['/proprio/login'], extras);
+    } 
+    else {
+      this.router.navigate(['/auth'], extras);
+      
     }
   }
 
