@@ -3,15 +3,14 @@ import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import {
   LucidePlusCircle,
-  LucideBuilding,
-  LucideHome,
-  LucideTrees,
   LucideBuilding2,
-  LucideMapPin,
-  LucideMaximize2,
+  LucideSearch,
+  LucideX,
+  LucideSlidersHorizontal,
 } from '@lucide/angular';
 import { FormsModule } from '@angular/forms';
 import { BienService } from '../../../core/services/bien.service';
+import { BienCardComponent } from '../bien-card/bien-card.component';
 
 export interface Bien {
   id: string;
@@ -32,8 +31,10 @@ export interface Bien {
     LucidePlusCircle,
     FormsModule,
     LucideBuilding2,
-    LucideMapPin,
-    LucideMaximize2,
+    LucideSearch,
+    LucideX,
+    LucideSlidersHorizontal,
+    BienCardComponent,
   ],
   templateUrl: './proprietaire-biens.html',
 })
@@ -50,13 +51,80 @@ export class ProprietaireBiens {
   // Signal pour stocker les biens de manière réactive
   biens = signal<any[]>([]);
 
-  // Catégories avec compteurs (peuvent aussi être calculés dynamiquement si besoin)
+  // 1. Compteurs de statut dynamiques (qui tiennent compte du type de bien sélectionné)
+  countTous = computed(() => {
+    const type = this.selectedType();
+    const list = this.biens();
+    return type === 'TOUS' ? list.length : list.filter((b) => b.type === type).length;
+  });
+
+  countDisponibles = computed(() => {
+    const type = this.selectedType();
+    const list = this.biens();
+    return list.filter((b) => b.statut === 'DISPONIBLE' && (type === 'TOUS' || b.type === type))
+      .length;
+  });
+
+  countLoues = computed(() => {
+    const type = this.selectedType();
+    const list = this.biens();
+    return list.filter((b) => b.statut === 'LOUE' && (type === 'TOUS' || b.type === type)).length;
+  });
+
+  // 2. Compteurs de types dynamiques (qui tiennent compte du statut sélectionné)
   propertyTypes = [
-    { label: 'Tous les biens', value: 'TOUS', count: 0 },
-    { label: 'Appartements', value: 'APPARTEMENT', count: 0 },
-    { label: 'Maisons & Villas', value: 'MAISON', count: 0 },
-    { label: 'Terrains', value: 'TERRAIN', count: 0 },
-    { label: 'Immeubles', value: 'IMMEUBLE', count: 0 },
+    {
+      label: 'Tous les biens',
+      value: 'TOUS',
+      count: computed(() => {
+        const statut = this.selectedStatut();
+        const list = this.biens();
+        return statut === 'TOUS' ? list.length : list.filter((b) => b.statut === statut).length;
+      }),
+    },
+    {
+      label: 'Appartements',
+      value: 'APPARTEMENT',
+      count: computed(() => {
+        const statut = this.selectedStatut();
+        const list = this.biens();
+        return list.filter(
+          (b) => b.type === 'APPARTEMENT' && (statut === 'TOUS' || b.statut === statut),
+        ).length;
+      }),
+    },
+    {
+      label: 'Maisons & Villas',
+      value: 'MAISON',
+      count: computed(() => {
+        const statut = this.selectedStatut();
+        const list = this.biens();
+        return list.filter((b) => b.type === 'MAISON' && (statut === 'TOUS' || b.statut === statut))
+          .length;
+      }),
+    },
+    {
+      label: 'Terrains',
+      value: 'TERRAIN',
+      count: computed(() => {
+        const statut = this.selectedStatut();
+        const list = this.biens();
+        return list.filter(
+          (b) => b.type === 'TERRAIN' && (statut === 'TOUS' || b.statut === statut),
+        ).length;
+      }),
+    },
+    {
+      label: 'Immeubles',
+      value: 'IMMEUBLE',
+      count: computed(() => {
+        const statut = this.selectedStatut();
+        const list = this.biens();
+        return list.filter(
+          (b) => b.type === 'IMMEUBLE' && (statut === 'TOUS' || b.statut === statut),
+        ).length;
+      }),
+    },
   ];
 
   ngOnInit(): void {
@@ -69,7 +137,6 @@ export class ProprietaireBiens {
       next: (data) => {
         this.biens.set(data);
         this.isLoading.set(false);
-        // Optionnel : Mettre à jour les compteurs dynamiquement ici
       },
       error: (err) => {
         console.error('Erreur lors de la récupération des biens :', err);
@@ -85,18 +152,18 @@ export class ProprietaireBiens {
 
     if (!media.url) return null;
 
-    // Si l'URL est relative, on ajoute l'URL de base du backend
     if (media.url.startsWith('/uploads')) {
-      return `http://localhost:8081${media.url}`; // Remplacez par le port de votre backend si nécessaire
+      return `http://localhost:8081${media.url}`;
     }
     return media.url;
   }
-  // Calcul réactif de la liste filtrée (Attention : biens() est maintenant un Signal, donc on l'appelle avec des parenthèses)
+
+  // Calcul réactif de la liste filtrée
   filteredBiens = computed(() => {
     const query = this.searchQuery().toLowerCase().trim();
     const type = this.selectedType();
     const statut = this.selectedStatut();
-    const list = this.biens(); // Appel du signal biens
+    const list = this.biens();
 
     return list.filter((bien) => {
       const matchesQuery =
@@ -112,10 +179,12 @@ export class ProprietaireBiens {
     });
   });
 
-  // Indicateur de présence de filtres actifs
-
   hasActiveFilters = computed(() => {
-    return this.searchQuery() !== '' || this.selectedStatut() !== 'TOUS';
+    return (
+      this.searchQuery() !== '' ||
+      this.selectedStatut() !== 'TOUS' ||
+      this.selectedType() !== 'TOUS'
+    );
   });
 
   onSearchChange(value: string): void {
@@ -125,7 +194,7 @@ export class ProprietaireBiens {
   toggleFilterDrawer(): void {
     this.isFilterDrawerOpen.update((open) => !open);
   }
-  // Signals pour l'overlay mobile
+
   isSearchOverlayOpen = signal<boolean>(false);
   @ViewChild('mobileSearchInput') mobileSearchInput?: ElementRef<HTMLInputElement>;
 
@@ -143,5 +212,10 @@ export class ProprietaireBiens {
   resetFilters(): void {
     this.searchQuery.set('');
     this.selectedStatut.set('TOUS');
+    this.selectedType.set('TOUS');
+  }
+
+  onSelectBien(bien: any): void {
+    console.log(bien);
   }
 }

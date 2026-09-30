@@ -144,7 +144,7 @@ export class AuthService {
 
     if (currentRole === UserRole.ADMIN) {
       this.router.navigate(['/admin/login'], extras);
-    }else if (currentRole === UserRole.AGENCE || currentRole === UserRole.PROPRIETAIRE || location.pathname.startsWith('/proprio')) {
+    }else if (currentRole === UserRole.AGENCE || currentRole === UserRole.PROPRIETAIRE) {
       this.router.navigate(['/proprio/login'], extras);
     } 
     else {
