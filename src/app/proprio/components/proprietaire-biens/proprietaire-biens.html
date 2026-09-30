@@ -1,105 +1,110 @@
-<div class="space-y-5 pb-10">
+<div class="space-y-5 pb-10 -mt-4 sm:mt-0">
 
-  <!-- En-tête de page -->
-  <div class="flex items-center justify-between gap-3">
-    <div class="min-w-0">
-      <h1 class="text-lg sm:text-xl font-black text-main-text dark:text-white tracking-tight truncate">Mes Biens</h1>
-      <p class="text-[11px] sm:text-xs text-text-muted truncate">Gérez vos annonces et disponibilités</p>
+  <!-- ZONE SUPÉRIEURE FIXE (EN-TÊTE + RECHERCHE + FILTRES) SUR MOBILE -->
+  <div class="sticky top-0 z-30 bg-slate-50 dark:bg-[#121214] pt-2 pb-3 -mx-4 px-4 sm:static sm:mx-0 sm:px-0 sm:bg-transparent space-y-3 transition-all">
+
+    <!-- En-tête de page -->
+    <div class="flex items-center justify-between gap-3">
+      <div class="min-w-0">
+        <h1 class="text-lg sm:text-xl font-black text-main-text dark:text-white tracking-tight truncate">Mes Biens</h1>
+        <p class="text-[11px] sm:text-xs text-text-muted truncate">Gérez vos annonces et disponibilités</p>
+      </div>
+
+      <a [routerLink]="'/proprio/new-bien'"
+        class="inline-flex items-center justify-center gap-1.5 py-2 px-3.5 sm:px-4 rounded-2xl bg-main-text text-white dark:bg-white dark:text-main-text hover:bg-main-text/90 text-xs font-black shadow-bento transition-all cursor-pointer shrink-0 active:scale-95">
+        <svg lucidePlusCircle class="w-4 h-4"></svg>
+        <span class="hidden sm:inline">Publier un bien</span>
+        <span class="sm:hidden">Ajouter</span>
+      </a>
     </div>
 
-    <a [routerLink]="'/proprio/new-bien'"
-      class="inline-flex items-center justify-center gap-1.5 py-2 px-3.5 sm:px-4 rounded-2xl bg-main-text text-white dark:bg-white dark:text-main-text hover:bg-main-text/90 text-xs font-black shadow-bento transition-all cursor-pointer shrink-0 active:scale-95">
-      <svg lucidePlusCircle class="w-4 h-4"></svg>
-      <span class="hidden sm:inline">Publier un bien</span>
-      <span class="sm:hidden">Ajouter</span>
-    </a>
-  </div>
+    <!-- ZONE DE RECHERCHE ET FILTRES RAPIDES (Compacte & Fluide) -->
+    <div class="space-y-3">
 
-  <!-- ZONE DE RECHERCHE ET FILTRES RAPIDES (Compacte & Fluide) -->
-  <div class="space-y-3">
+      <div class="flex items-center gap-2">
+        <!-- Déclencheur Mobile -->
+        <button (click)="openSearchOverlay()" type="button"
+          class="flex sm:hidden w-full items-center justify-between px-3.5 py-2.5 rounded-2xl bg-white dark:bg-[#1A1A1A] border border-border/60 text-text-muted text-xs font-bold transition-all shadow-sm active:scale-[0.99]">
+          <div class="flex items-center gap-2.5 truncate">
+            <svg lucideSearch class="w-4 h-4 text-brand shrink-0"></svg>
+            <span class="truncate text-main-text dark:text-white">{{ searchQuery() ? searchQuery() : 'Rechercher un bien, ville, réf...' }}</span>
+          </div>
+          @if (searchQuery()) {
+          <span class="px-2 py-0.5 rounded-full bg-brand/10 text-brand text-[10px] font-black shrink-0">Actif</span>
+          } @else {
+          <span class="text-[10px] text-text-muted bg-slate-100 dark:bg-white/5 px-2 py-1 rounded-xl">Rechercher</span>
+          }
+        </button>
 
-    <div class="flex items-center gap-2">
-      <!-- Déclencheur Mobile -->
-      <button (click)="openSearchOverlay()" type="button"
-        class="flex sm:hidden w-full items-center justify-between px-3.5 py-2.5 rounded-2xl bg-white dark:bg-[#1A1A1A] border border-border/60 text-text-muted text-xs font-bold transition-all shadow-sm active:scale-[0.99]">
-        <div class="flex items-center gap-2.5 truncate">
-          <svg lucideSearch class="w-4 h-4 text-brand shrink-0"></svg>
-          <span class="truncate text-main-text dark:text-white">{{ searchQuery() ? searchQuery() : 'Rechercher un bien, ville, réf...' }}</span>
+        <!-- Champ de recherche Desktop -->
+        <div class="relative flex-1 hidden sm:block">
+          <svg lucideSearch class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-text-muted"></svg>
+          <input type="text" [ngModel]="searchQuery()" (ngModelChange)="onSearchChange($event)"
+            placeholder="Rechercher par nom, ville, ref..."
+            class="w-full pl-9 pr-8 py-2.5 rounded-2xl text-xs bg-white dark:bg-[#1A1A1A] border border-border/50 text-main-text dark:text-white placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-brand transition-all shadow-sm" />
+          @if (searchQuery()) {
+          <button (click)="onSearchChange('')" type="button"
+            class="absolute right-2.5 top-1/2 -translate-y-1/2 p-1 text-text-muted hover:text-main-text dark:hover:text-white">
+            <svg lucideX class="w-3.5 h-3.5"></svg>
+          </button>
+          }
         </div>
-        @if (searchQuery()) {
-        <span class="px-2 py-0.5 rounded-full bg-brand/10 text-brand text-[10px] font-black shrink-0">Actif</span>
-        } @else {
-        <span class="text-[10px] text-text-muted bg-slate-100 dark:bg-white/5 px-2 py-1 rounded-xl">Rechercher</span>
-        }
-      </button>
 
-      <!-- Champ de recherche Desktop -->
-      <div class="relative flex-1 hidden sm:block">
-        <svg lucideSearch class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-text-muted"></svg>
-        <input type="text" [ngModel]="searchQuery()" (ngModelChange)="onSearchChange($event)"
-          placeholder="Rechercher par nom, ville, ref..."
-          class="w-full pl-9 pr-8 py-2.5 rounded-2xl text-xs bg-white dark:bg-[#1A1A1A] border border-border/50 text-main-text dark:text-white placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-brand transition-all shadow-sm" />
-        @if (searchQuery()) {
-        <button (click)="onSearchChange('')" type="button"
-          class="absolute right-2.5 top-1/2 -translate-y-1/2 p-1 text-text-muted hover:text-main-text dark:hover:text-white">
-          <svg lucideX class="w-3.5 h-3.5"></svg>
+        <!-- Bouton Filtres Avancés -->
+        <button (click)="toggleFilterDrawer()" type="button"
+          class="p-2.5 rounded-2xl bg-white dark:bg-[#1A1A1A] border border-border/50 text-main-text dark:text-white flex items-center justify-center shrink-0 hover:bg-slate-50 dark:hover:bg-white/10 transition-all relative shadow-sm">
+          <svg lucideSlidersHorizontal class="w-4 h-4"></svg>
+          @if (hasActiveFilters()) {
+          <span class="absolute -top-1 -right-1 w-3 h-3 bg-brand rounded-full border-2 border-white dark:border-[#1A1A1A]"></span>
+          }
+        </button>
+      </div>
+
+      <!-- ONGLETS DE FILTRAGE PAR TYPE DE BIEN (Bento Chips dynamiques) -->
+      <div class="flex items-center gap-2 overflow-x-auto no-scrollbar py-0.5">
+        @for (type of propertyTypes; track type.value) {
+        <button (click)="selectedType.set(type.value)" type="button" [ngClass]="selectedType() === type.value 
+              ? 'bg-main-text text-white dark:bg-white dark:text-main-text border-transparent shadow-sm' 
+              : 'bg-white text-text-muted dark:bg-[#1A1A1A] border-border/50 hover:text-main-text dark:hover:text-white'"
+          class="px-3.5 py-2 rounded-xl text-xs font-black border shrink-0 transition-all cursor-pointer flex items-center gap-1.5">
+          <span>{{ type.label }}</span>
+          <span
+            [ngClass]="selectedType() === type.value ? 'bg-white/20 text-white dark:bg-black/10 dark:text-main-text' : 'bg-slate-100 text-text-muted dark:bg-white/10 dark:text-white'"
+            class="px-1.5 py-0.5 rounded-full text-[10px] font-black">
+            {{ type.count() }}
+          </span>
         </button>
         }
       </div>
 
-      <!-- Bouton Filtres Avancés -->
-      <button (click)="toggleFilterDrawer()" type="button"
-        class="p-2.5 rounded-2xl bg-white dark:bg-[#1A1A1A] border border-border/50 text-main-text dark:text-white flex items-center justify-center shrink-0 hover:bg-slate-50 dark:hover:bg-white/10 transition-all relative shadow-sm">
-        <svg lucideSlidersHorizontal class="w-4 h-4"></svg>
-        @if (hasActiveFilters()) {
-        <span class="absolute -top-1 -right-1 w-3 h-3 bg-brand rounded-full border-2 border-white dark:border-[#1A1A1A]"></span>
-        }
-      </button>
-    </div>
+      <!-- Filtres de Statut Rapides (avec compteurs) -->
+      <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar pt-1">
+        <button (click)="selectedStatut.set('TOUS')" [ngClass]="selectedStatut() === 'TOUS' 
+            ? 'bg-main-text text-white dark:bg-white dark:text-black font-black' 
+            : 'bg-white/60 dark:bg-[#1A1A1A]/60 text-text-muted border border-border/30 font-bold'"
+          class="px-3.5 py-1.5 rounded-xl text-[11px] shrink-0 transition-all cursor-pointer flex items-center gap-1.5">
+          <span>Tous</span>
+          <span class="px-1.5 py-0.5 rounded-full text-[9px] bg-black/10 dark:bg-white/10">{{ countTous() }}</span>
+        </button>
+        
+        <button (click)="selectedStatut.set('DISPONIBLE')"
+          [ngClass]="selectedStatut() === 'DISPONIBLE' 
+            ? 'bg-emerald-500 text-white font-black shadow-sm shadow-emerald-500/20' 
+            : 'bg-white/60 dark:bg-[#1A1A1A]/60 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 font-bold'"
+          class="px-3.5 py-1.5 rounded-xl text-[11px] shrink-0 transition-all cursor-pointer flex items-center gap-1.5">
+          <span>Disponibles</span>
+          <span class="px-1.5 py-0.5 rounded-full text-[9px] bg-emerald-500/20">{{ countDisponibles() }}</span>
+        </button>
 
-    <!-- ONGLETS DE FILTRAGE PAR TYPE DE BIEN (Bento Chips dynamiques) -->
-    <div class="flex items-center gap-2 overflow-x-auto no-scrollbar py-0.5">
-      @for (type of propertyTypes; track type.value) {
-      <button (click)="selectedType.set(type.value)" type="button" [ngClass]="selectedType() === type.value 
-            ? 'bg-main-text text-white dark:bg-white dark:text-main-text border-transparent shadow-sm' 
-            : 'bg-white text-text-muted dark:bg-[#1A1A1A] border-border/50 hover:text-main-text dark:hover:text-white'"
-        class="px-3.5 py-2 rounded-xl text-xs font-black border shrink-0 transition-all cursor-pointer flex items-center gap-1.5">
-        <span>{{ type.label }}</span>
-        <span
-          [ngClass]="selectedType() === type.value ? 'bg-white/20 text-white dark:bg-black/10 dark:text-main-text' : 'bg-slate-100 text-text-muted dark:bg-white/10 dark:text-white'"
-          class="px-1.5 py-0.5 rounded-full text-[10px] font-black">
-          {{ type.count() }}
-        </span>
-      </button>
-      }
-    </div>
+        <button (click)="selectedStatut.set('LOUE')" [ngClass]="selectedStatut() === 'LOUE' 
+            ? 'bg-amber-500 text-white font-black shadow-sm shadow-amber-500/20' 
+            : 'bg-white/60 dark:bg-[#1A1A1A]/60 text-amber-600 dark:text-amber-400 border border-amber-500/30 font-bold'"
+          class="px-3.5 py-1.5 rounded-xl text-[11px] shrink-0 transition-all cursor-pointer flex items-center gap-1.5">
+          <span>Loués</span>
+          <span class="px-1.5 py-0.5 rounded-full text-[9px] bg-amber-500/20">{{ countLoues() }}</span>
+        </button>
+      </div>
 
-    <!-- Filtres de Statut Rapides (avec compteurs) -->
-    <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar pt-1">
-      <button (click)="selectedStatut.set('TOUS')" [ngClass]="selectedStatut() === 'TOUS' 
-          ? 'bg-main-text text-white dark:bg-white dark:text-black font-black' 
-          : 'bg-white/60 dark:bg-[#1A1A1A]/60 text-text-muted border border-border/30 font-bold'"
-        class="px-3.5 py-1.5 rounded-xl text-[11px] shrink-0 transition-all cursor-pointer flex items-center gap-1.5">
-        <span>Tous</span>
-        <span class="px-1.5 py-0.5 rounded-full text-[9px] bg-black/10 dark:bg-white/10">{{ countTous() }}</span>
-      </button>
-      
-      <button (click)="selectedStatut.set('DISPONIBLE')"
-        [ngClass]="selectedStatut() === 'DISPONIBLE' 
-          ? 'bg-emerald-500 text-white font-black shadow-sm shadow-emerald-500/20' 
-          : 'bg-white/60 dark:bg-[#1A1A1A]/60 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 font-bold'"
-        class="px-3.5 py-1.5 rounded-xl text-[11px] shrink-0 transition-all cursor-pointer flex items-center gap-1.5">
-        <span>Disponibles</span>
-        <span class="px-1.5 py-0.5 rounded-full text-[9px] bg-emerald-500/20">{{ countDisponibles() }}</span>
-      </button>
-
-      <button (click)="selectedStatut.set('LOUE')" [ngClass]="selectedStatut() === 'LOUE' 
-          ? 'bg-amber-500 text-white font-black shadow-sm shadow-amber-500/20' 
-          : 'bg-white/60 dark:bg-[#1A1A1A]/60 text-amber-600 dark:text-amber-400 border border-amber-500/30 font-bold'"
-        class="px-3.5 py-1.5 rounded-xl text-[11px] shrink-0 transition-all cursor-pointer flex items-center gap-1.5">
-        <span>Loués</span>
-        <span class="px-1.5 py-0.5 rounded-full text-[9px] bg-amber-500/20">{{ countLoues() }}</span>
-      </button>
     </div>
 
   </div>

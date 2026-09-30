@@ -11,6 +11,7 @@ import {
 import { FormsModule } from '@angular/forms';
 import { BienService } from '../../../core/services/bien.service';
 import { BienCardComponent } from '../bien-card/bien-card.component';
+import { environment } from '../../../../environments/environment';
 
 export interface Bien {
   id: string;
@@ -153,7 +154,7 @@ export class ProprietaireBiens {
     if (!media.url) return null;
 
     if (media.url.startsWith('/uploads')) {
-      return `http://localhost:8081${media.url}`;
+      return `${environment.mediaUrl}${media.url}`;
     }
     return media.url;
   }
